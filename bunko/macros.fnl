@@ -31,16 +31,21 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
+(local fennel (require :fennel))
 
 (fn assert-type [expected & items]
-  "Check if the given items are of the given type."
-  (let [message (.. expected " expected, got ")]
-    (accumulate [todo '(do)
-                 _ x (ipairs items)]
-      (do (table.insert todo
-                        `(let [actual# (type ,x)]
-                              (assert (= actual# ,expected)
-                                      (.. ,message actual#))))
-          todo))))
+  "Check if each item is of the expected type."
+  (assert (= (type expected) :string)
+          (string.format "expected type invalid or missing: %s"
+                         (fennel.view expected)))
+  (let [fmt (.. expected " expected, got %s")]
+    (unpack
+      (accumulate [checks '() _ x (ipairs items)]
+        (do (table.insert
+              checks
+              `(let [actual# (type ,x)]
+                 (assert (= actual# ,expected)
+                         (string.format ,fmt actual#))))
+            checks)))))
 
 {: assert-type}
