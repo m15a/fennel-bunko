@@ -1,5 +1,5 @@
 ;;;; ==========================================================================
-;;;; Miscellaneous macros.
+;;;; Utilities for multiple values.
 ;;;; ==========================================================================
 ;;;; 
 ;;;; URL: https://github.com/m15a/fennel-bunko
@@ -32,15 +32,11 @@
 
 (local unpack (or table.unpack _G.unpack))
 
-(fn assert-type [expected & items]
-  "Check if the given items are of the given type."
-  (let [message (.. expected " expected, got ")]
-    (accumulate [todo '(do)
-                 _ x (ipairs items)]
-      (do (table.insert todo
-                        `(let [actual# (type ,x)]
-                              (assert (= actual# ,expected)
-                                      (.. ,message actual#))))
-          todo))))
+(fn map-values [function ...]
+  "Apply the given function to each of the rest args. Returns multiple values.
 
-{: assert-type}
+This is similar to `map-values` in Scheme's SRFI-210, but consumes vargs directly."
+  (unpack (icollect [_ arg (ipairs [...])]
+            (function arg))))
+
+{: map-values}
