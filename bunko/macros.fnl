@@ -3,7 +3,7 @@
 ;;;; ==========================================================================
 ;;;; 
 ;;;; URL: https://github.com/m15a/fennel-bunko
-;;;; License: Public domain
+;;;; License: Unlicense
 ;;;; 
 ;;;; This is free and unencumbered software released into the public domain.
 ;;;; 

@@ -18,7 +18,7 @@ Mostly following Alexandria's philosophy, this library aims to be:
 
 ## License
 
-[Public domain](LICENSE)
+[The Unlicense](LICENSE)
 
 [1]: https://alexandria.common-lisp.dev/
 [2]: https://en.wiktionary.org/wiki/%E6%96%87%E5%BA%AB
