@@ -1,5 +1,7 @@
 # fennel-bunko
 
+![hondana](_assets/tosyokan_book_tana.png)
+
 Fennel library of miscellaneous utilities, far from [Alexandria][1].
 
 ## Philosophy
