@@ -32,8 +32,10 @@
 
 (local unpack (or table.unpack _G.unpack))
 
-(fn vapply [function & vargs]
-  "Apply the given function to each of the rest args. Returns multiple values."
+(fn map-values [function & vargs]
+  "Apply the given function to each of the rest args. Returns multiple values.
+
+This is similar to `map-values` in Scheme's SRFI-210, but consumes vargs directly."
   `(-> (icollect [_# arg# (ipairs [,(unpack vargs)])]
          (,function arg#))
        (unpack)
@@ -46,5 +48,5 @@
        (assert (= actual-type# ,expected-type)
                (.. ,expected-type " expected, got " actual-type#)))))
 
-{: vapply
+{: map-values
  : assert-type}

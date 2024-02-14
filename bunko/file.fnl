@@ -31,7 +31,7 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-(import-macros {: assert-type : vapply}
+(import-macros {: assert-type : map-values}
                (.. (: ... :match "(.+)%.[^.]+") :.macros))
 
 (lambda exists? [file]
@@ -47,7 +47,7 @@
 (fn normalize [...]
   "Remove duplicated /'s in the path(s). The last / will remain."
   (assert-type :string ...)
-  (vapply %normalize ...))
+  (map-values %normalize ...))
 
 (fn %basename [path]
   (case (%normalize path)
@@ -68,7 +68,7 @@ Examples:
   (basename \".\")     ;=> \".\"
   (basename \"..\")    ;=> \"..\""
   (assert-type :string ...)
-  (vapply %basename ...))
+  (map-values %basename ...))
 
 (fn %dirname [path]
   (case (%normalize path)
@@ -94,7 +94,7 @@ Examples:
   (%dirname \".\")     ;=> \".\"
   (%dirname \"..\")    ;=> \".\""
   (assert-type :string ...)
-  (vapply %dirname ...))
+  (map-values %dirname ...))
 
 (fn %slurp [path]
   (with-open [in (io.open path)]
