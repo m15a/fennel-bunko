@@ -38,8 +38,7 @@
 This is similar to `map-values` in Scheme's SRFI-210, but consumes vargs directly."
   `(-> (icollect [_# arg# (ipairs [,(unpack vargs)])]
          (,function arg#))
-       (unpack)
-       (values)))
+       (unpack)))
 
 (fn assert-type [expected-type & items]
   "Check if the given items are of the given type."
