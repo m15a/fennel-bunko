@@ -1,5 +1,5 @@
 ;;;; ==========================================================================
-;;;; Utilities for multiple values.
+;;;; Utilities for manipulating multiple values.
 ;;;; ==========================================================================
 ;;;; 
 ;;;; URL: https://github.com/m15a/fennel-bunko
@@ -33,10 +33,11 @@
 (local unpack (or table.unpack _G.unpack))
 
 (fn map-values [function ...]
-  "Apply the given function to each of the rest args. Returns multiple values.
+  "Apply the function on each rest arg, and return the results as multiple values.
 
 This is similar to `map-values` in Scheme's SRFI-210, but consumes vargs directly."
-  (unpack (icollect [_ arg (ipairs [...])]
-            (function arg))))
+  (unpack
+    (icollect [_ arg (ipairs [...])]
+      (function arg))))
 
 {: map-values}
