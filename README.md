@@ -4,6 +4,8 @@
 
 Fennel library of miscellaneous utilities, far from [Alexandria][1].
 
+([Bunko][2] means a collection of books in Japanese.)
+
 ## Philosophy
 
 Mostly following Alexandria's philosophy, this library aims to be:
@@ -19,3 +21,4 @@ Mostly following Alexandria's philosophy, this library aims to be:
 [Public domain](LICENSE)
 
 [1]: https://alexandria.common-lisp.dev/
+[2]: https://en.wiktionary.org/wiki/%E6%96%87%E5%BA%AB
