@@ -37,18 +37,18 @@
 ;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
 (macro %copy [tbl]
   (if _G.next
-    `(do (var index# nil)
-         (var done?# false)
-         (var result# {})
-         (while (not done?#)
-           (let [(k# v#) (next ,tbl index#)]
-             (if k#
-               (do (set index# k#)
-                   (tset result# k# v#))
-               (set done?# true))))
-         result#)
-    `(collect [k# v# (pairs ,tbl)]
-       (values k# v#))))
+      `(do (var index# nil)
+           (var done?# false)
+           (var result# {})
+           (while (not done?#)
+             (let [(k# v#) (next ,tbl index#)]
+               (if k#
+                   (do (set index# k#)
+                       (tset result# k# v#))
+                   (set done?# true))))
+           result#)
+      `(collect [k# v# (pairs ,tbl)]
+         (values k# v#))))
 
 (lambda copy [tbl ?metatable]
   "Return a shallow copy of the table.
@@ -56,8 +56,8 @@
 Optionally set the same metatable as the original's."
   (let [clone (%copy tbl)]
     (if ?metatable
-      (setmetatable clone (getmetatable tbl))
-      clone)))
+        (setmetatable clone (getmetatable tbl))
+        clone)))
 
 (lambda keys [tbl]
   "Return all keys in the table."
