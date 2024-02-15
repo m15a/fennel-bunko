@@ -38,7 +38,6 @@
 
 (lambda exists? [file]
   "Check if the file exists."
-  (assert-type :string file)
   (match (io.open file)
     any (do (any:close) true)
     _ false))
@@ -112,7 +111,6 @@ Examples:
   "Read all contents of the given files. The results are concatenated.
 
 Return `nil` if no files are specified."
-  (assert-type :string ...)
   (if (= 0 (select :# ...))
       nil
       (accumulate [result "" _ file (ipairs [...])]
