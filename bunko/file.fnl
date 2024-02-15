@@ -31,10 +31,8 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-(import-macros {: assert-type}
-               (.. (: ... :match "(.+)%.[^.]+") :.macros))
-(local {: map-values}
-       (require (.. (: ... :match "(.+)%.[^.]+") :.values)))
+(import-macros {: assert-type} :bunko.macros)
+(local {: map-values} :bunko.values)
 
 (lambda exists? [file]
   "Check if the file exists."

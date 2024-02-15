@@ -1,5 +1,23 @@
 {
   "nodes": {
+    "fenneldoc": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1688733313,
+        "narHash": "sha256-fGCmTpYWlyP14M1aF2nLf+bfHaxkLIipZkIw6jW7MhA=",
+        "ref": "refs/heads/master",
+        "rev": "73d00a02bfe98564dc84af731f5e1c8a82857ba5",
+        "revCount": 96,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/Olical/fenneldoc"
+      },
+      "original": {
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/Olical/fenneldoc"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -36,6 +54,7 @@
     },
     "root": {
       "inputs": {
+        "fenneldoc": "fenneldoc",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs"
       }

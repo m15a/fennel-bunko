@@ -31,8 +31,7 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-(import-macros {: assert-type}
-               (.. (: ... :match "(.+)%.[^.]+") :.macros))
+(import-macros {: assert-type} :bunko.macros)
 
 ;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
 (macro %copy [tbl]
