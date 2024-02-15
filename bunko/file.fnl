@@ -104,8 +104,8 @@ Examples:
   (assert-type :string ...)
   (map-values %dirname ...))
 
-(fn %slurp [path]
-  (with-open [in (io.open path)]
+(fn %slurp [file]
+  (with-open [in (io.open file)]
     (in:read :*all)))
 
 (fn slurp [...]
@@ -113,9 +113,10 @@ Examples:
 
 Return `nil` if no files are specified."
   (assert-type :string ...)
-  (accumulate [out ""
-               _ file (ipairs [...])]
-    (.. out (%slurp file))))
+  (if (= 0 (select :# ...))
+      nil
+      (accumulate [result "" _ file (ipairs [...])]
+        (.. result (%slurp file)))))
 
 {: exists?
  : normalize
