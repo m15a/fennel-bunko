@@ -78,7 +78,7 @@ Examples:
 (fn %dirname [path]
   (case (%normalize path)
     "/" "/"
-    path (let [path (path:match "(.-)(/?)$")]
+    path (let [path (path:match "(.-)/?$")]
            (case (path:match "^(.*)/")
              any any
              _ "."))))
