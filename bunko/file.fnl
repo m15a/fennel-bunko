@@ -47,7 +47,7 @@
   (path:gsub "/+" "/"))
 
 (fn normalize [...]
-  "Remove duplicated /'s in the path(s). The last / will remain."
+  "Remove duplicated `/`'s in the path(s). The last `/` will remain."
   (assert-type :string ...)
   (map-values %normalize ...))
 
@@ -57,10 +57,13 @@
     path (path:match "([^/]*)/?$")))
 
 (fn basename [...]
-  "Remove leading directory components from each given path. Trailing /'s are also
-removed unless the given path is /.
+  "Remove leading directory components from each given path.
+
+Trailing `/`'s are also removed unless the given path is just `/`.
+Compatible to GNU coreutils' `basename --muptiple`.
 
 Examples:
+
   (basename \"/a/b\")  ;=> \"b\"
   (basename \"/a/b/\") ;=> \"b\"
   (basename \"a/b\")   ;=> \"b\"
@@ -81,10 +84,13 @@ Examples:
              _ "."))))
 
 (fn dirname [...]
-  "Extract the last directory component from each given path. Trailing /'s are removed.
-If the path contains no /'s, output '.', meaning the current directory.
+  "Extract the last directory component from each given path.
+
+Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
+Compatible to GNU coreutils' `dirname`.
 
 Examples:
+
   (%dirname \"/a/b\")  ;=> \"/a\"
   (%dirname \"/a/b/\") ;=> \"/a\"
   (%dirname \"a/b\")   ;=> \"a\"
@@ -103,7 +109,9 @@ Examples:
     (in:read :*all)))
 
 (fn slurp [...]
-  "Read all contents of the given files. The results are concatenated."
+  "Read all contents of the given files. The results are concatenated.
+
+Return `nil` if no files are specified."
   (assert-type :string ...)
   (accumulate [out ""
                _ file (ipairs [...])]
