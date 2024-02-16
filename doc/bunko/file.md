@@ -7,30 +7,37 @@
 - [`exists?`](#exists)
 - [`normalize`](#normalize)
 - [`read-file`](#read-file)
+- [`read-lines`](#read-lines)
 
 ## `basename`
 Function signature:
 
 ```
-(basename & paths)
+(basename path ?suffix)
 ```
 
-Remove leading directory components from each of the `paths`.
+Remove leading directory components from the `path`.
 
-Trailing `/`'s are also removed unless the given path is just `/`.
-Compatible to GNU coreutils' `basename --muptiple`.
+Compatible with GNU coreutils' `basename`.
+
+Trailing `/`'s are also removed unless the `path` is just `/`.
+
+Optionally, a trailing `?suffix` will be removed if specified. 
+However, if `path` and `?suffix` is identical, it does not remove suffix.
+This is for convenience on manipulating hidden files.
 
 ### Examples
 
 ```fennel
-(basename "/a/b")  ;=> "b"
-(basename "/a/b/") ;=> "b"
-(basename "a/b")   ;=> "b"
-(basename "a/b/")  ;=> "b"
-(basename "/")     ;=> "/"
-(basename "")      ;=> ""
-(basename ".")     ;=> "."
-(basename "..")    ;=> ".."
+(basename "/")    ;=> "/"
+(basename "/a/b") ;=> "b"
+(basename "a/b/") ;=> "b"
+(basename "")     ;=> ""
+(basename ".")    ;=> "."
+(basename "..")   ;=> ".."
+(basename "/a/b.ext" ".ext")  ;=> "b"
+(basename "/a/b.ext/" ".ext") ;=> "b"
+(basename "/a/b/.ext" ".ext") ;=> ".ext"
 ```
 
 ## `dirname`
@@ -40,24 +47,20 @@ Function signature:
 (dirname & paths)
 ```
 
-Extract the last directory component from each of the `paths`.
+Remove the last non-slash component from each of the `paths`.
+
+Compatible with GNU coreutils' `dirname`.
 
 Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
-Compatible to GNU coreutils' `dirname`.
 
 ### Examples
 
 ```fennel
-(dirname "/a/b")  ;=> "/a"
-(dirname "/a/b/") ;=> "/a"
-(dirname "a/b")   ;=> "a"
-(dirname "a/b/")  ;=> "a"
-(dirname "/")     ;=> "/"
-(dirname "a")     ;=> "."
-(dirname "a/")    ;=> "."
-(dirname "")      ;=> "."
-(dirname ".")     ;=> "."
-(dirname "..")    ;=> "."
+(dirname "/")            ;=> "/"
+(dirname "/a/b" "/a/b/") ;=> "/a"	"/a"
+(dirname "a/b" "a/b/")   ;=> "a"	"a"
+(dirname "a" "a/")       ;=> "."	"."
+(dirname "" "." "..")    ;=> "."	"."	"."
 ```
 
 ## `exists?`
@@ -67,7 +70,7 @@ Function signature:
 (exists? file)
 ```
 
-Check if the `file` exists.
+Return `true` if the `file` exists.
 
 ## `normalize`
 Function signature:
@@ -76,9 +79,11 @@ Function signature:
 (normalize & paths)
 ```
 
-Remove duplicated `/`'s in the `paths`. The last `/` will remain.
+Remove duplicated `/`'s in the `paths`.
 
-### Example
+Trailing `/`'s will remain.
+
+### Examples
 
 ```fennel
 (normalize "//a/b" "a//b/") ;=> "/a/b"	"a/b/"
@@ -91,7 +96,16 @@ Function signature:
 (read-file file)
 ```
 
-Read all contents of the `file`.
+Read all contents of the `file` as a string.
+
+## `read-lines`
+Function signature:
+
+```
+(read-lines file)
+```
+
+Read all lines of the `file` as a sequential table of strings.
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev

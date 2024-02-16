@@ -38,7 +38,7 @@
 This is similar to `map-values` in [SRFI-210](https://srfi.schemers.org/srfi-210/),
 but consumes vargs directly.
 
-# Example
+# Examples
 
 ```fennel :skip-test
 (map-values #(+ 1 $) 1 2 3) ;=> 2\t3\t4

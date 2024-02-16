@@ -1,6 +1,6 @@
-;;;; ==========================================================================
-;;;; Miscellaneous macros.
-;;;; ==========================================================================
+;;;; =========================================================================
+;;;; Utilities for string manipulation.
+;;;; =========================================================================
 ;;;; 
 ;;;; URL: https://github.com/m15a/fennel-bunko
 ;;;; License: Unlicense
@@ -30,42 +30,22 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(local unpack (or table.unpack _G.unpack))
-(local fennel (require :fennel))
+(import-macros {: assert-type} :bunko.macros)
 
-(fn assert-type [expected & items]
-  "Check if each of `items` is of the `expected` type.
+(lambda escape [str]
+  {:fnl/docstring "Escape magic characters of [patterns][1] in the `string`.
+
+Namely, `^$()%.[]*+-?`.
+
+[1]: https://www.lua.org/manual/5.4/manual.html#6.4.1
 
 # Examples
 
 ```fennel :skip-test
-(assert-type :table x y)
-```
-
-is expanded to
-
-```fennel :skip-test
-(do (let [actual (type x)]
-      (assert (= actual \"table\")
-              (string.format \"table expected, got %s\" actual)))
-    (let [actual (type y)]
-      (assert (= actual \"table\")
-              (string.format \"table expected, got %s\" actual))))
+(escape \"%\") ;=> \"%%\"
 ```"
-  (assert (= (type expected) :string)
-          (string.format "expected type invalid or missing: %s"
-                         (fennel.view expected)))
-  (let [fmt (.. expected " expected, got %s")
-        checks (accumulate [checks [] _ x (ipairs items)]
-                 (do (table.insert
-                       checks
-                       `(let [actual# (type ,x)]
-                          (assert (= actual# ,expected)
-                                  (string.format ,fmt actual#))))
-                     checks))]
-    (case (length checks)
-      0 nil
-      1 (. checks 1)
-      _ `(do ,(unpack checks)))))
+   :fnl/arglist [string]}
+  (assert-type :string str)
+  (pick-values 1 (str:gsub "([%^%$%(%)%%%.%[%]%*%+%-%?])" "%%%1")))
 
-{: assert-type}
+{: escape}

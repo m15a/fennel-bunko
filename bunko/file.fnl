@@ -32,21 +32,24 @@
 
 (local unpack (or table.unpack _G.unpack))
 (import-macros {: assert-type} :bunko.macros)
-(local {: map-values} :bunko.values)
+(local {: map-values} (require :bunko.values))
+(local {: escape} (require :bunko.string))
 
 (lambda exists? [file]
-  "Check if the `file` exists."
-  (match (io.open file)
+  "Return `true` if the `file` exists."
+  (case (io.open file)
     any (do (any:close) true)
     _ false))
 
 (fn %normalize [path]
-  (path:gsub "/+" "/"))
+  (pick-values 1 (path:gsub "/+" "/")))
 
 (fn normalize [...]
-  "Remove duplicated `/`'s in the `paths`. The last `/` will remain.
+  "Remove duplicated `/`'s in the `paths`.
 
-# Example
+Trailing `/`'s will remain.
+
+# Examples
 
 ```fennel :skip-test
 (normalize \"//a/b\" \"a//b/\") ;=> \"/a/b\"\t\"a/b/\"
@@ -55,72 +58,101 @@
   (assert-type :string ...)
   (map-values %normalize ...))
 
-(fn %basename [path]
-  (case (%normalize path)
-    "/" "/"
-    path (path:match "([^/]*)/?$")))
+(fn %strip-suffix [path suffix]
+  (let [stripped (path:match (.. "^(.*)" (escape suffix) "$"))]
+    (if (= "" stripped)
+        path
+        stripped)))
 
-(fn basename [...]
-  "Remove leading directory components from each of the `paths`.
+(lambda basename [path ?suffix]
+  "Remove leading directory components from the `path`.
 
-Trailing `/`'s are also removed unless the given path is just `/`.
-Compatible to GNU coreutils' `basename --muptiple`.
+Compatible with GNU coreutils' `basename`.
+
+Trailing `/`'s are also removed unless the `path` is just `/`.
+
+Optionally, a trailing `?suffix` will be removed if specified. 
+However, if `path` and `?suffix` is identical, it does not remove suffix.
+This is for convenience on manipulating hidden files.
 
 # Examples
 
 ```fennel :skip-test
-(basename \"/a/b\")  ;=> \"b\"
-(basename \"/a/b/\") ;=> \"b\"
-(basename \"a/b\")   ;=> \"b\"
-(basename \"a/b/\")  ;=> \"b\"
-(basename \"/\")     ;=> \"/\"
-(basename \"\")      ;=> \"\"
-(basename \".\")     ;=> \".\"
-(basename \"..\")    ;=> \"..\"
+(basename \"/\")    ;=> \"/\"
+(basename \"/a/b\") ;=> \"b\"
+(basename \"a/b/\") ;=> \"b\"
+(basename \"\")     ;=> \"\"
+(basename \".\")    ;=> \".\"
+(basename \"..\")   ;=> \"..\"
+(basename \"/a/b.ext\" \".ext\")  ;=> \"b\"
+(basename \"/a/b.ext/\" \".ext\") ;=> \"b\"
+(basename \"/a/b/.ext\" \".ext\") ;=> \".ext\"
 ```"
-  {:fnl/arglist [& paths]}
-  (assert-type :string ...)
-  (map-values %basename ...))
+  (assert-type :string path)
+  (when ?suffix
+    (assert-type :string ?suffix))
+  (let [path (%normalize path)]
+    (if (= "/" path)
+        path
+        (case-try (path:match "([^/]*)/?$")
+          path (if ?suffix
+                   (%strip-suffix path ?suffix)
+                   path)
+          path path
+          (catch
+            _ (error "basename: unknown path matching error"))))))
 
 (fn %dirname [path]
-  (case (%normalize path)
-    "/" "/"
-    path (let [path (path:match "(.-)/?$")]
-           (case (path:match "^(.*)/")
-             any any
-             _ "."))))
+  (let [path (%normalize path)]
+    (if (= "/" path)
+        path
+        (case-try (path:match "(.-)/?$")
+          path (path:match "^(.*)/")
+          path path
+          (catch
+            _ ".")))))
 
 (fn dirname [...]
-  "Extract the last directory component from each of the `paths`.
+  "Remove the last non-slash component from each of the `paths`.
+
+Compatible with GNU coreutils' `dirname`.
 
 Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
-Compatible to GNU coreutils' `dirname`.
 
 # Examples
 
 ```fennel :skip-test
-(dirname \"/a/b\")  ;=> \"/a\"
-(dirname \"/a/b/\") ;=> \"/a\"
-(dirname \"a/b\")   ;=> \"a\"
-(dirname \"a/b/\")  ;=> \"a\"
-(dirname \"/\")     ;=> \"/\"
-(dirname \"a\")     ;=> \".\"
-(dirname \"a/\")    ;=> \".\"
-(dirname \"\")      ;=> \".\"
-(dirname \".\")     ;=> \".\"
-(dirname \"..\")    ;=> \".\"
+(dirname \"/\")            ;=> \"/\"
+(dirname \"/a/b\" \"/a/b/\") ;=> \"/a\"\t\"/a\"
+(dirname \"a/b\" \"a/b/\")   ;=> \"a\"\t\"a\"
+(dirname \"a\" \"a/\")       ;=> \".\"\t\".\"
+(dirname \"\" \".\" \"..\")    ;=> \".\"\t\".\"\t\".\"
 ```"
   {:fnl/arglist [& paths]}
   (assert-type :string ...)
   (map-values %dirname ...))
 
 (lambda read-file [file]
-  "Read all contents of the `file`."
-  (with-open [in (io.open file)]
-    (in:read :*all)))
+  "Read all contents of the `file` as a string."
+  (case (io.open file)
+    in (let [contents (in:read :*a)]
+         (in:close)
+         contents)
+    (_ msg code) (values nil msg code)))
+
+(lambda read-lines [file]
+  "Read all lines of the `file` as a sequential table of strings."
+  (case (io.open file)
+    in (do (var lines [])
+           (each [line (in:lines)]
+             (table.insert lines line))
+           (in:close)
+           lines)
+    (_ msg code) (values nil msg code)))
 
 {: exists?
  : normalize
  : basename
  : dirname
- : read-file}
+ : read-file
+ : read-lines}

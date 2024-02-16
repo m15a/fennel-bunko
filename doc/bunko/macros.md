@@ -13,7 +13,7 @@ Function signature:
 
 Check if each of `items` is of the `expected` type.
 
-### Example
+### Examples
 
 ```fennel
 (assert-type :table x y)
