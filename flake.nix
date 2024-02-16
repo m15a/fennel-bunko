@@ -7,7 +7,7 @@
       flake = false;
     };
     fenneldoc = {
-      url = "git+https://github.com/Olical/fenneldoc?submodules=1";
+      url = "gitlab:andreyorst/fenneldoc/master";
       flake = false;
     };
   };
@@ -35,11 +35,11 @@
       };
       fenneldoc = final.stdenv.mkDerivation rec {
         pname = "fenneldoc";
-        version = "1.0.1";
+        version = "1.0.1-dev";
         src = inputs.fenneldoc;
-        buildInputs = [
-          final.lua5_4
-          final.lua5_4.pkgs.fennel
+        nativeBuildInputs = [
+          final.luajit
+          final.luajit.pkgs.fennel
         ];
         postPatch = ''
           sed -i Makefile -e 's|\./fenneldoc|lua ./fenneldoc|'
