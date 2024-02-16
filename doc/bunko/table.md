@@ -15,50 +15,50 @@
 Function signature:
 
 ```
-(copy tbl ?metatable)
+(copy table ?metatable)
 ```
 
-Return a shallow copy of the table.
+Return a shallow copy of the `table`.
 
-Optionally set the same metatable as the original's.
+Optionally, if `?metatable` is truthy, set the same metatable as the original's.
 
 ## `flatten`
 Function signature:
 
 ```
-(flatten ...)
+(flatten & tables)
 ```
 
-Concatenate all the given sequential tables.
+Concatenate all the given sequential `tables`.
 
 ## `insert`
 Function signature:
 
 ```
-(insert seq ...)
+(insert table & rest-args)
 ```
 
-Do `table.insert` and return the updated table.
+Do `table.insert` and return the updated `table`.
 
-The rest args are passed to `table.insert`.
+The `rest-args` are passed to `table.insert`.
 
 ## `keys`
 Function signature:
 
 ```
-(keys tbl)
+(keys table)
 ```
 
-Return all keys in the table.
+Return all keys in the `table`.
 
 ## `merge`
 Function signature:
 
 ```
-(merge ...)
+(merge & tables)
 ```
 
-Merge all the given non-sequential tables.
+Merge all the given non-sequential `tables`.
 
 Return `nil` for no arguments.
 
@@ -66,31 +66,31 @@ Return `nil` for no arguments.
 Function signature:
 
 ```
-(sort seq ...)
+(sort table & rest-args)
 ```
 
-Do `table.sort` and return the sorted table.
+Do `table.sort` and return the sorted `table`.
 
-The rest args are passed to `table.sort`.
+The `rest-args` are passed to `table.sort`.
 
 ## `update`
 Function signature:
 
 ```
-(update tbl key value)
+(update table key value)
 ```
 
-Do `tset` and return the updated table.
+Do `tset` using `key` and `value`, and return the updated `table`.
 
 ## `values`
 Function signature:
 
 ```
-(values tbl)
+(values table)
 ```
 
-Return all values in the table.
+Return all values in the `table`.
 
 
-<!-- Generated with Fenneldoc 1.0.1
+<!-- Generated with Fenneldoc 1.0.1-dev
      https://gitlab.com/andreyorst/fenneldoc -->

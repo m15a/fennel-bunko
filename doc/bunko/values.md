@@ -8,13 +8,23 @@
 Function signature:
 
 ```
-(map-values function ...)
+(map-values & vargs)
 ```
 
-Apply the function on each rest arg, and return the results as multiple values.
+Apply the function on each of `vargs`, and return the results as multiple values.
 
-This is similar to `map-values` in Scheme's SRFI-210, but consumes vargs directly.
+This is similar to `map-values` in [SRFI-210](https://srfi.schemers.org/srfi-210/),
+but consumes vargs directly.
+
+### Example
+
+```fennel
+(assert (let [(x y z) (map-values #(+ 1 $) 1 2 3)]
+          (and (= x 2)
+               (= y 3)
+               (= z 4))))
+```
 
 
-<!-- Generated with Fenneldoc 1.0.1
+<!-- Generated with Fenneldoc 1.0.1-dev
      https://gitlab.com/andreyorst/fenneldoc -->

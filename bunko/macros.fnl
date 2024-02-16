@@ -34,7 +34,13 @@
 (local fennel (require :fennel))
 
 (fn assert-type [expected & items]
-  "Check if each item is of the expected type."
+  "Check if each of `items` is of the `expected` type.
+
+## Examples
+
+```fennel :skip-test
+(assert-type :string \"a\" \"b\")
+```"
   (assert (= (type expected) :string)
           (string.format "expected type invalid or missing: %s"
                          (fennel.view expected)))

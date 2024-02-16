@@ -12,49 +12,53 @@
 Function signature:
 
 ```
-(basename ...)
+(basename & paths)
 ```
 
-Remove leading directory components from each given path.
+Remove leading directory components from each of the `paths`.
 
 Trailing `/`'s are also removed unless the given path is just `/`.
 Compatible to GNU coreutils' `basename --muptiple`.
 
-Examples:
+#### Examples
 
-  (basename "/a/b")  ;=> "b"
-  (basename "/a/b/") ;=> "b"
-  (basename "a/b")   ;=> "b"
-  (basename "a/b/")  ;=> "b"
-  (basename "/")     ;=> "/"
-  (basename "")      ;=> ""
-  (basename ".")     ;=> "."
-  (basename "..")    ;=> ".."
+```fennel
+(basename "/a/b")  ;=> "b"
+(basename "/a/b/") ;=> "b"
+(basename "a/b")   ;=> "b"
+(basename "a/b/")  ;=> "b"
+(basename "/")     ;=> "/"
+(basename "")      ;=> ""
+(basename ".")     ;=> "."
+(basename "..")    ;=> ".."
+```
 
 ## `dirname`
 Function signature:
 
 ```
-(dirname ...)
+(dirname & paths)
 ```
 
-Extract the last directory component from each given path.
+Extract the last directory component from each of the `paths`.
 
 Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
 Compatible to GNU coreutils' `dirname`.
 
-Examples:
+#### Examples
 
-  (%dirname "/a/b")  ;=> "/a"
-  (%dirname "/a/b/") ;=> "/a"
-  (%dirname "a/b")   ;=> "a"
-  (%dirname "a/b/")  ;=> "a"
-  (%dirname "/")     ;=> "/"
-  (%dirname "a")     ;=> "."
-  (%dirname "a/")    ;=> "."
-  (%dirname "")      ;=> "."
-  (%dirname ".")     ;=> "."
-  (%dirname "..")    ;=> "."
+```fennel
+(dirname "/a/b")  ;=> "/a"
+(dirname "/a/b/") ;=> "/a"
+(dirname "a/b")   ;=> "a"
+(dirname "a/b/")  ;=> "a"
+(dirname "/")     ;=> "/"
+(dirname "a")     ;=> "."
+(dirname "a/")    ;=> "."
+(dirname "")      ;=> "."
+(dirname ".")     ;=> "."
+(dirname "..")    ;=> "."
+```
 
 ## `exists?`
 Function signature:
@@ -63,28 +67,34 @@ Function signature:
 (exists? file)
 ```
 
-Check if the file exists.
+Check if the `file` exists.
 
 ## `normalize`
 Function signature:
 
 ```
-(normalize ...)
+(normalize & paths)
 ```
 
-Remove duplicated `/`'s in the path(s). The last `/` will remain.
+Remove duplicated `/`'s in the `paths`. The last `/` will remain.
+
+#### Examples
+
+```fennel
+(normalize "//a/b" "/a//b/") ;=> "/a/b"	"/a/b/"
+```
 
 ## `slurp`
 Function signature:
 
 ```
-(slurp ...)
+(slurp & files)
 ```
 
-Read all contents of the given files. The results are concatenated.
+Read all contents of the given `files`. The results are concatenated.
 
 Return `nil` if no files are specified.
 
 
-<!-- Generated with Fenneldoc 1.0.1
+<!-- Generated with Fenneldoc 1.0.1-dev
      https://gitlab.com/andreyorst/fenneldoc -->

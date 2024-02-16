@@ -50,47 +50,54 @@
          (values k# v#))))
 
 (lambda copy [tbl ?metatable]
-  "Return a shallow copy of the table.
+  {:fnl/docstring "Return a shallow copy of the `table`.
 
-Optionally set the same metatable as the original's."
+Optionally, if `?metatable` is truthy, set the same metatable as the original's."
+   :fnl/arglist [table ?metatable]}
   (let [clone (%copy tbl)]
     (if ?metatable
         (setmetatable clone (getmetatable tbl))
         clone)))
 
 (lambda keys [tbl]
-  "Return all keys in the table."
+  {:fnl/docstring "Return all keys in the `table`."
+   :fnl/arglist [table]}
   (icollect [key _ (pairs tbl)]
     key))
 
 (lambda %values [tbl]
-  "Return all values in the table."
+  {:fnl/docstring "Return all values in the `table`."
+   :fnl/arglist [table]}
   (icollect [_ value (pairs tbl)]
     value))
 
 (lambda insert [seq ...]
-  "Do `table.insert` and return the updated table.
+  {:fnl/docstring "Do `table.insert` and return the updated `table`.
 
-The rest args are passed to `table.insert`."
+The `rest-args` are passed to `table.insert`."
+   :fnl/arglist [table & rest-args]}
   (table.insert seq ...)
   seq)
 
 (lambda sort [seq ...]
-  "Do `table.sort` and return the sorted table.
+  {:fnl/docstring "Do `table.sort` and return the sorted `table`.
 
-The rest args are passed to `table.sort`."
+The `rest-args` are passed to `table.sort`."
+   :fnl/arglist [table & rest-args]}
   (table.sort seq ...)
   seq)
 
 (lambda update [tbl key value]
-  "Do `tset` and return the updated table."
+  {:fnl/docstring "Do `tset` using `key` and `value`, and return the updated `table`."
+   :fnl/arglist [table key value]}
   (tset tbl key value)
   tbl)
 
 (fn merge [...]
-  "Merge all the given non-sequential tables.
+  "Merge all the given non-sequential `tables`.
 
 Return `nil` for no arguments."
+  {:fnl/arglist [& tables]}
   (case (select :# ...)
     0 nil
     _ (do (assert-type :table ...)
@@ -99,7 +106,8 @@ Return `nil` for no arguments."
               (update result key value))))))
 
 (fn flatten [...]
-  "Concatenate all the given sequential tables."
+  "Concatenate all the given sequential `tables`."
+  {:fnl/arglist [& tables]}
   (assert-type :table ...)
   (accumulate [result [] _ seq (ipairs [...])]
     (accumulate [result result _ x (ipairs seq)]

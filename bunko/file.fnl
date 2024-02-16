@@ -35,7 +35,7 @@
 (local {: map-values} :bunko.values)
 
 (lambda exists? [file]
-  "Check if the file exists."
+  "Check if the `file` exists."
   (match (io.open file)
     any (do (any:close) true)
     _ false))
@@ -44,7 +44,14 @@
   (path:gsub "/+" "/"))
 
 (fn normalize [...]
-  "Remove duplicated `/`'s in the path(s). The last `/` will remain."
+  "Remove duplicated `/`'s in the `paths`. The last `/` will remain.
+
+## Examples
+
+```fennel :skip-test
+(normalize \"//a/b\" \"/a//b/\") ;=> \"/a/b\"\t\"/a/b/\"
+```"
+  {:fnl/arglist [& paths]}
   (assert-type :string ...)
   (map-values %normalize ...))
 
@@ -54,21 +61,24 @@
     path (path:match "([^/]*)/?$")))
 
 (fn basename [...]
-  "Remove leading directory components from each given path.
+  "Remove leading directory components from each of the `paths`.
 
 Trailing `/`'s are also removed unless the given path is just `/`.
 Compatible to GNU coreutils' `basename --muptiple`.
 
-Examples:
+## Examples
 
-  (basename \"/a/b\")  ;=> \"b\"
-  (basename \"/a/b/\") ;=> \"b\"
-  (basename \"a/b\")   ;=> \"b\"
-  (basename \"a/b/\")  ;=> \"b\"
-  (basename \"/\")     ;=> \"/\"
-  (basename \"\")      ;=> \"\"
-  (basename \".\")     ;=> \".\"
-  (basename \"..\")    ;=> \"..\""
+```fennel :skip-test
+(basename \"/a/b\")  ;=> \"b\"
+(basename \"/a/b/\") ;=> \"b\"
+(basename \"a/b\")   ;=> \"b\"
+(basename \"a/b/\")  ;=> \"b\"
+(basename \"/\")     ;=> \"/\"
+(basename \"\")      ;=> \"\"
+(basename \".\")     ;=> \".\"
+(basename \"..\")    ;=> \"..\"
+```"
+  {:fnl/arglist [& paths]}
   (assert-type :string ...)
   (map-values %basename ...))
 
@@ -81,23 +91,26 @@ Examples:
              _ "."))))
 
 (fn dirname [...]
-  "Extract the last directory component from each given path.
+  "Extract the last directory component from each of the `paths`.
 
 Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
 Compatible to GNU coreutils' `dirname`.
 
-Examples:
+## Examples
 
-  (%dirname \"/a/b\")  ;=> \"/a\"
-  (%dirname \"/a/b/\") ;=> \"/a\"
-  (%dirname \"a/b\")   ;=> \"a\"
-  (%dirname \"a/b/\")  ;=> \"a\"
-  (%dirname \"/\")     ;=> \"/\"
-  (%dirname \"a\")     ;=> \".\"
-  (%dirname \"a/\")    ;=> \".\"
-  (%dirname \"\")      ;=> \".\"
-  (%dirname \".\")     ;=> \".\"
-  (%dirname \"..\")    ;=> \".\""
+```fennel :skip-test
+(dirname \"/a/b\")  ;=> \"/a\"
+(dirname \"/a/b/\") ;=> \"/a\"
+(dirname \"a/b\")   ;=> \"a\"
+(dirname \"a/b/\")  ;=> \"a\"
+(dirname \"/\")     ;=> \"/\"
+(dirname \"a\")     ;=> \".\"
+(dirname \"a/\")    ;=> \".\"
+(dirname \"\")      ;=> \".\"
+(dirname \".\")     ;=> \".\"
+(dirname \"..\")    ;=> \".\"
+```"
+  {:fnl/arglist [& paths]}
   (assert-type :string ...)
   (map-values %dirname ...))
 
@@ -106,9 +119,10 @@ Examples:
     (in:read :*all)))
 
 (fn slurp [...]
-  "Read all contents of the given files. The results are concatenated.
+  "Read all contents of the given `files`. The results are concatenated.
 
 Return `nil` if no files are specified."
+  {:fnl/arglist [& files]}
   (if (= 0 (select :# ...))
       nil
       (accumulate [result "" _ file (ipairs [...])]
