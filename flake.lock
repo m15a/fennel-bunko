@@ -1,21 +1,37 @@
 {
   "nodes": {
+    "fennel": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1708054890,
+        "narHash": "sha256-HV3MO21E6Ud5uWx3JJzURXbI+FcRNw7CjaULf4UV554=",
+        "owner": "~technomancy",
+        "repo": "fennel",
+        "rev": "1d38c92e73802fb66eedb908698da5e17546a210",
+        "type": "sourcehut"
+      },
+      "original": {
+        "owner": "~technomancy",
+        "ref": "main",
+        "repo": "fennel",
+        "type": "sourcehut"
+      }
+    },
     "fenneldoc": {
       "flake": false,
       "locked": {
-        "lastModified": 1688733313,
-        "narHash": "sha256-fGCmTpYWlyP14M1aF2nLf+bfHaxkLIipZkIw6jW7MhA=",
-        "ref": "refs/heads/master",
-        "rev": "73d00a02bfe98564dc84af731f5e1c8a82857ba5",
-        "revCount": 96,
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/Olical/fenneldoc"
+        "lastModified": 1693330851,
+        "narHash": "sha256-qKoTZf5ra574c0lPFXcDdbe2pUY9bSEwuGnhXI15Phw=",
+        "owner": "andreyorst",
+        "repo": "fenneldoc",
+        "rev": "7960056a31db6c28d0c2f3eb76e6bf88a90e436e",
+        "type": "gitlab"
       },
       "original": {
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/Olical/fenneldoc"
+        "owner": "andreyorst",
+        "ref": "master",
+        "repo": "fenneldoc",
+        "type": "gitlab"
       }
     },
     "flake-utils": {
@@ -38,11 +54,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1707743206,
-        "narHash": "sha256-AehgH64b28yKobC/DAWYZWkJBxL/vP83vkY+ag2Hhy4=",
+        "lastModified": 1708001613,
+        "narHash": "sha256-woOmAXW05XnqlLn7dKzCkRAEOSOdA/Z2ndVvKcjid94=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "2d627a2a704708673e56346fcb13d25344b8eaf3",
+        "rev": "085589047343aad800c4d305cf7b98e8a3d51ae2",
         "type": "github"
       },
       "original": {
@@ -54,6 +70,7 @@
     },
     "root": {
       "inputs": {
+        "fennel": "fennel",
         "fenneldoc": "fenneldoc",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs"
