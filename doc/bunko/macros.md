@@ -13,10 +13,21 @@ Function signature:
 
 Check if each of `items` is of the `expected` type.
 
-#### Examples
+### Example
 
 ```fennel
-(assert-type :string "a" "b")
+(assert-type :table x y)
+```
+
+is expanded to
+
+```fennel
+(do (let [actual (type x)]
+      (assert (= actual "table")
+              (string.format "table expected, got %s" actual)))
+    (let [actual (type y)]
+      (assert (= actual "table")
+              (string.format "table expected, got %s" actual))))
 ```
 
 

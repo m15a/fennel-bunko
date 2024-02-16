@@ -36,22 +36,36 @@
 (fn assert-type [expected & items]
   "Check if each of `items` is of the `expected` type.
 
-## Examples
+# Example
 
 ```fennel :skip-test
-(assert-type :string \"a\" \"b\")
+(assert-type :table x y)
+```
+
+is expanded to
+
+```fennel :skip-test
+(do (let [actual (type x)]
+      (assert (= actual \"table\")
+              (string.format \"table expected, got %s\" actual)))
+    (let [actual (type y)]
+      (assert (= actual \"table\")
+              (string.format \"table expected, got %s\" actual))))
 ```"
   (assert (= (type expected) :string)
           (string.format "expected type invalid or missing: %s"
                          (fennel.view expected)))
-  (let [fmt (.. expected " expected, got %s")]
-    (unpack
-      (accumulate [checks '() _ x (ipairs items)]
-        (do (table.insert
-              checks
-              `(let [actual# (type ,x)]
-                 (assert (= actual# ,expected)
-                         (string.format ,fmt actual#))))
-            checks)))))
+  (let [fmt (.. expected " expected, got %s")
+        checks (accumulate [checks [] _ x (ipairs items)]
+                 (do (table.insert
+                       checks
+                       `(let [actual# (type ,x)]
+                          (assert (= actual# ,expected)
+                                  (string.format ,fmt actual#))))
+                     checks))]
+    (case (length checks)
+      0 nil
+      1 (. checks 1)
+      _ `(do ,(unpack checks)))))
 
 {: assert-type}
