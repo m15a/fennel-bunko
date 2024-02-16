@@ -20,7 +20,7 @@ Remove leading directory components from each of the `paths`.
 Trailing `/`'s are also removed unless the given path is just `/`.
 Compatible to GNU coreutils' `basename --muptiple`.
 
-#### Examples
+### Examples
 
 ```fennel
 (basename "/a/b")  ;=> "b"
@@ -45,7 +45,7 @@ Extract the last directory component from each of the `paths`.
 Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
 Compatible to GNU coreutils' `dirname`.
 
-#### Examples
+### Examples
 
 ```fennel
 (dirname "/a/b")  ;=> "/a"
@@ -78,10 +78,10 @@ Function signature:
 
 Remove duplicated `/`'s in the `paths`. The last `/` will remain.
 
-#### Examples
+### Example
 
 ```fennel
-(normalize "//a/b" "/a//b/") ;=> "/a/b"	"/a/b/"
+(normalize "//a/b" "a//b/") ;=> "/a/b"	"a/b/"
 ```
 
 ## `slurp`

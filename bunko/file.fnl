@@ -46,10 +46,10 @@
 (fn normalize [...]
   "Remove duplicated `/`'s in the `paths`. The last `/` will remain.
 
-## Examples
+# Example
 
 ```fennel :skip-test
-(normalize \"//a/b\" \"/a//b/\") ;=> \"/a/b\"\t\"/a/b/\"
+(normalize \"//a/b\" \"a//b/\") ;=> \"/a/b\"\t\"a/b/\"
 ```"
   {:fnl/arglist [& paths]}
   (assert-type :string ...)
@@ -66,7 +66,7 @@
 Trailing `/`'s are also removed unless the given path is just `/`.
 Compatible to GNU coreutils' `basename --muptiple`.
 
-## Examples
+# Examples
 
 ```fennel :skip-test
 (basename \"/a/b\")  ;=> \"b\"
@@ -96,7 +96,7 @@ Compatible to GNU coreutils' `basename --muptiple`.
 Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
 Compatible to GNU coreutils' `dirname`.
 
-## Examples
+# Examples
 
 ```fennel :skip-test
 (dirname \"/a/b\")  ;=> \"/a\"

@@ -19,10 +19,7 @@ but consumes vargs directly.
 ### Example
 
 ```fennel
-(assert (let [(x y z) (map-values #(+ 1 $) 1 2 3)]
-          (and (= x 2)
-               (= y 3)
-               (= z 4))))
+(map-values #(+ 1 $) 1 2 3) ;=> 2	3	4
 ```
 
 

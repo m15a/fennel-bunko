@@ -40,11 +40,8 @@ but consumes vargs directly.
 
 # Example
 
-```fennel
-(assert (let [(x y z) (map-values #(+ 1 $) 1 2 3)]
-          (and (= x 2)
-               (= y 3)
-               (= z 4))))
+```fennel :skip-test
+(map-values #(+ 1 $) 1 2 3) ;=> 2\t3\t4
 ```"
   {:fnl/arglist [& vargs]}
   (unpack
