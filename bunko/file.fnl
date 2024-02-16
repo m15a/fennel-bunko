@@ -114,22 +114,13 @@ Compatible to GNU coreutils' `dirname`.
   (assert-type :string ...)
   (map-values %dirname ...))
 
-(fn %slurp [file]
+(lambda read-file [file]
+  "Read all contents of the `file`."
   (with-open [in (io.open file)]
     (in:read :*all)))
-
-(fn slurp [...]
-  "Read all contents of the given `files`. The results are concatenated.
-
-Return `nil` if no files are specified."
-  {:fnl/arglist [& files]}
-  (if (= 0 (select :# ...))
-      nil
-      (accumulate [result "" _ file (ipairs [...])]
-        (.. result (%slurp file)))))
 
 {: exists?
  : normalize
  : basename
  : dirname
- : slurp}
+ : read-file}

@@ -6,7 +6,7 @@
 - [`dirname`](#dirname)
 - [`exists?`](#exists)
 - [`normalize`](#normalize)
-- [`slurp`](#slurp)
+- [`read-file`](#read-file)
 
 ## `basename`
 Function signature:
@@ -84,16 +84,14 @@ Remove duplicated `/`'s in the `paths`. The last `/` will remain.
 (normalize "//a/b" "a//b/") ;=> "/a/b"	"a/b/"
 ```
 
-## `slurp`
+## `read-file`
 Function signature:
 
 ```
-(slurp & files)
+(read-file file)
 ```
 
-Read all contents of the given `files`. The results are concatenated.
-
-Return `nil` if no files are specified.
+Read all contents of the `file`.
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev
