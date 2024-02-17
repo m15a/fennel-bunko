@@ -105,13 +105,17 @@ Return `nil` for no arguments."
             (accumulate [result result key value (pairs tbl)]
               (update result key value))))))
 
-(fn flatten [...]
-  "Concatenate all the given sequential `tables`."
+(fn append [...]
+  "Concatenate all the given sequential `tables`.
+
+Return `nil` and an error message for no arguments."
   {:fnl/arglist [& tables]}
-  (assert-type :table ...)
-  (accumulate [result [] _ seq (ipairs [...])]
-    (accumulate [result result _ x (ipairs seq)]
-      (insert result x))))
+  (case (select :# ...)
+    0 (values nil "append: no tables found")
+    _ (do (assert-type :table ...)
+          (accumulate [result [] _ seq (ipairs [...])]
+            (accumulate [result result _ x (ipairs seq)]
+              (insert result x))))))
 
 {: copy
  : keys
@@ -120,4 +124,4 @@ Return `nil` for no arguments."
  : sort
  : update
  : merge
- : flatten}
+ : append}
