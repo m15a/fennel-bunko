@@ -28,6 +28,21 @@
      (let [(_# _# signal#) (os.execute ,shell)]
        (os.exit signal#))))
 
+(fn find-test-modules []
+  (with-open [in (io.popen "ls test/*.fnl")]
+    (let [modules []]
+      (each [line (in:lines)]
+        (let [module (-> line
+                         (: :gsub "/" ".")
+                         (: :gsub "%.fnl$" ""))]
+          (table.insert modules module)))
+      modules)))
+
+(shell-task :test
+  "Run tests."
+  (let [test-modules (find-test-modules)]
+    (.. "faith --tests " (table.concat test-modules " "))))
+
 (shell-task :fmt
   "Format sources."
   "fnlfmt --indent-do-as-if --fix bunko/*.fnl")
@@ -44,6 +59,7 @@
   (let [command (. arg 1)
         rest (do (table.remove arg 1) arg)]
     (match command
+      :test (commands.test)
       :fmt (commands.fmt)
       :fmt-check (commands.fmt-check)
       :docs (commands.docs)

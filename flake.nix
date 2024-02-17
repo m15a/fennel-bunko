@@ -14,6 +14,10 @@
       url = "sourcehut:~technomancy/fnlfmt/main";
       flake = false;
     };
+    faith = {
+      url = "sourcehut:~technomancy/faith/main";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, flake-utils, ... } @ inputs:
@@ -33,9 +37,11 @@
             fennel
             fenneldoc
             fnlfmt
+            faith
           ] ++ (with lua5_3.pkgs; [
             readline
           ]);
+          FENNEL_PATH = "${pkgs.faith}/bin/?";
         };
       });
 }

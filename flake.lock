@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "faith": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1701540648,
+        "narHash": "sha256-vwMgl+PFdwW0YwYXAM1Wcwj5HZCGPed95XQ5YfuKGg0=",
+        "owner": "~technomancy",
+        "repo": "faith",
+        "rev": "627bad7f962dbdaf61eeb842113764bcede605ed",
+        "type": "sourcehut"
+      },
+      "original": {
+        "owner": "~technomancy",
+        "ref": "main",
+        "repo": "faith",
+        "type": "sourcehut"
+      }
+    },
     "fennel": {
       "flake": false,
       "locked": {
@@ -87,6 +104,7 @@
     },
     "root": {
       "inputs": {
+        "faith": "faith",
         "fennel": "fennel",
         "fenneldoc": "fenneldoc",
         "flake-utils": "flake-utils",
