@@ -22,6 +22,14 @@
     (out:write (.. "Run " cmd "\n"))
     (os.execute cmd)))
 
+(set helps.fmt-check "Check if all sources are formatted.")
+(fn commands.fmt-check []
+  (let [out io.stderr
+        cmd "fnlfmt --indent-do-as-if --check bunko/*.fnl"]
+    (out:write (.. "Run " cmd "\n"))
+    (let [(_ _ signal) (os.execute cmd)]
+      (os.exit signal))))
+
 (set helps.docs "Build API documents from sources.")
 (fn commands.docs []
   (let [out io.stderr
@@ -34,6 +42,7 @@
         rest (do (table.remove arg 1) arg)]
     (match command
       :fmt (commands.fmt)
+      :fmt-check (commands.fmt-check)
       :docs (commands.docs)
       _ (usage "<command> [<arg> ...]" "Commands:"
                (unpack (icollect [command _ (pairs commands)]
