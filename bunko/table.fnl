@@ -65,7 +65,7 @@ Optionally, if `?metatable` is truthy, set the same metatable as the original's.
   (icollect [key _ (pairs tbl)]
     key))
 
-(lambda %values [tbl]
+(lambda items [tbl]
   {:fnl/docstring "Return all values in the `table`."
    :fnl/arglist [table]}
   (icollect [_ value (pairs tbl)]
@@ -121,7 +121,7 @@ Return `nil` and an error message for no arguments."
 
 {: copy
  : keys
- :values %values
+ : items
  : insert
  : sort
  : update

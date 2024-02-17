@@ -5,11 +5,11 @@
 - [`append`](#append)
 - [`copy`](#copy)
 - [`insert`](#insert)
+- [`items`](#items)
 - [`keys`](#keys)
 - [`merge`](#merge)
 - [`sort`](#sort)
 - [`update`](#update)
-- [`values`](#values)
 
 ## `append`
 Function signature:
@@ -43,6 +43,15 @@ Function signature:
 Wrapper for `table.insert` that returns the updated `table`.
 
 The `rest-args` are passed to `table.insert`.
+
+## `items`
+Function signature:
+
+```
+(items table)
+```
+
+Return all values in the `table`.
 
 ## `keys`
 Function signature:
@@ -85,15 +94,6 @@ Function signature:
 Wrapper for `tset` that returns the updated `table`.
 
 As usual, the content of `key` will be replaced with the `value`.
-
-## `values`
-Function signature:
-
-```
-(values table)
-```
-
-Return all values in the `table`.
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev
