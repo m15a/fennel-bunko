@@ -57,8 +57,7 @@ rec {
   fennel-lua5_1 = fennelWith { lua = final.lua5_1; };
   fennel-lua5_2 = fennelWith { lua = final.lua5_2; };
   fennel-lua5_3 = fennelWith { lua = final.lua5_3; };
-  # NOTE: currently broken
-  # fennel-lua5_4 = fennelWith { lua = final.lua5_4 };
+  fennel-lua5_4 = fennelWith { lua = final.lua5_4; };
 
   faith = faith-lua5_3;
 
@@ -66,8 +65,7 @@ rec {
   faith-lua5_1 = faithWith { fennel = final.fennel-lua5_1; };
   faith-lua5_2 = faithWith { fennel = final.fennel-lua5_2; };
   faith-lua5_3 = faithWith { fennel = final.fennel-lua5_3; };
-  # NOTE: currently broken
-  # faith-lua5_4 = faithWith { fennel = final.fennel_lua5_4 };
+  faith-lua5_4 = faithWith { fennel = final.fennel-lua5_4; };
 
   fnlfmt = final.stdenv.mkDerivation {
     pname = "fnlfmt";

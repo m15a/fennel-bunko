@@ -54,11 +54,10 @@
             fennel = pkgs.fennel-lua5_3;
             faith = pkgs.faith-lua5_3;
           };
-          # NOTE: currently broken
-          # ci-lua5_4 = mkCIShell {
-          #   fennel = pkgs.fennel-lua5_4;
-          #   faith = pkgs.faith-lua5_4;
-          # };
+          ci-lua5_4 = mkCIShell {
+            fennel = pkgs.fennel-lua5_4;
+            faith = pkgs.faith-lua5_4;
+          };
 
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
