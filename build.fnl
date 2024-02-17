@@ -10,28 +10,33 @@
         (#(table.concat $ "\n"))
         (out:write))
     (out:write "\n"))
-  (os.exit 1))
+  (os.exit false))
 
 (local commands {})
 (local helps {})
 
-(set helps.fmt "Format sources.")
-(fn commands.fmt []
+(macro task [command args help & body]
+  "Define task to run."
+  `(do (tset helps ,command ,help)
+       (tset commands ,command (fn ,args ,(unpack body)))))
+
+(task :fmt []
+  "Format sources."
   (let [out io.stderr
         cmd "fnlfmt --indent-do-as-if --fix bunko/*.fnl"]
     (out:write (.. "Run " cmd "\n"))
     (os.execute cmd)))
 
-(set helps.fmt-check "Check if all sources are formatted.")
-(fn commands.fmt-check []
+(task :fmt-check []
+  "Check if all sources are formatted."
   (let [out io.stderr
         cmd "fnlfmt --indent-do-as-if --check bunko/*.fnl"]
     (out:write (.. "Run " cmd "\n"))
     (let [(_ _ signal) (os.execute cmd)]
       (os.exit signal))))
 
-(set helps.docs "Build API documents from sources.")
-(fn commands.docs []
+(task :docs []
+  "Build API documents from sources."
   (let [out io.stderr
         cmd "fenneldoc bunko/*.fnl"]
     (out:write (.. "Run " cmd "\n"))
