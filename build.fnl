@@ -20,27 +20,25 @@
   `(do (tset helps ,command ,help)
        (tset commands ,command (fn ,args ,(unpack body)))))
 
-(task :fmt []
+(macro shell-task [command help shell]
+  "Define simple shell task to run."
+  `(task ,command []
+     ,help
+     (io.stderr:write (.. "Run " ,shell "\n"))
+     (let [(_# _# signal#) (os.execute ,shell)]
+       (os.exit signal#))))
+
+(shell-task :fmt
   "Format sources."
-  (let [out io.stderr
-        cmd "fnlfmt --indent-do-as-if --fix bunko/*.fnl"]
-    (out:write (.. "Run " cmd "\n"))
-    (os.execute cmd)))
+  "fnlfmt --indent-do-as-if --fix bunko/*.fnl")
 
-(task :fmt-check []
+(shell-task :fmt-check
   "Check if all sources are formatted."
-  (let [out io.stderr
-        cmd "fnlfmt --indent-do-as-if --check bunko/*.fnl"]
-    (out:write (.. "Run " cmd "\n"))
-    (let [(_ _ signal) (os.execute cmd)]
-      (os.exit signal))))
+  "fnlfmt --indent-do-as-if --check bunko/*.fnl")
 
-(task :docs []
+(shell-task :docs
   "Build API documents from sources."
-  (let [out io.stderr
-        cmd "fenneldoc bunko/*.fnl"]
-    (out:write (.. "Run " cmd "\n"))
-    (os.execute cmd)))
+  "fenneldoc bunko/*.fnl")
 
 (fn main []
   (let [command (. arg 1)
