@@ -72,7 +72,7 @@ Optionally, if `?metatable` is truthy, set the same metatable as the original's.
     value))
 
 (lambda insert [seq ...]
-  {:fnl/docstring "Do `table.insert` and return the updated `table`.
+  {:fnl/docstring "Wrapper for `table.insert` that returns the updated `table`.
 
 The `rest-args` are passed to `table.insert`."
    :fnl/arglist [table & rest-args]}
@@ -80,7 +80,7 @@ The `rest-args` are passed to `table.insert`."
   seq)
 
 (lambda sort [seq ...]
-  {:fnl/docstring "Do `table.sort` and return the sorted `table`.
+  {:fnl/docstring "Wrapper for `table.sort` that returns the sorted `table`.
 
 The `rest-args` are passed to `table.sort`."
    :fnl/arglist [table & rest-args]}
@@ -88,7 +88,9 @@ The `rest-args` are passed to `table.sort`."
   seq)
 
 (lambda update [tbl key value]
-  {:fnl/docstring "Do `tset` using `key` and `value`, and return the updated `table`."
+  {:fnl/docstring "Wrapper for `tset` that returns the updated `table`.
+
+As usual, the content of `key` will be replaced with the `value`."
    :fnl/arglist [table key value]}
   (tset tbl key value)
   tbl)
@@ -96,10 +98,10 @@ The `rest-args` are passed to `table.sort`."
 (fn merge [...]
   "Merge all the given non-sequential `tables`.
 
-Return `nil` for no arguments."
+Return `nil` and an error message for no arguments."
   {:fnl/arglist [& tables]}
   (case (select :# ...)
-    0 nil
+    0 (values nil "merge: no tables found")
     _ (do (assert-type :table ...)
           (accumulate [result {} _ tbl (ipairs [...])]
             (accumulate [result result key value (pairs tbl)]

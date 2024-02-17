@@ -2,14 +2,25 @@
 
 **Table of contents**
 
+- [`append`](#append)
 - [`copy`](#copy)
-- [`flatten`](#flatten)
 - [`insert`](#insert)
 - [`keys`](#keys)
 - [`merge`](#merge)
 - [`sort`](#sort)
 - [`update`](#update)
 - [`values`](#values)
+
+## `append`
+Function signature:
+
+```
+(append & tables)
+```
+
+Concatenate all the given sequential `tables`.
+
+Return `nil` and an error message for no arguments.
 
 ## `copy`
 Function signature:
@@ -22,15 +33,6 @@ Return a shallow copy of the `table`.
 
 Optionally, if `?metatable` is truthy, set the same metatable as the original's.
 
-## `flatten`
-Function signature:
-
-```
-(flatten & tables)
-```
-
-Concatenate all the given sequential `tables`.
-
 ## `insert`
 Function signature:
 
@@ -38,7 +40,7 @@ Function signature:
 (insert table & rest-args)
 ```
 
-Do `table.insert` and return the updated `table`.
+Wrapper for `table.insert` that returns the updated `table`.
 
 The `rest-args` are passed to `table.insert`.
 
@@ -60,7 +62,7 @@ Function signature:
 
 Merge all the given non-sequential `tables`.
 
-Return `nil` for no arguments.
+Return `nil` and an error message for no arguments.
 
 ## `sort`
 Function signature:
@@ -69,7 +71,7 @@ Function signature:
 (sort table & rest-args)
 ```
 
-Do `table.sort` and return the sorted `table`.
+Wrapper for `table.sort` that returns the sorted `table`.
 
 The `rest-args` are passed to `table.sort`.
 
@@ -80,7 +82,9 @@ Function signature:
 (update table key value)
 ```
 
-Do `tset` using `key` and `value`, and return the updated `table`.
+Wrapper for `tset` that returns the updated `table`.
+
+As usual, the content of `key` will be replaced with the `value`.
 
 ## `values`
 Function signature:
