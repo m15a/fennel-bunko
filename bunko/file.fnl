@@ -58,11 +58,27 @@ Trailing `/`'s will remain.
   (assert-type :string ...)
   (map-values %normalize ...))
 
-(fn %strip-suffix [path suffix]
+(fn %remove-suffix [path suffix]
   (let [stripped (path:match (.. "^(.*)" (escape suffix) "$"))]
-    (if (= "" stripped)
+    (if (or (= "" stripped) (stripped:match "/$"))
         path
         stripped)))
+
+(lambda remove-suffix [path suffix]
+  "Remove `suffix` from the `path`.
+
+If the basename of `path` and `suffix` is identical,
+it does not remove suffix.
+This is for convenience on manipulating hidden files.
+
+# Examples
+
+```fennel :skip-test
+(remove-suffix \"/a/b.ext\" \".ext\") ;=> \"/a/b\"
+(remove-suffix \"/a/b/.ext\" \".ext\") ;=> \"/a/b/.ext\"
+```"
+  (assert-type :string path suffix)
+  (%remove-suffix path suffix))
 
 (lambda basename [path ?suffix]
   "Remove leading directory components from the `path`.
@@ -72,7 +88,8 @@ Compatible with GNU coreutils' `basename`.
 Trailing `/`'s are also removed unless the `path` is just `/`.
 
 Optionally, a trailing `?suffix` will be removed if specified. 
-However, if `path` and `?suffix` is identical, it does not remove suffix.
+However, if the basename of `path` and `?suffix` is identical,
+it does not remove suffix.
 This is for convenience on manipulating hidden files.
 
 # Examples
@@ -96,7 +113,7 @@ This is for convenience on manipulating hidden files.
         path
         (case-try (path:match "([^/]*)/?$")
           path (if ?suffix
-                   (%strip-suffix path ?suffix)
+                   (%remove-suffix path ?suffix)
                    path)
           path path
           (catch _ (error "basename: unknown path matching error"))))))
@@ -148,4 +165,10 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
            lines)
     (_ msg code) (values nil msg code)))
 
-{: exists? : normalize : basename : dirname : read-file : read-lines}
+{: exists?
+ : normalize
+ : remove-suffix
+ : basename
+ : dirname
+ : read-file
+ : read-lines}
