@@ -63,7 +63,7 @@ final: prev: {
       {
           echo '#!/usr/bin/env fennel'
           cat faith.fnl
-      } >> bin/faith
+      } > bin/faith
       chmod +x bin/faith
       patchShebangs .
     '';
