@@ -52,6 +52,23 @@
         "type": "github"
       }
     },
+    "fnlfmt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1706065499,
+        "narHash": "sha256-DfnN8B6ZwP7Io6ax4H5lmPbe5Wkv6yKkErqxk81OL5o=",
+        "owner": "~technomancy",
+        "repo": "fnlfmt",
+        "rev": "2e1d288e90acd62904eec2cff0dee1f1956db9e2",
+        "type": "sourcehut"
+      },
+      "original": {
+        "owner": "~technomancy",
+        "ref": "main",
+        "repo": "fnlfmt",
+        "type": "sourcehut"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1708001613,
@@ -73,6 +90,7 @@
         "fennel": "fennel",
         "fenneldoc": "fenneldoc",
         "flake-utils": "flake-utils",
+        "fnlfmt": "fnlfmt",
         "nixpkgs": "nixpkgs"
       }
     },

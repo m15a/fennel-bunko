@@ -1,0 +1,49 @@
+diff --git a/cli.fnl b/cli.fnl
+index 55d6c6d..73fc529 100644
+--- a/cli.fnl
++++ b/cli.fnl
+@@ -5,7 +5,7 @@
+ (local {: format-file : version} (require :fnlfmt))
+ 
+ (fn help []
+-  (print "Usage: fnlfmt [--no-comments] [--fix] FILENAME...")
++  (print "Usage: fnlfmt [--no-comments] [--indent-do-as-if] [--fix] FILENAME...")
+   (print "With the --fix argument, multiple files can be specified")
+   (print "and changes are made in-place; otherwise prints the")
+   (print "formatted file to stdout."))
+@@ -13,9 +13,15 @@
+ (local options [])
+ 
+ (for [i (length arg) 1 -1]
+-  (when (= :--no-comments (. arg i))
+-    (set options.no-comments true)
+-    (table.remove arg i)))
++  (match (. arg i)
++    :--no-comments
++    (do
++      (set options.no-comments true)
++      (table.remove arg i))
++    :--indent-do-as-if
++    (do
++      (set options.indent-do-as-if true)
++      (table.remove arg i))))
+ 
+ (fn fix [filename]
+   (let [new (format-file filename options)
+diff --git a/fnlfmt.fnl b/fnlfmt.fnl
+index 07d6d5c..8112b71 100644
+--- a/fnlfmt.fnl
++++ b/fnlfmt.fnl
+@@ -389,8 +389,11 @@ When f returns a truthy value, recursively walks the children."
+   (io.stderr:write (string.format "File not found: %s\n" filename))
+   (os.exit 1))
+ 
+-(fn format-file [filename {: no-comments}]
++(fn format-file [filename {: no-comments : indent-do-as-if}]
+   "Read source from a file and return formatted source."
++  (when indent-do-as-if
++    (set force-initial-newline.do nil)
++    (set one-element-per-line-forms.do true))
+   (let [f (match filename
+             "-" io.stdin
+             _ (or (io.open filename :r) (abort filename)))
