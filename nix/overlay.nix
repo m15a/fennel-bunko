@@ -1,12 +1,15 @@
 { inputs }:
 
-final: prev: {
-  fennel = final.stdenv.mkDerivation rec {
+final: prev:
+
+let
+  fennelWith = { lua }:
+  final.stdenv.mkDerivation rec {
     pname = "fennel";
     version = "1.4.1-dev";
     src = inputs.fennel;
     nativeBuildInputs = [
-      final.lua5_3
+      lua
       final.pandoc
     ];
     postPatch = ''
@@ -18,23 +21,54 @@ final: prev: {
     makeFlags = [
       "PREFIX=$(out)"
     ];
-  };
-  fenneldoc = final.stdenv.mkDerivation rec {
-    pname = "fenneldoc";
-    version = "1.0.1-dev";
-    src = inputs.fenneldoc;
-    nativeBuildInputs = [
-      final.luajit
-      final.luajit.pkgs.fennel
-    ];
-    postPatch = ''
-      sed -i Makefile -e 's|\./fenneldoc|lua fenneldoc|'
+    postBuild = ''
+      patchShebangs .
     '';
-    makeFlags = [
-      "VERSION=${version}"
-      "PREFIX=$(out)"
-    ];
   };
+
+  faithWith = { fennel }:
+  final.stdenv.mkDerivation {
+    pname = "faith";
+    version = "0.1.3-dev";
+    src = inputs.faith;
+    nativeBuildInputs = [
+      fennel
+    ];
+    buildPhase = ''
+      mkdir bin
+      {
+          echo '#!/usr/bin/env fennel'
+          cat faith.fnl
+      } > bin/faith
+      chmod +x bin/faith
+      patchShebangs .
+    '';
+    installPhase = ''
+      mkdir -p $out/bin
+      install -m755 bin/faith -t $out/bin/
+    '';
+  };
+in
+
+rec {
+  fennel = fennel-lua5_3;
+
+  fennel-luajit = fennelWith { lua = final.luajit; };
+  fennel-lua5_1 = fennelWith { lua = final.lua5_1; };
+  fennel-lua5_2 = fennelWith { lua = final.lua5_2; };
+  fennel-lua5_3 = fennelWith { lua = final.lua5_3; };
+  # NOTE: currently broken
+  # fennel-lua5_4 = fennelWith { lua = final.lua5_4 };
+
+  faith = faith-lua5_3;
+
+  faith-luajit = faithWith { fennel = final.fennel-luajit; };
+  faith-lua5_1 = faithWith { fennel = final.fennel-lua5_1; };
+  faith-lua5_2 = faithWith { fennel = final.fennel-lua5_2; };
+  faith-lua5_3 = faithWith { fennel = final.fennel-lua5_3; };
+  # NOTE: currently broken
+  # faith-lua5_4 = faithWith { fennel = final.fennel_lua5_4 };
+
   fnlfmt = final.stdenv.mkDerivation {
     pname = "fnlfmt";
     version = "0.3.2-dev";
@@ -50,26 +84,28 @@ final: prev: {
       sed -i Makefile -e 's|./fennel|lua fennel|'
     '';
     makeFlags = [ "PREFIX=$(out)" ];
-  };
-  faith = final.stdenv.mkDerivation {
-    pname = "faith";
-    version = "0.1.3-dev";
-    src = inputs.faith;
-    nativeBuildInputs = [
-      final.luajit.pkgs.fennel
-    ];
-    buildPhase = ''
-      mkdir bin
-      {
-          echo '#!/usr/bin/env fennel'
-          cat faith.fnl
-      } > bin/faith
-      chmod +x bin/faith
+    postBuild = ''
       patchShebangs .
     '';
-    installPhase = ''
-      mkdir -p $out/bin
-      install -m755 bin/faith -t $out/bin/
+  };
+
+  fenneldoc = final.stdenv.mkDerivation rec {
+    pname = "fenneldoc";
+    version = "1.0.1-dev";
+    src = inputs.fenneldoc;
+    nativeBuildInputs = [
+      final.luajit
+      final.luajit.pkgs.fennel
+    ];
+    postPatch = ''
+      sed -i Makefile -e 's|\./fenneldoc|lua fenneldoc|'
+    '';
+    makeFlags = [
+      "VERSION=${version}"
+      "PREFIX=$(out)"
+    ];
+    postBuild = ''
+      patchShebangs .
     '';
   };
 }

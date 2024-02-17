@@ -30,18 +30,47 @@
           inherit system;
           overlays = [ overlay ];
         };
+        mkCIShell = { fennel, faith }:
+        pkgs.mkShell {
+          buildInputs = [ fennel faith ];
+          FENNEL_PATH = "${faith}/bin/?";
+        };
       in
       {
-        devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            fennel
-            fenneldoc
-            fnlfmt
-            faith
-          ] ++ (with lua5_3.pkgs; [
-            readline
-          ]);
-          FENNEL_PATH = "${pkgs.faith}/bin/?";
+        devShells = rec {
+          ci-luajit = mkCIShell {
+            fennel = pkgs.fennel-luajit;
+            faith = pkgs.faith-luajit;
+          };
+          ci-lua5_1 = mkCIShell {
+            fennel = pkgs.fennel-lua5_1;
+            faith = pkgs.faith-lua5_1;
+          };
+          ci-lua5_2 = mkCIShell {
+            fennel = pkgs.fennel-lua5_2;
+            faith = pkgs.faith-lua5_2;
+          };
+          ci-lua5_3 = mkCIShell {
+            fennel = pkgs.fennel-lua5_3;
+            faith = pkgs.faith-lua5_3;
+          };
+          # NOTE: currently broken
+          # ci-lua5_4 = mkCIShell {
+          #   fennel = pkgs.fennel-lua5_4;
+          #   faith = pkgs.faith-lua5_4;
+          # };
+
+          default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              fennel
+              faith
+              fnlfmt
+              fenneldoc
+            ] ++ (with lua5_3.pkgs; [
+              readline
+            ]);
+            FENNEL_PATH = "${pkgs.faith}/bin/?";
+          };
         };
       });
 }

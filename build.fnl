@@ -41,7 +41,7 @@
 (shell-task :test
   "Run tests."
   (let [test-modules (find-test-modules)]
-    (.. "faith --tests " (table.concat test-modules " "))))
+    (.. "fennel --version && faith --tests " (table.concat test-modules " "))))
 
 (shell-task :fmt
   "Format sources."
