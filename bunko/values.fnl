@@ -44,8 +44,7 @@ but consumes vargs directly.
 (map-values #(+ 1 $) 1 2 3) ;=> 2\t3\t4
 ```"
   {:fnl/arglist [& vargs]}
-  (unpack
-    (icollect [_ arg (ipairs [...])]
-      (function arg))))
+  (unpack (icollect [_ arg (ipairs [...])]
+            (function arg))))
 
 {: map-values}

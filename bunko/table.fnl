@@ -60,14 +60,12 @@ Optionally, if `?metatable` is truthy, set the same metatable as the original's.
         clone)))
 
 (lambda keys [tbl]
-  {:fnl/docstring "Return all keys in the `table`."
-   :fnl/arglist [table]}
+  {:fnl/docstring "Return all keys in the `table`." :fnl/arglist [table]}
   (icollect [key _ (pairs tbl)]
     key))
 
 (lambda items [tbl]
-  {:fnl/docstring "Return all values in the `table`."
-   :fnl/arglist [table]}
+  {:fnl/docstring "Return all values in the `table`." :fnl/arglist [table]}
   (icollect [_ value (pairs tbl)]
     value))
 
@@ -100,7 +98,7 @@ As usual, the content of `key` will be replaced with the `value`."
 
 Return `nil` and an error message for no arguments."
   {:fnl/arglist [& tables]}
-  (case (select :# ...)
+  (case (select "#" ...)
     0 (values nil "merge: no tables found")
     _ (do (assert-type :table ...)
           (accumulate [result {} _ tbl (ipairs [...])]
@@ -112,18 +110,11 @@ Return `nil` and an error message for no arguments."
 
 Return `nil` and an error message for no arguments."
   {:fnl/arglist [& tables]}
-  (case (select :# ...)
+  (case (select "#" ...)
     0 (values nil "append: no tables found")
     _ (do (assert-type :table ...)
           (accumulate [result [] _ seq (ipairs [...])]
             (accumulate [result result _ x (ipairs seq)]
               (insert result x))))))
 
-{: copy
- : keys
- : items
- : insert
- : sort
- : update
- : merge
- : append}
+{: copy : keys : items : insert : sort : update : merge : append}

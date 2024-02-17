@@ -57,11 +57,10 @@ is expanded to
                          (fennel.view expected)))
   (let [fmt (.. expected " expected, got %s")
         checks (accumulate [checks [] _ x (ipairs items)]
-                 (do (table.insert
-                       checks
-                       `(let [actual# (type ,x)]
-                          (assert (= actual# ,expected)
-                                  (string.format ,fmt actual#))))
+                 (do (table.insert checks
+                                   `(let [actual# (type ,x)]
+                                      (assert (= actual# ,expected)
+                                              (string.format ,fmt actual#))))
                      checks))]
     (case (length checks)
       0 nil

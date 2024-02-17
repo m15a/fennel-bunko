@@ -99,8 +99,7 @@ This is for convenience on manipulating hidden files.
                    (%strip-suffix path ?suffix)
                    path)
           path path
-          (catch
-            _ (error "basename: unknown path matching error"))))))
+          (catch _ (error "basename: unknown path matching error"))))))
 
 (fn %dirname [path]
   (let [path (%normalize path)]
@@ -109,8 +108,7 @@ This is for convenience on manipulating hidden files.
         (case-try (path:match "(.-)/?$")
           path (path:match "^(.*)/")
           path path
-          (catch
-            _ ".")))))
+          (catch _ ".")))))
 
 (fn dirname [...]
   "Remove the last non-slash component from each of the `paths`.
@@ -150,9 +148,4 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
            lines)
     (_ msg code) (values nil msg code)))
 
-{: exists?
- : normalize
- : basename
- : dirname
- : read-file
- : read-lines}
+{: exists? : normalize : basename : dirname : read-file : read-lines}
