@@ -45,27 +45,25 @@
   (t.= "he\nllo\n" (bf.read-all :./_assets/hello.txt))
   (t.= nil (bf.read-all :./_assets/none.txt))
   (let [file (io.open :./_assets/hello.txt)]
-    (t.= "he\nllo\n" (bf.read-all file)))
-  (let [file (io.popen "ls _assets")]
-    (t.= "hello.txt\ntosyokan_book_tana.png\n" (bf.read-all file))
-    (t.= "closed file" (io.type file)))
-  (let [file (doto (io.open :./_assets/hello.txt) (io.close))
-        (ret msg) (bf.read-all file)]
-    (t.= nil ret)
-    (t.match "closed" msg)))
+    (t.= "he\nllo\n" (bf.read-all file))
+    (t.= :file (io.type file))
+    (file:close))
+  (with-open [file (io.popen "ls _assets")]
+    (t.= "hello.txt\ntosyokan_book_tana.png\n" (bf.read-all file)))
+  (let [file (doto (io.open :./_assets/hello.txt) (io.close))]
+    (t.error "closed file" #(bf.read-all file))))
 
 (fn test-read-lines []
   (t.= [:he :llo] (bf.read-lines :./_assets/hello.txt))
   (t.= nil (bf.read-lines :./_assets/none.txt))
   (let [file (io.open :./_assets/hello.txt)]
     (t.= [:he :llo] (bf.read-lines file))
-    (t.= "closed file" (io.type file)))
-  (let [file (io.popen "ls _assets")]
-    (t.= ["hello.txt" "tosyokan_book_tana.png"] (bf.read-lines file)))
-  (let [file (doto (io.open :./_assets/hello.txt) (io.close))
-        (ret msg) (bf.read-lines file)]
-    (t.= nil ret)
-    (t.match "closed" msg)))
+    (t.= :file (io.type file))
+    (file:close))
+  (with-open [file (io.popen "ls _assets")]
+    (t.= [:hello.txt :tosyokan_book_tana.png] (bf.read-lines file)))
+  (let [file (doto (io.open :./_assets/hello.txt) (io.close))]
+    (t.error "closed file" #(bf.read-lines file))))
 
 {: test-exists?
  : test-normalize

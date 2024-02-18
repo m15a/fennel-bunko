@@ -3,6 +3,7 @@
 (local unpack (or table.unpack _G.pack))
 (import-macros {: map-values} :bunko.macros)
 (local {: keys : sort+} (require :bunko.table))
+(local {: read-lines} (require :bunko.file))
 
 (fn usage [script-name synopsis ...]
   "Print usage information."
@@ -28,14 +29,11 @@
            (os.exit signal#))))
 
 (fn find-test-modules []
-  (with-open [in (io.popen "ls test/*.fnl")]
-    (let [modules []]
-      (each [line (in:lines)]
-        (let [module (-> line
-                         (: :gsub "/" ".")
-                         (: :gsub "%.fnl$" ""))]
-          (table.insert modules module)))
-      modules)))
+  (with-open [in (assert (io.popen "ls test/*.fnl"))]
+    (icollect [_ line (ipairs (read-lines in))]
+      (-> line
+          (: :gsub "/" ".")
+          (: :gsub "%.fnl$" "")))))
 
 (shell-task :test "Run tests."
             (let [test-modules (find-test-modules)]

@@ -146,32 +146,32 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
   (assert-type :string ...)
   (map-values %dirname ...))
 
-(fn %read-all-from-file [file]
-  (let [contents (file:read :*a)]
-    (file:close)
-    contents))
-
 (fn read-all [file/path]
-  "Read all contents from a file handle or a file path, specified by `file/path`."
+  "Read all contents from a file handle or a file path, specified by `file/path`.
+
+If `file/path` is a file handle, it will not be closed, so make sure to use it
+in `with-open` macro or to close it manually."
   (case (io.type file/path)
-    "file" (%read-all-from-file file/path)
-    "closed file" (values nil "read-lines: closed file")
+    :file (file/path:read :*a)
+    "closed file" (error "read-all: attempt to use a closed file")
     _ (case (io.open file/path)
-        file (%read-all-from-file file)
+        file (file:read :*a)
         (_ msg code) (values nil msg code))))
 
 (fn %read-lines-from-file [file]
   (let [lines []]
     (each [line (file:lines)]
       (table.insert lines line))
-    (file:close)
     lines))
 
 (fn read-lines [file/path]
-  "Read all lines from a file handle or a file path, specified by `file/path`."
+  "Read all lines from a file handle or a file path, specified by `file/path`.
+
+If `file/path` is a file handle, it will not be closed, so make sure to use it
+in `with-open` macro or to close it manually."
   (case (io.type file/path)
-    "file" (%read-lines-from-file file/path)
-    "closed file" (values nil "read-lines: closed file")
+    :file (%read-lines-from-file file/path)
+    "closed file" (error "read-lines: attempt to use a closed file")
     _ (case (io.open file/path)
         file (%read-lines-from-file file)
         (_ msg code) (values nil msg code))))
