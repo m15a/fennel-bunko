@@ -53,7 +53,7 @@
 
 (shell-task :docs
   "Build API documents from sources."
-  "fenneldoc bunko/*.fnl")
+  "rm -rf doc/ && fenneldoc bunko/*.fnl")
 
 (fn main []
   (let [command (. arg 1)
