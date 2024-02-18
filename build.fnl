@@ -1,6 +1,6 @@
 #!/usr/bin/env fennel
 
-(local unpack (or table.unpack _G.pack))
+(local unpack (or table.unpack _G.unpack))
 (import-macros {: map-values} :bunko.macros)
 (local {: keys : sort+} (require :bunko.table))
 (local {: read-lines} (require :bunko.file))
