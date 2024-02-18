@@ -86,7 +86,7 @@ The `rest-args` are passed to `table.sort`."
   (table.sort seq ...)
   seq)
 
-(fn update [tbl key value]
+(fn %tset [tbl key value]
   {:fnl/docstring "Wrapper for `tset` that returns the updated `table`.
 
 As usual, the content of `key` will be replaced with the `value`."
@@ -104,7 +104,7 @@ Return `nil` and an error message for no arguments."
     _ (do (assert-type :table ...)
           (accumulate [result {} _ tbl (ipairs [...])]
             (accumulate [result result key value (pairs tbl)]
-              (update result key value))))))
+              (%tset result key value))))))
 
 (fn append [...]
   "Concatenate all the given sequential `tables`.
@@ -118,4 +118,4 @@ Return `nil` and an error message for no arguments."
             (accumulate [result result _ x (ipairs seq)]
               (insert result x))))))
 
-{: copy : keys : items : insert : sort : update : merge : append}
+{: copy : keys : items : insert : sort :tset %tset : merge : append}
