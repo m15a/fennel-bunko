@@ -64,8 +64,6 @@ The rest args `...` are passed to `tset`.
 ### Examples
 
 ```fennel
-(import-macros {: tset*} :bunko.macros)
-
 (accumulate [t {} _ w (ipairs [:a :b :c])]
   (tset* t w true))
 ; => {:a true, :b true, :c true}
