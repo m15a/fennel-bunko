@@ -35,7 +35,7 @@
 (local {: map-values} (require :bunko.values))
 (local {: escape} (require :bunko.string))
 
-(lambda exists? [file]
+(fn exists? [file]
   "Return `true` if the `file` exists."
   (case (io.open file)
     any (do (any:close) true)
@@ -64,7 +64,7 @@ Trailing `/`'s will remain.
         path
         stripped)))
 
-(lambda remove-suffix [path suffix]
+(fn remove-suffix [path suffix]
   "Remove `suffix` from the `path`.
 
 If the basename of `path` and `suffix` is identical,
@@ -80,7 +80,7 @@ This is for convenience on manipulating hidden files.
   (assert-type :string path suffix)
   (%remove-suffix path suffix))
 
-(lambda basename [path ?suffix]
+(fn basename [path ?suffix]
   "Remove leading directory components from the `path`.
 
 Compatible with GNU coreutils' `basename`.
@@ -147,7 +147,7 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
   (assert-type :string ...)
   (map-values %dirname ...))
 
-(lambda read-file [file]
+(fn read-file [file]
   "Read all contents of the `file` as a string."
   (case (io.open file)
     in (let [contents (in:read :*a)]
@@ -155,7 +155,7 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
          contents)
     (_ msg code) (values nil msg code)))
 
-(lambda read-lines [file]
+(fn read-lines [file]
   "Read all lines of the `file` as a sequential table of strings."
   (case (io.open file)
     in (do (var lines [])

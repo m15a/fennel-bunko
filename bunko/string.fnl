@@ -32,7 +32,7 @@
 
 (import-macros {: assert-type} :bunko.macros)
 
-(lambda escape [str]
+(fn escape [str]
   {:fnl/docstring "Escape magic characters of [patterns][1] in the `string`.
 
 Namely, `^$()%.[]*+-?`.

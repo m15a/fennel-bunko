@@ -49,27 +49,28 @@
       `(collect [k# v# (pairs ,tbl)]
          (values k# v#))))
 
-(lambda copy [tbl ?metatable]
+(fn copy [tbl ?metatable]
   {:fnl/docstring "Return a shallow copy of the `table`.
 
 Optionally, if `?metatable` is truthy, set the same metatable as the original's."
    :fnl/arglist [table ?metatable]}
+  (assert-type :table tbl)
   (let [clone (%copy tbl)]
     (if ?metatable
         (setmetatable clone (getmetatable tbl))
         clone)))
 
-(lambda keys [tbl]
+(fn keys [tbl]
   {:fnl/docstring "Return all keys in the `table`." :fnl/arglist [table]}
   (icollect [key _ (pairs tbl)]
     key))
 
-(lambda items [tbl]
+(fn items [tbl]
   {:fnl/docstring "Return all values in the `table`." :fnl/arglist [table]}
   (icollect [_ value (pairs tbl)]
     value))
 
-(lambda insert [seq ...]
+(fn insert [seq ...]
   {:fnl/docstring "Wrapper for `table.insert` that returns the updated `table`.
 
 The `rest-args` are passed to `table.insert`."
@@ -77,7 +78,7 @@ The `rest-args` are passed to `table.insert`."
   (table.insert seq ...)
   seq)
 
-(lambda sort [seq ...]
+(fn sort [seq ...]
   {:fnl/docstring "Wrapper for `table.sort` that returns the sorted `table`.
 
 The `rest-args` are passed to `table.sort`."
@@ -85,7 +86,7 @@ The `rest-args` are passed to `table.sort`."
   (table.sort seq ...)
   seq)
 
-(lambda update [tbl key value]
+(fn update [tbl key value]
   {:fnl/docstring "Wrapper for `tset` that returns the updated `table`.
 
 As usual, the content of `key` will be replaced with the `value`."
