@@ -38,7 +38,7 @@
   (if _G.next
       `(do (var index# nil)
            (var done?# false)
-           (var result# {})
+           (local result# {})
            (while (not done?#)
              (let [(k# v#) (next ,tbl index#)]
                (if k#
