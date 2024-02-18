@@ -32,7 +32,10 @@
         };
         mkTestShell = { faith }:
         pkgs.mkShell {
-          buildInputs = [ faith ];
+          buildInputs = [
+            faith
+            faith.fennel
+          ];
           FENNEL_PATH = "${faith}/bin/?";
         };
       in
@@ -54,7 +57,10 @@
             faith = pkgs.faith.lua5_4;
           };
           ci-lint = pkgs.mkShell {
-            buildInputs = [ pkgs.fnlfmt ];
+            buildInputs = [
+              pkgs.fennel.luajit
+              pkgs.fnlfmt
+            ];
           };
 
           default = pkgs.mkShell {

@@ -28,4 +28,6 @@ stdenv.mkDerivation {
     mkdir -p $out/bin
     install -m755 bin/faith -t $out/bin/
   '';
+
+  passthru = { inherit fennel; };
 }
