@@ -68,7 +68,7 @@
               faith.default
               fnlfmt
               fenneldoc
-            ] ++ (with lua5_3.pkgs; [
+            ] ++ (with fennel.default.lua.pkgs; [
               # NOTE: lua5_3.pkgs.readline is currently broken.
               readline
             ]);

@@ -25,4 +25,6 @@ stdenv.mkDerivation rec {
   postBuild = ''
     patchShebangs .
   '';
+
+  passthru = { inherit lua; };
 }
