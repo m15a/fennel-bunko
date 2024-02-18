@@ -146,28 +146,40 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
   (assert-type :string ...)
   (map-values %dirname ...))
 
-(fn read-file [path]
-  "Read all contents in a file at the `path` as a string."
-  (case (io.open path)
-    in (let [contents (in:read :*a)]
-         (in:close)
-         contents)
-    (_ msg code) (values nil msg code)))
+(fn %read-all-from-file [file]
+  (let [contents (file:read :*a)]
+    (file:close)
+    contents))
 
-(fn read-lines [path]
-  "Read all lines in a file at the `path` as a sequential table of string."
-  (case (io.open file)
-    in (do (local lines [])
-           (each [line (in:lines)]
-             (table.insert lines line))
-           (in:close)
-           lines)
-    (_ msg code) (values nil msg code)))
+(fn read-all [file/path]
+  "Read all contents from a file handle or a file path, specified by `file/path`."
+  (case (io.type file/path)
+    "file" (%read-all-from-file file/path)
+    "closed file" (values nil "read-lines: closed file")
+    _ (case (io.open file/path)
+        file (%read-all-from-file file)
+        (_ msg code) (values nil msg code))))
+
+(fn %read-lines-from-file [file]
+  (let [lines []]
+    (each [line (file:lines)]
+      (table.insert lines line))
+    (file:close)
+    lines))
+
+(fn read-lines [file/path]
+  "Read all lines from a file handle or a file path, specified by `file/path`."
+  (case (io.type file/path)
+    "file" (%read-lines-from-file file/path)
+    "closed file" (values nil "read-lines: closed file")
+    _ (case (io.open file/path)
+        file (%read-lines-from-file file)
+        (_ msg code) (values nil msg code))))
 
 {: exists?
  : normalize
  : remove-suffix
  : basename
  : dirname
- : read-file
+ : read-all
  : read-lines}

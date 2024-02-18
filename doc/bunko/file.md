@@ -6,7 +6,7 @@
 - [`dirname`](#dirname)
 - [`exists?`](#exists)
 - [`normalize`](#normalize)
-- [`read-file`](#read-file)
+- [`read-all`](#read-all)
 - [`read-lines`](#read-lines)
 - [`remove-suffix`](#remove-suffix)
 
@@ -91,23 +91,23 @@ Trailing `/`'s will remain.
 (normalize "//a/b" "a//b/") ;=> "/a/b"	"a/b/"
 ```
 
-## `read-file`
+## `read-all`
 Function signature:
 
 ```
-(read-file path)
+(read-all file/path)
 ```
 
-Read all contents in a file at the `path` as a string.
+Read all contents from a file handle or a file path, specified by `file/path`.
 
 ## `read-lines`
 Function signature:
 
 ```
-(read-lines path)
+(read-lines file/path)
 ```
 
-Read all lines in a file at the `path` as a sequential table of string.
+Read all lines from a file handle or a file path, specified by `file/path`.
 
 ## `remove-suffix`
 Function signature:
