@@ -42,6 +42,6 @@ in
 
   fenneldoc = final.callPackage ./pkgs/fenneldoc {
     src = inputs.fenneldoc;
-    lua = final.luajit;
+    lua = final.lua5_4;
   };
 }
