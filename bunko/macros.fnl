@@ -67,4 +67,22 @@ is expanded to
       1 (. checks 1)
       _ `(do ,(unpack checks)))))
 
-{: assert-type}
+(fn %tset [tbl & rest]
+  {:fnl/docstring "Wrapper for `tset` that returns the updated `table`.
+
+The rest args `...` are passed to `tset`.
+
+# Examples
+
+```fennel :skip-test
+(import-macros b :bunko.macros)
+
+(accumulate [t {} _ w (ipairs [:a :b :c])]
+  (b.tset t w true))
+; => {:a true, :b true, :c true}
+```"
+   :fnl/arglist [table ...]}
+  `(do (tset ,tbl ,(unpack rest))
+       ,tbl))
+
+{: assert-type :tset %tset}

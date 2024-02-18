@@ -31,7 +31,7 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-(import-macros {: assert-type} :bunko.macros)
+(import-macros {: assert-type :tset tset+} :bunko.macros)
 
 ;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
 (macro %copy [tbl]
@@ -86,14 +86,6 @@ The rest args `...` are passed to `table.sort`."
   (table.sort seq ...)
   seq)
 
-(fn %tset [tbl key value]
-  {:fnl/docstring "Wrapper for `tset` that returns the updated `table`.
-
-The content of `key` will be replaced with the `value`."
-   :fnl/arglist [table key value]}
-  (tset tbl key value)
-  tbl)
-
 (fn update [tbl key function default]
   {:fnl/docstring "Update the value of the `key` using the `function`.
 
@@ -133,7 +125,7 @@ Return `nil` and a warning message in case of no arguments.
     _ (do (assert-type :table ...)
           (accumulate [result {} _ tbl (ipairs [...])]
             (accumulate [result result key value (pairs tbl)]
-              (%tset result key value))))))
+              (tset+ result key value))))))
 
 (fn append [...]
   "Concatenate all the given sequential `tables`.
@@ -153,4 +145,4 @@ Return `nil` and a warning message in case of no arguments.
             (accumulate [result result _ x (ipairs seq)]
               (insert result x))))))
 
-{: copy : keys : items : insert : sort :tset %tset : update : merge : append}
+{: copy : keys : items : insert : sort : update : merge : append}
