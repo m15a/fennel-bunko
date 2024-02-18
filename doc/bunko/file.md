@@ -69,10 +69,10 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
 Function signature:
 
 ```
-(exists? file)
+(exists? path)
 ```
 
-Return `true` if the `file` exists.
+Return `true` if a file at the `path` exists.
 
 ## `normalize`
 Function signature:

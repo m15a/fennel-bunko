@@ -34,9 +34,9 @@
 (import-macros {: assert-type : map-values} :bunko.macros)
 (local {: escape} (require :bunko.string))
 
-(fn exists? [file]
-  "Return `true` if the `file` exists."
-  (case (io.open file)
+(fn exists? [path]
+  "Return `true` if a file at the `path` exists."
+  (case (io.open path)
     any (do (any:close) true)
     _ false))
 
