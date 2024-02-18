@@ -9,7 +9,6 @@
 - [`keys`](#keys)
 - [`merge`](#merge)
 - [`sort`](#sort)
-- [`tset`](#tset)
 - [`update`](#update)
 
 ## `append`
@@ -96,17 +95,6 @@ Function signature:
 Wrapper for `table.sort` that returns the sorted `table`.
 
 The rest args `...` are passed to `table.sort`.
-
-## `tset`
-Function signature:
-
-```
-(tset table key value)
-```
-
-Wrapper for `tset` that returns the updated `table`.
-
-The content of `key` will be replaced with the `value`.
 
 ## `update`
 Function signature:

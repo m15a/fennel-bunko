@@ -31,8 +31,7 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-(import-macros {: assert-type} :bunko.macros)
-(local {: map-values} (require :bunko.values))
+(import-macros {: assert-type : map-values} :bunko.macros)
 (local {: escape} (require :bunko.string))
 
 (fn exists? [file]

@@ -67,7 +67,22 @@ is expanded to
       1 (. checks 1)
       _ `(do ,(unpack checks)))))
 
-(fn %tset [tbl & rest]
+(fn map-values [function & varg]
+  "Apply the `function` on each of `varg`, and return the results as multiple values.
+
+This is similar to `map-values` in [SRFI-210](https://srfi.schemers.org/srfi-210/),
+but consumes varg directly.
+
+# Examples
+
+```fennel :skip-test
+(map-values #(+ 1 $) 1 2 3) ;=> 2\t3\t4
+```"
+  (let [%unpack (if table.unpack `table.unpack `unpack)]
+    `(,%unpack (icollect [_# arg# (ipairs [,(unpack varg)])]
+                 (,function arg#)))))
+
+(fn tset* [tbl & rest]
   {:fnl/docstring "Wrapper for `tset` that returns the updated `table`.
 
 The rest args `...` are passed to `tset`.
@@ -75,14 +90,14 @@ The rest args `...` are passed to `tset`.
 # Examples
 
 ```fennel :skip-test
-(import-macros b :bunko.macros)
+(import-macros {: tset*} :bunko.macros)
 
 (accumulate [t {} _ w (ipairs [:a :b :c])]
-  (b.tset t w true))
+  (tset* t w true))
 ; => {:a true, :b true, :c true}
 ```"
    :fnl/arglist [table ...]}
   `(do (tset ,tbl ,(unpack rest))
        ,tbl))
 
-{: assert-type :tset %tset}
+{: assert-type : map-values : tset*}

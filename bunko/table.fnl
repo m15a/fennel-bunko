@@ -31,7 +31,7 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-(import-macros {: assert-type :tset tset+} :bunko.macros)
+(import-macros {: assert-type : tset*} :bunko.macros)
 
 ;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
 (macro %copy [tbl]
@@ -125,7 +125,7 @@ Return `nil` and a warning message in case of no arguments.
     _ (do (assert-type :table ...)
           (accumulate [result {} _ tbl (ipairs [...])]
             (accumulate [result result key value (pairs tbl)]
-              (tset+ result key value))))))
+              (tset* result key value))))))
 
 (fn append [...]
   "Concatenate all the given sequential `tables`.
