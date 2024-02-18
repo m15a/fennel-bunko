@@ -94,6 +94,29 @@ The content of `key` will be replaced with the `value`."
   (tset tbl key value)
   tbl)
 
+(fn update [tbl key function default]
+  {:fnl/docstring "Update the value of the `key` using the `function`.
+
+The `function` takes the value of the `key` as an argument and its returned value
+will replace the old value. If the value of the `key` is missing, the `default`
+value will be consumed by the `function`.
+Finally return the updated `table`.
+
+# Examples
+
+```fennel :skip-test
+(update {:a 1} :a #(+ $ 1)) ;=> {:a 2}
+(update {} :a #(+ $ 1) 0)   ;=> {:a 1}
+
+(accumulate [counts {}
+             _ w (ipairs [:a :b :c :b :c :c])]
+  (update counts w #(+ 1 $) 0))
+;=> {:a 1 :b 2 :c 3}
+```"
+   :fnl/arglist [table key function default]}
+  (tset tbl key (function (or (. tbl key) default)))
+  tbl)
+
 (fn merge [...]
   "Merge all the given non-sequential `tables`.
 
@@ -118,4 +141,4 @@ Return `nil` and a warning message in case of no arguments."
             (accumulate [result result _ x (ipairs seq)]
               (insert result x))))))
 
-{: copy : keys : items : insert : sort :tset %tset : merge : append}
+{: copy : keys : items : insert : sort :tset %tset : update : merge : append}

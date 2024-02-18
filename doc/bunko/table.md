@@ -10,6 +10,7 @@
 - [`merge`](#merge)
 - [`sort`](#sort)
 - [`tset`](#tset)
+- [`update`](#update)
 
 ## `append`
 Function signature:
@@ -94,6 +95,32 @@ Function signature:
 Wrapper for `tset` that returns the updated `table`.
 
 The content of `key` will be replaced with the `value`.
+
+## `update`
+Function signature:
+
+```
+(update table key function default)
+```
+
+Update the value of the `key` using the `function`.
+
+The `function` takes the value of the `key` as an argument and its returned value
+will replace the old value. If the value of the `key` is missing, the `default`
+value will be consumed by the `function`.
+Finally return the updated `table`.
+
+### Examples
+
+```fennel
+(update {:a 1} :a #(+ $ 1)) ;=> {:a 2}
+(update {} :a #(+ $ 1) 0)   ;=> {:a 1}
+
+(accumulate [counts {}
+             _ w (ipairs [:a :b :c :b :c :c])]
+  (update counts w #(+ 1 $) 0))
+;=> {:a 1 :b 2 :c 3}
+```
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev
