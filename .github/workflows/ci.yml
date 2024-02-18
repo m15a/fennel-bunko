@@ -18,7 +18,7 @@ jobs:
 
       - name: Run tests (LuaJIT)
         run: |
-          nix develop .#ci-luajit --command bash -c "./build.fnl test"
+          nix develop .#ci-test-luajit --command bash -c "./build.fnl test"
 
   test-lua5_1:
     runs-on: ubuntu-latest
@@ -31,7 +31,7 @@ jobs:
 
       - name: Run tests (PUC Lua 5.1)
         run: |
-          nix develop .#ci-lua5_1 --command bash -c "./build.fnl test"
+          nix develop .#ci-test-lua5_1 --command bash -c "./build.fnl test"
 
   test-lua5_2:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
 
       - name: Run tests (PUC Lua 5.2)
         run: |
-          nix develop .#ci-lua5_2 --command bash -c "./build.fnl test"
+          nix develop .#ci-test-lua5_2 --command bash -c "./build.fnl test"
 
   test-lua5_3:
     runs-on: ubuntu-latest
@@ -57,7 +57,7 @@ jobs:
 
       - name: Run tests (PUC Lua 5.3)
         run: |
-          nix develop .#ci-lua5_3 --command bash -c "./build.fnl test"
+          nix develop .#ci-test-lua5_3 --command bash -c "./build.fnl test"
 
   test-lua5_4:
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
 
       - name: Run tests (PUC Lua 5.4)
         run: |
-          nix develop .#ci-lua5_4 --command bash -c "./build.fnl test"
+          nix develop .#ci-test-lua5_4 --command bash -c "./build.fnl test"
 
   lint:
     runs-on: ubuntu-latest
@@ -83,4 +83,4 @@ jobs:
 
       - name: Check formats
         run: |
-          nix develop --command bash -c "./build.fnl fmt-check"
+          nix develop .#ci-lint --command bash -c "./build.fnl fmt-check"

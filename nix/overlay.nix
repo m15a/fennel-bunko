@@ -16,22 +16,24 @@ let
   };
 in
 
-rec {
-  fennel = fennel-lua5_3;
+{
+  fennel = rec {
+    default = lua5_3;
+    luajit = fennelWith { lua = final.luajit; };
+    lua5_1 = fennelWith { lua = final.lua5_1; };
+    lua5_2 = fennelWith { lua = final.lua5_2; };
+    lua5_3 = fennelWith { lua = final.lua5_3; };
+    lua5_4 = fennelWith { lua = final.lua5_4; };
+  };
 
-  fennel-luajit = fennelWith { lua = final.luajit; };
-  fennel-lua5_1 = fennelWith { lua = final.lua5_1; };
-  fennel-lua5_2 = fennelWith { lua = final.lua5_2; };
-  fennel-lua5_3 = fennelWith { lua = final.lua5_3; };
-  fennel-lua5_4 = fennelWith { lua = final.lua5_4; };
-
-  faith = faith-lua5_3;
-
-  faith-luajit = faithWith { fennel = final.fennel-luajit; };
-  faith-lua5_1 = faithWith { fennel = final.fennel-lua5_1; };
-  faith-lua5_2 = faithWith { fennel = final.fennel-lua5_2; };
-  faith-lua5_3 = faithWith { fennel = final.fennel-lua5_3; };
-  faith-lua5_4 = faithWith { fennel = final.fennel-lua5_4; };
+  faith = rec {
+    default = lua5_3;
+    luajit = faithWith { fennel = final.fennel.luajit; };
+    lua5_1 = faithWith { fennel = final.fennel.lua5_1; };
+    lua5_2 = faithWith { fennel = final.fennel.lua5_2; };
+    lua5_3 = faithWith { fennel = final.fennel.lua5_3; };
+    lua5_4 = faithWith { fennel = final.fennel.lua5_4; };
+  };
 
   fnlfmt = final.callPackage ./pkgs/fnlfmt {
     src = inputs.fnlfmt;
