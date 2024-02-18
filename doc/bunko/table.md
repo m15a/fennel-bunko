@@ -23,6 +23,12 @@ Concatenate all the given sequential `tables`.
 
 Return `nil` and a warning message in case of no arguments.
 
+### Examples
+
+```fennel
+(append [1] [2 3] [4]) ;=> [1 2 3 4]
+```
+
 ## `copy`
 Function signature:
 
@@ -73,6 +79,12 @@ Function signature:
 Merge all the given non-sequential `tables`.
 
 Return `nil` and a warning message in case of no arguments.
+
+### Examples
+
+```fennel
+(merge {:a 1 :b 2} {:a 2 :c 3}) ;=> {:a 2 :b 2 :c 3}
+```
 
 ## `sort`
 Function signature:

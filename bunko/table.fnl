@@ -120,7 +120,13 @@ Finally return the updated `table`.
 (fn merge [...]
   "Merge all the given non-sequential `tables`.
 
-Return `nil` and a warning message in case of no arguments."
+Return `nil` and a warning message in case of no arguments.
+
+# Examples
+
+```fennel :skip-test
+(merge {:a 1 :b 2} {:a 2 :c 3}) ;=> {:a 2 :b 2 :c 3}
+```"
   {:fnl/arglist [& tables]}
   (case (select "#" ...)
     0 (values nil "merge: no tables found in the arguments")
@@ -132,7 +138,13 @@ Return `nil` and a warning message in case of no arguments."
 (fn append [...]
   "Concatenate all the given sequential `tables`.
 
-Return `nil` and a warning message in case of no arguments."
+Return `nil` and a warning message in case of no arguments.
+
+# Examples
+
+```fennel :skip-test
+(append [1] [2 3] [4]) ;=> [1 2 3 4]
+```"
   {:fnl/arglist [& tables]}
   (case (select "#" ...)
     0 (values nil "append: no tables found in the arguments")
