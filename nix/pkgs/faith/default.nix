@@ -10,6 +10,10 @@ stdenv.mkDerivation {
     fennel
   ];
 
+  patches = [
+    ./patches/faith.patch
+  ];
+
   buildPhase = ''
     mkdir bin
     {

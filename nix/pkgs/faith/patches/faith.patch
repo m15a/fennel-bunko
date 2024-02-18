@@ -1,0 +1,23 @@
+diff --git a/faith.fnl b/faith.fnl
+index c4c35eb..4e8de5a 100644
+--- a/faith.fnl
++++ b/faith.fnl
+@@ -32,6 +32,7 @@
+ ;; SOFTWARE.
+ 
+ (local fennel (require :fennel))
++(local utils (require :fennel.utils))
+ 
+ ;;; helper functions
+ 
+@@ -291,6 +292,10 @@
+     (when (or (next results.err) (next results.fail))
+       (exit hooks))))
+ 
++(when (= ... "--fennel-version")
++  (print (utils.runtime-version))
++  (os.exit 0))
++
+ (when (= ... "--tests")
+   (run (doto [...] (table.remove 1)))
+   (os.exit 0))

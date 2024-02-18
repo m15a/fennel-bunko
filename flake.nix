@@ -30,32 +30,27 @@
           inherit system;
           overlays = [ overlay ];
         };
-        mkTestShell = { fennel, faith }:
+        mkTestShell = { faith }:
         pkgs.mkShell {
-          buildInputs = [ fennel faith ];
+          buildInputs = [ faith ];
           FENNEL_PATH = "${faith}/bin/?";
         };
       in
       {
         devShells = rec {
           ci-test-luajit = mkTestShell {
-            fennel = pkgs.fennel.luajit;
             faith = pkgs.faith.luajit;
           };
           ci-test-lua5_1 = mkTestShell {
-            fennel = pkgs.fennel.lua5_1;
             faith = pkgs.faith.lua5_1;
           };
           ci-test-lua5_2 = mkTestShell {
-            fennel = pkgs.fennel.lua5_2;
             faith = pkgs.faith.lua5_2;
           };
           ci-test-lua5_3 = mkTestShell {
-            fennel = pkgs.fennel.lua5_3;
             faith = pkgs.faith.lua5_3;
           };
           ci-test-lua5_4 = mkTestShell {
-            fennel = pkgs.fennel.lua5_4;
             faith = pkgs.faith.lua5_4;
           };
           ci-lint = pkgs.mkShell {
