@@ -95,19 +95,19 @@ Trailing `/`'s will remain.
 Function signature:
 
 ```
-(read-file file)
+(read-file path)
 ```
 
-Read all contents of the `file` as a string.
+Read all contents in a file at the `path` as a string.
 
 ## `read-lines`
 Function signature:
 
 ```
-(read-lines file)
+(read-lines path)
 ```
 
-Read all lines of the `file` as a sequential table of strings.
+Read all lines in a file at the `path` as a sequential table of string.
 
 ## `remove-suffix`
 Function signature:

@@ -146,18 +146,18 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
   (assert-type :string ...)
   (map-values %dirname ...))
 
-(fn read-file [file]
-  "Read all contents of the `file` as a string."
-  (case (io.open file)
+(fn read-file [path]
+  "Read all contents in a file at the `path` as a string."
+  (case (io.open path)
     in (let [contents (in:read :*a)]
          (in:close)
          contents)
     (_ msg code) (values nil msg code)))
 
-(fn read-lines [file]
-  "Read all lines of the `file` as a sequential table of strings."
+(fn read-lines [path]
+  "Read all lines in a file at the `path` as a sequential table of string."
   (case (io.open file)
-    in (do (var lines [])
+    in (do (local lines [])
            (each [line (in:lines)]
              (table.insert lines line))
            (in:close)
