@@ -1,5 +1,5 @@
 diff --git a/cli.fnl b/cli.fnl
-index 55d6c6d..e9f1a07 100644
+index 55d6c6d..76c536a 100644
 --- a/cli.fnl
 +++ b/cli.fnl
 @@ -5,17 +5,39 @@
@@ -10,10 +10,10 @@ index 55d6c6d..e9f1a07 100644
 -  (print "With the --fix argument, multiple files can be specified")
 -  (print "and changes are made in-place; otherwise prints the")
 -  (print "formatted file to stdout."))
-+  (print "Usage: fnlfmt [--no-comments] [--indent-do-as-if] [--check] [--fix] FILENAME...")
-+  (print "With --check or --fix option, multiple files can be specified.")
-+  (print "With --check option, only checks if the files are all formatted;")
-+  (print "with --fix option, formats the files in-place;")
++  (print "Usage: fnlfmt [--no-comments] [--indent-do-as-if] [--fix] [--check] FILENAME...")
++  (print "With option --fix or --check, multiple files can be specified.")
++  (print "With option --fix, formats all the files in-place;")
++  (print "with option --check, only checks if all the files are formatted;")
 +  (print "otherwise prints the formatted file to stdout."))
  
  (local options [])
@@ -49,14 +49,14 @@ index 55d6c6d..e9f1a07 100644
  
  (fn fix [filename]
    (let [new (format-file filename options)
-@@ -25,6 +47,7 @@
- 
+@@ -26,6 +48,7 @@
  (match arg
    [:--version] (print (.. "fnlfmt version " version))
-+  [:--check & filenames] (check-all filenames)
    [:--fix & filenames] (each [_ filename (pairs filenames)] (fix filename))
++  [:--check & filenames] (check-all filenames)
    (where (or [:--help] ["-?"] [:-h])) (help)
    [filename nil] (io.stdout:write (format-file filename options))
+   _ (help))
 diff --git a/fnlfmt.fnl b/fnlfmt.fnl
 index 07d6d5c..8112b71 100644
 --- a/fnlfmt.fnl
