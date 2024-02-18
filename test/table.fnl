@@ -2,15 +2,13 @@
 (local bt (require :bunko.table))
 
 (fn test-copy-non-table []
-  (t.error "table expected"
-           #(bt.copy nil)))
+  (t.error "table expected" #(bt.copy nil)))
 
 (fn test-copy-simple-table []
-  (let [origin {:a "a"}
+  (let [origin {:a :a}
         clone (bt.copy origin)]
-    (tset origin :a "b")
-    (t.is (and (= "b" (. origin :a))
-               (= "a" (. clone :a))))))
+    (tset origin :a :b)
+    (t.is (and (= :b (. origin :a)) (= :a (. clone :a))))))
 
 (fn test-copy-deep-table []
   (let [origin {:a {:b :c}}
@@ -25,37 +23,28 @@
 
 (fn test-keys []
   (let [tbl {:a 1 :b 2}]
-    (t.= [:a :b]
-         (doto (bt.keys tbl) (table.sort)))))
+    (t.= [:a :b] (doto (bt.keys tbl) (table.sort)))))
 
 (fn test-items []
   (let [tbl {:a 1 :b 2}]
-    (t.= [1 2]
-         (doto (bt.items tbl) (table.sort)))))
+    (t.= [1 2] (doto (bt.items tbl) (table.sort)))))
 
 (fn test-insert []
-  (t.= [:a :b :c]
-       (bt.insert [:a :c] 2 :b)))
+  (t.= [:a :b :c] (bt.insert [:a :c] 2 :b)))
 
 (fn test-sort []
-  (t.= [:c :b :a]
-       (bt.sort [:a :b :c] #(> $1 $2))))
+  (t.= [:c :b :a] (bt.sort [:a :b :c] #(> $1 $2))))
 
 (fn test-update []
-  (t.= {:a 1 :b 1}
-       (bt.update {:a 1} :b #(+ 1 $) 0)))
+  (t.= {:a 1 :b 1} (bt.update {:a 1} :b #(+ 1 $) 0)))
 
 (fn test-merge []
-  (t.= {:a 2 :b 2}
-       (bt.merge {:a 1} {:a 2} {:b 2}))
-  (t.= nil
-       (bt.merge)))
+  (t.= {:a 2 :b 2} (bt.merge {:a 1} {:a 2} {:b 2}))
+  (t.= nil (bt.merge)))
 
 (fn test-append []
-  (t.= [1 2 3]
-       (bt.append [1] [2 3]))
-  (t.= nil
-       (bt.append)))
+  (t.= [1 2 3] (bt.append [1] [2 3]))
+  (t.= nil (bt.append)))
 
 {: test-copy-non-table
  : test-copy-simple-table

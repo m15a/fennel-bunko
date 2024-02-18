@@ -45,11 +45,11 @@
 
 (shell-task :fmt
   "Format sources."
-  "fnlfmt --indent-do-as-if --fix bunko/*.fnl")
+  "fnlfmt --indent-do-as-if --fix bunko/*.fnl test/*.fnl")
 
 (shell-task :fmt-check
   "Check if all sources are formatted."
-  "fnlfmt --indent-do-as-if --check bunko/*.fnl")
+  "fnlfmt --indent-do-as-if --check bunko/*.fnl test/*.fnl")
 
 (shell-task :docs
   "Build API documents from sources."
