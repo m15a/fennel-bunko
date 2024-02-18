@@ -33,17 +33,17 @@
 (local unpack (or table.unpack _G.unpack))
 
 (fn map-values [function ...]
-  "Apply the function on each of `vargs`, and return the results as multiple values.
+  "Apply the function on each of `varg`, and return the results as multiple values.
 
 This is similar to `map-values` in [SRFI-210](https://srfi.schemers.org/srfi-210/),
-but consumes vargs directly.
+but consumes varg directly.
 
 # Examples
 
 ```fennel :skip-test
 (map-values #(+ 1 $) 1 2 3) ;=> 2\t3\t4
 ```"
-  {:fnl/arglist [& vargs]}
+  {:fnl/arglist [& varg]}
   (unpack (icollect [_ arg (ipairs [...])]
             (function arg))))
 
