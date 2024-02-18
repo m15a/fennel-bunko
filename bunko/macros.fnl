@@ -82,7 +82,7 @@ but consumes varg directly.
     `(,%unpack (icollect [_# arg# (ipairs [,(unpack varg)])]
                  (,function arg#)))))
 
-(fn tset* [tbl & rest]
+(fn tset+ [tbl & rest]
   {:fnl/docstring "Wrapper for `tset` that returns the updated `table`.
 
 The rest args `...` are passed to `tset`.
@@ -91,11 +91,11 @@ The rest args `...` are passed to `tset`.
 
 ```fennel :skip-test
 (accumulate [t {} _ w (ipairs [:a :b :c])]
-  (tset* t w true))
+  (tset+ t w true))
 ; => {:a true, :b true, :c true}
 ```"
    :fnl/arglist [table ...]}
   `(do (tset ,tbl ,(unpack rest))
        ,tbl))
 
-{: assert-type : map-values : tset*}
+{: assert-type : map-values : tset+}

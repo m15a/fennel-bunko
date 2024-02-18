@@ -4,11 +4,11 @@
 
 - [`append`](#append)
 - [`copy`](#copy)
-- [`insert`](#insert)
+- [`insert+`](#insert)
 - [`items`](#items)
 - [`keys`](#keys)
 - [`merge`](#merge)
-- [`sort`](#sort)
+- [`sort+`](#sort)
 - [`update`](#update)
 
 ## `append`
@@ -39,11 +39,11 @@ Return a shallow copy of the `table`.
 
 Optionally, if `?metatable` is truthy, set the same metatable as the original's.
 
-## `insert`
+## `insert+`
 Function signature:
 
 ```
-(insert table ...)
+(insert+ table ...)
 ```
 
 Wrapper for `table.insert` that returns the updated `table`.
@@ -85,11 +85,11 @@ Return `nil` and a warning message in case of no arguments.
 (merge {:a 1 :b 2} {:a 2 :c 3}) ;=> {:a 2 :b 2 :c 3}
 ```
 
-## `sort`
+## `sort+`
 Function signature:
 
 ```
-(sort table ...)
+(sort+ table ...)
 ```
 
 Wrapper for `table.sort` that returns the sorted `table`.

@@ -4,7 +4,7 @@
 
 - [`assert-type`](#assert-type)
 - [`map-values`](#map-values)
-- [`tset*`](#tset)
+- [`tset+`](#tset)
 
 ## `assert-type`
 Function signature:
@@ -50,11 +50,11 @@ but consumes varg directly.
 (map-values #(+ 1 $) 1 2 3) ;=> 2	3	4
 ```
 
-## `tset*`
+## `tset+`
 Function signature:
 
 ```
-(tset* table ...)
+(tset+ table ...)
 ```
 
 Wrapper for `tset` that returns the updated `table`.
@@ -65,7 +65,7 @@ The rest args `...` are passed to `tset`.
 
 ```fennel
 (accumulate [t {} _ w (ipairs [:a :b :c])]
-  (tset* t w true))
+  (tset+ t w true))
 ; => {:a true, :b true, :c true}
 ```
 
