@@ -9,7 +9,7 @@
 - [`keys`](#keys)
 - [`merge`](#merge)
 - [`sort`](#sort)
-- [`update`](#update)
+- [`tset`](#tset)
 
 ## `append`
 Function signature:
@@ -20,7 +20,7 @@ Function signature:
 
 Concatenate all the given sequential `tables`.
 
-Return `nil` and an error message for no arguments.
+Return `nil` and a warning message in case of no arguments.
 
 ## `copy`
 Function signature:
@@ -37,12 +37,12 @@ Optionally, if `?metatable` is truthy, set the same metatable as the original's.
 Function signature:
 
 ```
-(insert table & rest-args)
+(insert table ...)
 ```
 
 Wrapper for `table.insert` that returns the updated `table`.
 
-The `rest-args` are passed to `table.insert`.
+The rest args `...` are passed to `table.insert`.
 
 ## `items`
 Function signature:
@@ -71,29 +71,29 @@ Function signature:
 
 Merge all the given non-sequential `tables`.
 
-Return `nil` and an error message for no arguments.
+Return `nil` and a warning message in case of no arguments.
 
 ## `sort`
 Function signature:
 
 ```
-(sort table & rest-args)
+(sort table ...)
 ```
 
 Wrapper for `table.sort` that returns the sorted `table`.
 
-The `rest-args` are passed to `table.sort`.
+The rest args `...` are passed to `table.sort`.
 
-## `update`
+## `tset`
 Function signature:
 
 ```
-(update table key value)
+(tset table key value)
 ```
 
 Wrapper for `tset` that returns the updated `table`.
 
-As usual, the content of `key` will be replaced with the `value`.
+The content of `key` will be replaced with the `value`.
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev

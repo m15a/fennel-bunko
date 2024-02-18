@@ -73,23 +73,23 @@ Optionally, if `?metatable` is truthy, set the same metatable as the original's.
 (fn insert [seq ...]
   {:fnl/docstring "Wrapper for `table.insert` that returns the updated `table`.
 
-The `rest-args` are passed to `table.insert`."
-   :fnl/arglist [table & rest-args]}
+The rest args `...` are passed to `table.insert`."
+   :fnl/arglist [table ...]}
   (table.insert seq ...)
   seq)
 
 (fn sort [seq ...]
   {:fnl/docstring "Wrapper for `table.sort` that returns the sorted `table`.
 
-The `rest-args` are passed to `table.sort`."
-   :fnl/arglist [table & rest-args]}
+The rest args `...` are passed to `table.sort`."
+   :fnl/arglist [table ...]}
   (table.sort seq ...)
   seq)
 
 (fn %tset [tbl key value]
   {:fnl/docstring "Wrapper for `tset` that returns the updated `table`.
 
-As usual, the content of `key` will be replaced with the `value`."
+The content of `key` will be replaced with the `value`."
    :fnl/arglist [table key value]}
   (tset tbl key value)
   tbl)
@@ -97,10 +97,10 @@ As usual, the content of `key` will be replaced with the `value`."
 (fn merge [...]
   "Merge all the given non-sequential `tables`.
 
-Return `nil` and an error message for no arguments."
+Return `nil` and a warning message in case of no arguments."
   {:fnl/arglist [& tables]}
   (case (select "#" ...)
-    0 (values nil "merge: no tables found")
+    0 (values nil "merge: no tables found in the arguments")
     _ (do (assert-type :table ...)
           (accumulate [result {} _ tbl (ipairs [...])]
             (accumulate [result result key value (pairs tbl)]
@@ -109,10 +109,10 @@ Return `nil` and an error message for no arguments."
 (fn append [...]
   "Concatenate all the given sequential `tables`.
 
-Return `nil` and an error message for no arguments."
+Return `nil` and a warning message in case of no arguments."
   {:fnl/arglist [& tables]}
   (case (select "#" ...)
-    0 (values nil "append: no tables found")
+    0 (values nil "append: no tables found in the arguments")
     _ (do (assert-type :table ...)
           (accumulate [result [] _ seq (ipairs [...])]
             (accumulate [result result _ x (ipairs seq)]
