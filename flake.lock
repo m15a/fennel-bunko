@@ -47,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1708326612,
-        "narHash": "sha256-cVvmNWFWCC3z+80VDbyI+4Ph0i7AkC8Zht1f3Qy/lio=",
+        "lastModified": 1708331249,
+        "narHash": "sha256-biKap+kYVUuTjaoR4I+m9u4gASs1JqNAAbluTTyWDQs=",
         "owner": "m15a",
         "repo": "flake-fennel-tools",
-        "rev": "d5a3f98070f5e6945a4edd7b5e15e99aa30ad384",
+        "rev": "e6eafdeea52047f9c65b528cf9d1825852dbdd17",
         "type": "github"
       },
       "original": {
