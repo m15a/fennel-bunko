@@ -1,22 +1,45 @@
 final: prev:
 
-{
-  faith = {
-    stable = {
-      luajit = prev.faith.stable.luajit.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-      lua5_1 = prev.faith.stable.lua5_1.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-      lua5_2 = prev.faith.stable.lua5_2.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-      lua5_3 = prev.faith.stable.lua5_3.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-      lua5_4 = prev.faith.stable.lua5_4.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-    };
-    unstable = {
-      luajit = prev.faith.unstable.luajit.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-      lua5_1 = prev.faith.unstable.lua5_1.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-      lua5_2 = prev.faith.unstable.lua5_2.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-      lua5_3 = prev.faith.unstable.lua5_3.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-      lua5_4 = prev.faith.unstable.lua5_4.overrideAttrs (_: { patches = [ ./patches/faith.patch ]; });
-    };
+let
+  fennelVersions = [
+    "stable"
+    "unstable"
+  ];
+
+  luaVersions = [
+    "luajit"
+    "lua5_1"
+    "lua5_2"
+    "lua5_3"
+    "lua5_4"
+  ];
+
+  fennelLuaVersionMatrix = prev.lib.cartesianProductOfSets {
+    fennelVersion = fennelVersions;
+    luaVersion = luaVersions;
   };
 
-  fnlfmt = prev.fnlfmt.overrideAttrs (_: { patches = [ ./patches/fnlfmt.patch ]; });
+  buildFaith = { fennelVersion, luaVersion }:
+    prev."faith-${fennelVersion}-${luaVersion}".overrideAttrs (_: {
+      patches = [ ./patches/faith.patch ];
+    });
+
+  buildPackageSet = { pname, builder }:
+    builtins.listToAttrs
+      (map
+        ({ fennelVersion, luaVersion } @ args:
+          {
+            name = "${pname}-${fennelVersion}-${luaVersion}";
+            value = builder args;
+          })
+        fennelLuaVersionMatrix);
+in
+
+(buildPackageSet {
+  pname = "faith";
+  builder = buildFaith;
+}) // {
+  fnlfmt = prev.fnlfmt.overrideAttrs (_: {
+    patches = [ ./patches/fnlfmt.patch ];
+  });
 }

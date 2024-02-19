@@ -9,9 +9,9 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, fennel-tools, ... }:
-  let
-    overlay = import ./nix/overlay.nix;
-  in
+    let
+      overlay = import ./nix/overlay.nix;
+    in
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -21,55 +21,55 @@
             overlay
           ];
         };
+
         mkTestShell = { faith }:
-        pkgs.mkShell {
-          buildInputs = [
-            faith
-            faith.fennel
-          ];
-          FENNEL_PATH = "${faith}/bin/?";
-        };
+          pkgs.mkShell {
+            buildInputs = [
+              faith
+              faith.fennel
+            ];
+            FENNEL_PATH = "${faith}/bin/?";
+          };
+
+        luaVersions = [
+          "luajit"
+          "lua5_1"
+          "lua5_2"
+          "lua5_3"
+          "lua5_4"
+        ];
+
+        inherit (pkgs.lib) listToAttrs mapAttrs nameValuePair;
       in
       {
-        devShells = rec {
-          ci-test-stable-luajit = mkTestShell {
-            faith = pkgs.faith.stable.luajit;
-          };
-          ci-test-stable-lua5_1 = mkTestShell {
-            faith = pkgs.faith.stable.lua5_1;
-          };
-          ci-test-stable-lua5_2 = mkTestShell {
-            faith = pkgs.faith.stable.lua5_2;
-          };
-          ci-test-stable-lua5_3 = mkTestShell {
-            faith = pkgs.faith.stable.lua5_3;
-          };
-          ci-test-stable-lua5_4 = mkTestShell {
-            faith = pkgs.faith.stable.lua5_4;
-          };
+        devShells = (mapAttrs
+          (_: l: mkTestShell { faith = pkgs."faith-stable-${l}"; })
+          (listToAttrs
+            (map (l: nameValuePair "ci-test-stable-${l}" l) luaVersions))) // {
           ci-lint = pkgs.mkShell {
             buildInputs = [
-              pkgs.fennel.stable.luajit
+              pkgs.fennel-stable-luajit
               pkgs.fnlfmt
             ];
           };
 
-          default = let
-            fennel = pkgs.fennel.unstable.lua5_3;
-            faith = pkgs.faith.unstable.lua5_3;
-          in
-          pkgs.mkShell {
-            buildInputs = [
-              fennel
-              faith
-              pkgs.fnlfmt
-              pkgs.fenneldoc
-            ] ++ (with fennel.lua.pkgs; [
-              # NOTE: lua5_4.pkgs.readline is currently broken.
-              readline
-            ]);
-            FENNEL_PATH = "${faith}/bin/?";
-          };
+          default =
+            let
+              fennel = pkgs.fennel-unstable-lua5_3;
+              faith = pkgs.faith-unstable-lua5_3;
+            in
+            pkgs.mkShell {
+              buildInputs = [
+                fennel
+                faith
+                pkgs.fnlfmt
+                pkgs.fenneldoc
+              ] ++ (with fennel.lua.pkgs; [
+                # NOTE: lua5_4.pkgs.readline is currently broken.
+                readline
+              ]);
+              FENNEL_PATH = "${faith}/bin/?";
+            };
         };
       });
 }
