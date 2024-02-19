@@ -65,7 +65,7 @@
               pkgs.fnlfmt
               pkgs.fenneldoc
             ] ++ (with fennel.lua.pkgs; [
-              # NOTE: lua5_3.pkgs.readline is currently broken.
+              # NOTE: lua5_4.pkgs.readline is currently broken.
               readline
             ]);
             FENNEL_PATH = "${faith}/bin/?";
