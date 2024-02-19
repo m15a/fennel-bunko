@@ -2,33 +2,24 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    fennel = {
-      url = "sourcehut:~technomancy/fennel/main";
-      flake = false;
-    };
-    fenneldoc = {
-      url = "gitlab:andreyorst/fenneldoc/master";
-      flake = false;
-    };
-    fnlfmt = {
-      url = "sourcehut:~technomancy/fnlfmt/main";
-      flake = false;
-    };
-    faith = {
-      url = "sourcehut:~technomancy/faith/main";
-      flake = false;
+    fennel-tools = {
+      url = "github:m15a/flake-fennel-tools";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... } @ inputs:
+  outputs = { self, nixpkgs, flake-utils, fennel-tools, ... }:
   let
-    overlay = import ./nix/overlay.nix { inherit inputs; };
+    overlay = import ./nix/overlay.nix;
   in
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ overlay ];
+          overlays = [
+            fennel-tools.overlays.default
+            overlay
+          ];
         };
         mkTestShell = { faith }:
         pkgs.mkShell {
@@ -41,39 +32,43 @@
       in
       {
         devShells = rec {
-          ci-test-luajit = mkTestShell {
-            faith = pkgs.faith.luajit;
+          ci-test-stable-luajit = mkTestShell {
+            faith = pkgs.faith.stable.luajit;
           };
-          ci-test-lua5_1 = mkTestShell {
-            faith = pkgs.faith.lua5_1;
+          ci-test-stable-lua5_1 = mkTestShell {
+            faith = pkgs.faith.stable.lua5_1;
           };
-          ci-test-lua5_2 = mkTestShell {
-            faith = pkgs.faith.lua5_2;
+          ci-test-stable-lua5_2 = mkTestShell {
+            faith = pkgs.faith.stable.lua5_2;
           };
-          ci-test-lua5_3 = mkTestShell {
-            faith = pkgs.faith.lua5_3;
+          ci-test-stable-lua5_3 = mkTestShell {
+            faith = pkgs.faith.stable.lua5_3;
           };
-          ci-test-lua5_4 = mkTestShell {
-            faith = pkgs.faith.lua5_4;
+          ci-test-stable-lua5_4 = mkTestShell {
+            faith = pkgs.faith.stable.lua5_4;
           };
           ci-lint = pkgs.mkShell {
             buildInputs = [
-              pkgs.fennel.luajit
+              pkgs.fennel.stable.luajit
               pkgs.fnlfmt
             ];
           };
 
-          default = pkgs.mkShell {
-            buildInputs = with pkgs; [
-              fennel.default
-              faith.default
-              fnlfmt
-              fenneldoc
-            ] ++ (with fennel.default.lua.pkgs; [
+          default = let
+            fennel = pkgs.fennel.unstable.lua5_3;
+            faith = pkgs.faith.unstable.lua5_3;
+          in
+          pkgs.mkShell {
+            buildInputs = [
+              fennel
+              faith
+              pkgs.fnlfmt
+              pkgs.fenneldoc
+            ] ++ (with fennel.lua.pkgs; [
               # NOTE: lua5_3.pkgs.readline is currently broken.
               readline
             ]);
-            FENNEL_PATH = "${pkgs.faith.default}/bin/?";
+            FENNEL_PATH = "${faith}/bin/?";
           };
         };
       });
