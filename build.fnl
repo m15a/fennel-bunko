@@ -35,19 +35,23 @@
           (: :gsub "/" ".")
           (: :gsub "%.fnl$" "")))))
 
-(shell-task :test "Run tests."
-            (let [test-modules (find-test-modules)]
-              (.. "faith --fennel-version && faith --tests "
-                  (table.concat test-modules " "))))
+(shell-task :test
+  "Run tests."
+  (let [test-modules (find-test-modules)]
+    (.. "faith --fennel-version && faith --tests "
+        (table.concat test-modules " "))))
 
-(shell-task :format "Format sources."
-            "fnlfmt --indent-do-as-if --fix bunko/*.fnl test/*.fnl")
+(shell-task :format
+  "Format sources."
+  "fnlfmt --indent-do-as-if --fix bunko/*.fnl test/*.fnl")
 
-(shell-task :check-format "Check if all sources are formatted."
-            "fnlfmt --indent-do-as-if --check bunko/*.fnl test/*.fnl")
+(shell-task :check-format
+  "Check if all sources are formatted."
+  "fnlfmt --indent-do-as-if --check bunko/*.fnl test/*.fnl")
 
-(shell-task :docs "Build API documents from sources."
-            "rm -rf doc/ && fenneldoc bunko/*.fnl")
+(shell-task :docs
+  "Build API documents from sources."
+  "rm -rf doc/ && fenneldoc bunko/*.fnl")
 
 (let [script-name (. arg 0)
       [command & rest] arg]
