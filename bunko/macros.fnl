@@ -98,4 +98,8 @@ The rest args `...` are passed to `tset`.
   `(do (tset ,tbl ,(unpack rest))
        ,tbl))
 
-{: assert-type : map-values : tset+}
+(fn unless [condition & body]
+  "If the `condition` is falsy, evaluate `body`."
+  `(when (not ,condition) ,(unpack body)))
+
+{: assert-type : map-values : tset+ : unless}

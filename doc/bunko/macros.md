@@ -5,6 +5,7 @@
 - [`assert-type`](#assert-type)
 - [`map-values`](#map-values)
 - [`tset+`](#tset)
+- [`unless`](#unless)
 
 ## `assert-type`
 Function signature:
@@ -69,6 +70,15 @@ The rest args `...` are passed to `tset`.
 ; => {:a true, :b true, :c true}
 ```
 
+## `unless`
+Function signature:
 
-<!-- Generated with Fenneldoc 1.0.1-dev
+```
+(unless condition & body)
+```
+
+If the `condition` is falsy, evaluate `body`.
+
+
+<!-- Generated with Fenneldoc 1.0.1-dev-7960056
      https://gitlab.com/andreyorst/fenneldoc -->
