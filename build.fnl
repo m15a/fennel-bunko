@@ -40,10 +40,10 @@
               (.. "faith --fennel-version && faith --tests "
                   (table.concat test-modules " "))))
 
-(shell-task :fmt "Format sources."
+(shell-task :format "Format sources."
             "fnlfmt --indent-do-as-if --fix bunko/*.fnl test/*.fnl")
 
-(shell-task :fmt-check "Check if all sources are formatted."
+(shell-task :check-format "Check if all sources are formatted."
             "fnlfmt --indent-do-as-if --check bunko/*.fnl test/*.fnl")
 
 (shell-task :docs "Build API documents from sources."
@@ -53,8 +53,8 @@
       [command & rest] arg]
   (match command
     :test (commands.test)
-    :fmt (commands.fmt)
-    :fmt-check (commands.fmt-check)
+    :format (commands.format)
+    :check-format (commands.check-format)
     :docs (commands.docs)
     _ (usage script-name "COMMAND ARG...\n" "Commands:"
              (map-values #(.. "  " $ "\t" (. helps $))

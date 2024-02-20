@@ -26,9 +26,9 @@
           pkgs.mkShell {
             buildInputs = [
               fennel
-              pkgs.faith
+              pkgs.faith-unstable
             ];
-            FENNEL_PATH = "${pkgs.faith}/bin/?";
+            FENNEL_PATH = "${pkgs.faith-unstable}/bin/?";
           };
 
         luaVersions = [
@@ -43,13 +43,13 @@
       in
       {
         devShells = (mapAttrs
-          (_: l: mkTestShell { fennel = pkgs."fennel-stable-${l}"; })
+          (_: l: mkTestShell { fennel = pkgs."fennel-${l}"; })
           (listToAttrs
             (map (l: nameValuePair "ci-test-stable-${l}" l) luaVersions))) // {
-          ci-lint = pkgs.mkShell {
+          ci-check-format = pkgs.mkShell {
             buildInputs = [
-              pkgs.fennel-stable-luajit
-              pkgs.fnlfmt
+              pkgs.fennel-luajit
+              pkgs.fnlfmt-unstable
             ];
           };
 
@@ -60,14 +60,14 @@
             pkgs.mkShell {
               buildInputs = [
                 fennel
-                pkgs.faith
-                pkgs.fnlfmt
+                pkgs.faith-unstable
+                pkgs.fnlfmt-unstable
                 pkgs.fenneldoc
               ] ++ (with fennel.lua.pkgs; [
                 # NOTE: lua5_4.pkgs.readline is currently broken.
                 readline
               ]);
-              FENNEL_PATH = "${pkgs.faith}/bin/?";
+              FENNEL_PATH = "${pkgs.faith-unstable}/bin/?";
             };
         };
       });

@@ -27,7 +27,7 @@ jobs:
       - name: Run tests (${{ matrix.lua }})
         run: |
           nix develop .#ci-test-stable-${{ matrix.lua }} --command bash -c "./build.fnl test"
-  lint:
+  check-format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,6 +36,6 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: DeterminateSystems/magic-nix-cache-action@v3
 
-      - name: Check formats
+      - name: Check format
         run: |
-          nix develop .#ci-lint --command bash -c "./build.fnl fmt-check"
+          nix develop .#ci-check-format --command bash -c "./build.fnl check-format"
