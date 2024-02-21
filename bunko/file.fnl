@@ -54,12 +54,12 @@ Trailing `/`'s will remain.
 (normalize \"//a/b\" \"a//b/\") ;=> \"/a/b\"\t\"a/b/\"
 ```"
   {:fnl/arglist [& paths]}
-  (assert-type :string ...)
-  (map-values %normalize ...))
+  (map-values %normalize (assert-type :string ...)))
 
 (fn %remove-suffix [path suffix]
   (let [stripped (path:match (.. "^(.*)" (escape-regex suffix) "$"))]
-    (if (or (= "" stripped) (stripped:match "/$"))
+    (if (or (= "" stripped)
+            (stripped:match "/$"))
         path
         stripped)))
 
@@ -76,8 +76,7 @@ This is for convenience on manipulating hidden files.
 (remove-suffix \"/a/b.ext\" \".ext\") ;=> \"/a/b\"
 (remove-suffix \"/a/b/.ext\" \".ext\") ;=> \"/a/b/.ext\"
 ```"
-  (assert-type :string path suffix)
-  (%remove-suffix path suffix))
+  (%remove-suffix (assert-type :string path suffix)))
 
 (fn basename [path ?suffix]
   "Remove leading directory components from the `path`.
@@ -104,15 +103,12 @@ This is for convenience on manipulating hidden files.
 (basename \"/a/b.ext/\" \".ext\") ;=> \"b\"
 (basename \"/a/b/.ext\" \".ext\") ;=> \".ext\"
 ```"
-  (assert-type :string path)
-  (when ?suffix
-    (assert-type :string ?suffix))
-  (let [path (%normalize path)]
+  (let [path (%normalize (assert-type :string path))]
     (if (= "/" path)
         path
         (case-try (path:match "([^/]*)/?$")
           path (if ?suffix
-                   (%remove-suffix path ?suffix)
+                   (%remove-suffix path (assert-type :string ?suffix))
                    path)
           path path
           (catch _ (error "basename: unknown path matching error"))))))
@@ -143,8 +139,7 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
 (dirname \"\" \".\" \"..\")    ;=> \".\"\t\".\"\t\".\"
 ```"
   {:fnl/arglist [& paths]}
-  (assert-type :string ...)
-  (map-values %dirname ...))
+  (map-values %dirname (assert-type :string ...)))
 
 (fn read-all [file/path]
   "Read all contents from a file handle or a file path, specified by `file/path`.

@@ -36,16 +36,16 @@
 ;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
 (macro %copy [tbl]
   (if _G.next
-      `(do (var index# nil)
-           (var done?# false)
-           (local result# {})
-           (while (not done?#)
-             (let [(k# v#) (next ,tbl index#)]
-               (if k#
-                   (do (set index# k#)
-                       (tset result# k# v#))
-                   (set done?# true))))
-           result#)
+      `(let [result# {}]
+         (var index# nil)
+         (var done?# false)
+         (while (not done?#)
+           (let [(k# v#) (next ,tbl index#)]
+             (if k#
+                 (do (set index# k#)
+                     (tset result# k# v#))
+                 (set done?# true))))
+         result#)
       `(collect [k# v# (pairs ,tbl)]
          (values k# v#))))
 
@@ -54,8 +54,7 @@
 
 Optionally, if `?metatable` is truthy, set the same metatable as the original's."
    :fnl/arglist [table ?metatable]}
-  (assert-type :table tbl)
-  (let [clone (%copy tbl)]
+  (let [clone (%copy (assert-type :table tbl))]
     (if ?metatable
         (setmetatable clone (getmetatable tbl))
         clone)))
