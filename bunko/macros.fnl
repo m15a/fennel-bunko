@@ -36,36 +36,42 @@
 (fn assert-type [expected & items]
   "Check if each of `items` is of the `expected` type.
 
+Return `items` as multiple values if all the checks are passed;
+otherwise raise an error caused by the check failed first.
+
+Note that the `expected` type should be determined at compile time.
+So, it cannot be done like:
+
+```fennel :skip-test
+(assert-type (if condition :string :number) x)
+```
+
 # Examples
 
 ```fennel :skip-test
-(assert-type :table x y)
-```
+(let [x {:a 1}
+      y {:b 2}]
+  (assert-type :table x y))
+; => {:a 1}\t{:b 2}
 
-is expanded to
-
-```fennel :skip-test
-(do (let [actual (type x)]
-      (assert (= actual \"table\")
-              (string.format \"table expected, got %s\" actual)))
-    (let [actual (type y)]
-      (assert (= actual \"table\")
-              (string.format \"table expected, got %s\" actual))))
+(let [a 1 b :string c {:c :c}]
+  (assert-type :number a b c))
+; => runtime error: number expected, got string
 ```"
-  (assert (= (type expected) :string)
-          (string.format "expected type invalid or missing: %s"
-                         (fennel.view expected)))
+  (assert-compile (= :string (type expected))
+                  "expected type invalid or missing"
+                  expected)
   (let [fmt (.. expected " expected, got %s")
         checks (accumulate [checks [] _ x (ipairs items)]
-                 (do (table.insert checks
-                                   `(let [actual# (type ,x)]
-                                      (assert (= actual# ,expected)
-                                              (string.format ,fmt actual#))))
-                     checks))]
+                 (doto checks
+                       (table.insert `(let [actual# (type ,x)]
+                                        (assert (= actual# ,expected)
+                                                (string.format ,fmt actual#))
+                                        ,x))))]
     (case (length checks)
       0 nil
       1 (. checks 1)
-      _ `(do ,(unpack checks)))))
+      _ `(values ,(unpack checks)))))
 
 (fn map-values [function & varg]
   "Apply the `function` on each of `varg`, and return the results as multiple values.

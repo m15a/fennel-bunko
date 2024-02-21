@@ -15,21 +15,27 @@ Function signature:
 
 Check if each of `items` is of the `expected` type.
 
+Return `items` as multiple values if all the checks are passed;
+otherwise raise an error caused by the check failed first.
+
+Note that the `expected` type should be determined at compile time.
+So, it cannot be done like:
+
+```fennel
+(assert-type (if condition :string :number) x)
+```
+
 ### Examples
 
 ```fennel
-(assert-type :table x y)
-```
+(let [x {:a 1}
+      y {:b 2}]
+  (assert-type :table x y))
+; => {:a 1}	{:b 2}
 
-is expanded to
-
-```fennel
-(do (let [actual (type x)]
-      (assert (= actual "table")
-              (string.format "table expected, got %s" actual)))
-    (let [actual (type y)]
-      (assert (= actual "table")
-              (string.format "table expected, got %s" actual))))
+(let [a 1 b :string c {:c :c}]
+  (assert-type :number a b c))
+; => runtime error: number expected, got string
 ```
 
 ## `map-values`
