@@ -6,7 +6,10 @@ Fennel library of miscellaneous utilities, far from [Alexandria][1].
 
 ([Bunko][2] means a collection of books in Japanese.)
 
-[![ci][3]][4]
+[![ci][b1]][b2]
+
+[b1]: https://github.com/m15a/fennel-bunko/actions/workflows/ci.yml/badge.svg
+[b2]: https://github.com/m15a/fennel-bunko/actions/workflows/ci.yml
 
 ## Philosophy
 
@@ -24,5 +27,3 @@ Mostly following Alexandria's philosophy, this library aims to be:
 
 [1]: https://alexandria.common-lisp.dev/
 [2]: https://en.wiktionary.org/wiki/%E6%96%87%E5%BA%AB
-[3]: https://github.com/m15a/fennel-bunko/actions/workflows/ci.yml/badge.svg
-[4]: https://github.com/m15a/fennel-bunko/actions/workflows/ci.yml
