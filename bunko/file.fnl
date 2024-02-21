@@ -110,7 +110,7 @@ This is for convenience on manipulating hidden files.
                    (%remove-suffix path (assert-type :string ?suffix))
                    path)
           path path
-          (catch _ (error "basename: unknown path matching error"))))))
+          (catch _ (error "unknown path matching error"))))))
 
 (fn %dirname [path]
   (let [path (%normalize path)]
