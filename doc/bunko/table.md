@@ -4,11 +4,9 @@
 
 - [`append`](#append)
 - [`copy`](#copy)
-- [`insert+`](#insert)
 - [`items`](#items)
 - [`keys`](#keys)
 - [`merge`](#merge)
-- [`sort+`](#sort)
 - [`update`](#update)
 
 ## `append`
@@ -38,17 +36,6 @@ Function signature:
 Return a shallow copy of the `table`.
 
 Optionally, if `?metatable` is truthy, set the same metatable as the original's.
-
-## `insert+`
-Function signature:
-
-```
-(insert+ table ...)
-```
-
-Wrapper for `table.insert` that returns the updated `table`.
-
-The rest args `...` are passed to `table.insert`.
 
 ## `items`
 Function signature:
@@ -85,17 +72,6 @@ Return `nil` and a warning message in case of no arguments.
 (merge {:a 1 :b 2} {:a 2 :c 3}) ;=> {:a 2 :b 2 :c 3}
 ```
 
-## `sort+`
-Function signature:
-
-```
-(sort+ table ...)
-```
-
-Wrapper for `table.sort` that returns the sorted `table`.
-
-The rest args `...` are passed to `table.sort`.
-
 ## `update`
 Function signature:
 
@@ -123,5 +99,5 @@ Finally return the updated `table`.
 ```
 
 
-<!-- Generated with Fenneldoc 1.0.1-dev
+<!-- Generated with Fenneldoc 1.0.1-dev-7960056
      https://gitlab.com/andreyorst/fenneldoc -->

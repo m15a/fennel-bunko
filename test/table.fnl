@@ -29,12 +29,6 @@
   (let [tbl {:a 1 :b 2}]
     (t.= [1 2] (doto (bt.items tbl) (table.sort)))))
 
-(fn test-insert+ []
-  (t.= [:a :b :c] (bt.insert+ [:a :c] 2 :b)))
-
-(fn test-sort+ []
-  (t.= [:c :b :a] (bt.sort+ [:a :b :c] #(> $1 $2))))
-
 (fn test-update []
   (t.= {:a 1 :b 1} (bt.update {:a 1} :b #(+ 1 $) 0)))
 
@@ -52,8 +46,6 @@
  : test-copy-table-with-metatable
  : test-keys
  : test-items
- : test-insert+
- : test-sort+
  : test-update
  : test-merge
  : test-append}

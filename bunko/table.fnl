@@ -31,7 +31,7 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-(import-macros {: assert-type : tset+} :bunko.macros)
+(import-macros {: assert-type} :bunko.macros)
 
 ;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
 (macro %copy [tbl]
@@ -69,22 +69,6 @@ Optionally, if `?metatable` is truthy, set the same metatable as the original's.
   {:fnl/docstring "Return all values in the `table`." :fnl/arglist [table]}
   (icollect [_ value (pairs tbl)]
     value))
-
-(fn insert+ [seq ...]
-  {:fnl/docstring "Wrapper for `table.insert` that returns the updated `table`.
-
-The rest args `...` are passed to `table.insert`."
-   :fnl/arglist [table ...]}
-  (table.insert seq ...)
-  seq)
-
-(fn sort+ [seq ...]
-  {:fnl/docstring "Wrapper for `table.sort` that returns the sorted `table`.
-
-The rest args `...` are passed to `table.sort`."
-   :fnl/arglist [table ...]}
-  (table.sort seq ...)
-  seq)
 
 (fn update [tbl key function default]
   {:fnl/docstring "Update the value of the `key` using the `function`.
@@ -125,7 +109,7 @@ Return `nil` and a warning message in case of no arguments.
     _ (do (assert-type :table ...)
           (accumulate [result {} _ tbl (ipairs [...])]
             (accumulate [result result key value (pairs tbl)]
-              (tset+ result key value))))))
+              (doto result (tset key value)))))))
 
 (fn append [...]
   "Concatenate all the given sequential `tables`.
@@ -143,6 +127,6 @@ Return `nil` and a warning message in case of no arguments.
     _ (do (assert-type :table ...)
           (accumulate [result [] _ seq (ipairs [...])]
             (accumulate [result result _ x (ipairs seq)]
-              (insert+ result x))))))
+              (doto result (table.insert x)))))))
 
-{: copy : keys : items : insert+ : sort+ : update : merge : append}
+{: copy : keys : items : update : merge : append}

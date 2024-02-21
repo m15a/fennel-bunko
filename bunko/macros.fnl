@@ -82,24 +82,8 @@ but consumes varg directly.
     `(,%unpack (icollect [_# arg# (ipairs [,(unpack varg)])]
                  (,function arg#)))))
 
-(fn tset+ [tbl & rest]
-  {:fnl/docstring "Wrapper for `tset` that returns the updated `table`.
-
-The rest args `...` are passed to `tset`.
-
-# Examples
-
-```fennel :skip-test
-(accumulate [t {} _ w (ipairs [:a :b :c])]
-  (tset+ t w true))
-; => {:a true, :b true, :c true}
-```"
-   :fnl/arglist [table ...]}
-  `(do (tset ,tbl ,(unpack rest))
-       ,tbl))
-
 (fn unless [condition & body]
   "If the `condition` is falsy, evaluate `body`."
   `(when (not ,condition) ,(unpack body)))
 
-{: assert-type : map-values : tset+ : unless}
+{: assert-type : map-values : unless}

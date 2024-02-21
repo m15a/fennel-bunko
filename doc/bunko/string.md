@@ -24,5 +24,5 @@ Namely, `^$()%.[]*+-?`.
 ```
 
 
-<!-- Generated with Fenneldoc 1.0.1-dev
+<!-- Generated with Fenneldoc 1.0.1-dev-7960056
      https://gitlab.com/andreyorst/fenneldoc -->

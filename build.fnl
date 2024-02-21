@@ -2,7 +2,7 @@
 
 (local unpack (or table.unpack _G.unpack))
 (import-macros {: map-values} :bunko.macros)
-(local {: keys : sort+} (require :bunko.table))
+(local {: keys} (require :bunko.table))
 (local {: read-lines} (require :bunko.file))
 
 (fn usage [script-name synopsis ...]
@@ -62,4 +62,5 @@
     :docs (commands.docs)
     _ (usage script-name "COMMAND ARG...\n" "Commands:"
              (map-values #(.. "  " $ "\t" (. helps $))
-                         (unpack (sort+ (keys commands)))))))
+                         (unpack (doto (keys commands)
+                                       (table.sort)))))))
