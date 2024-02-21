@@ -70,28 +70,31 @@ Optionally, if `?metatable` is truthy, set the same metatable as the original's.
   (icollect [_ value (pairs tbl)]
     value))
 
-(fn update [tbl key function default]
-  {:fnl/docstring "Update the value of the `key` using the `function`.
+(fn update! [tbl key function default]
+  {:fnl/docstring "Update the value of the `key` in the `table` using the `function`.
 
 The `function` takes the value of the `key` as an argument and its returned value
 will replace the old value. If the value of the `key` is missing, the `default`
-value will be consumed by the `function`.
-Finally return the updated `table`.
+value will be consumed by the `function`. Returns `nil`.
+
+Note that the target `table` will be mutated.
 
 # Examples
 
 ```fennel :skip-test
-(update {:a 1} :a #(+ $ 1)) ;=> {:a 2}
-(update {} :a #(+ $ 1) 0)   ;=> {:a 1}
+(local t {:a 1})
+(update! t :a #(+ $ 1)) ;=> nil
+t ;=> {:a 2}
+
+(doto {} (update! :a #(+ $ 1) 0)) ;=> {:a 1}
 
 (accumulate [counts {}
              _ w (ipairs [:a :b :c :b :c :c])]
-  (update counts w #(+ 1 $) 0))
+  (doto counts (update! w #(+ 1 $) 0)))
 ;=> {:a 1 :b 2 :c 3}
 ```"
    :fnl/arglist [table key function default]}
-  (tset tbl key (function (or (. tbl key) default)))
-  tbl)
+  (tset tbl key (function (or (. tbl key) default))))
 
 (fn merge [...]
   "Merge all the given non-sequential `tables`.
@@ -129,4 +132,4 @@ Return `nil` and a warning message in case of no arguments.
             (accumulate [result result _ x (ipairs seq)]
               (doto result (table.insert x)))))))
 
-{: copy : keys : items : update : merge : append}
+{: copy : keys : items : update! : merge : append}

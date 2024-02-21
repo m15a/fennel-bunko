@@ -7,7 +7,7 @@
 - [`items`](#items)
 - [`keys`](#keys)
 - [`merge`](#merge)
-- [`update`](#update)
+- [`update!`](#update)
 
 ## `append`
 Function signature:
@@ -72,29 +72,33 @@ Return `nil` and a warning message in case of no arguments.
 (merge {:a 1 :b 2} {:a 2 :c 3}) ;=> {:a 2 :b 2 :c 3}
 ```
 
-## `update`
+## `update!`
 Function signature:
 
 ```
-(update table key function default)
+(update! table key function default)
 ```
 
-Update the value of the `key` using the `function`.
+Update the value of the `key` in the `table` using the `function`.
 
 The `function` takes the value of the `key` as an argument and its returned value
 will replace the old value. If the value of the `key` is missing, the `default`
-value will be consumed by the `function`.
-Finally return the updated `table`.
+value will be consumed by the `function`. Returns `nil`.
+
+Note that the target `table` will be mutated.
 
 ### Examples
 
 ```fennel
-(update {:a 1} :a #(+ $ 1)) ;=> {:a 2}
-(update {} :a #(+ $ 1) 0)   ;=> {:a 1}
+(local t {:a 1})
+(update! t :a #(+ $ 1)) ;=> nil
+t ;=> {:a 2}
+
+(doto {} (update! :a #(+ $ 1) 0)) ;=> {:a 1}
 
 (accumulate [counts {}
              _ w (ipairs [:a :b :c :b :c :c])]
-  (update counts w #(+ 1 $) 0))
+  (doto counts (update! w #(+ 1 $) 0)))
 ;=> {:a 1 :b 2 :c 3}
 ```
 
