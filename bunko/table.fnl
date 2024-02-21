@@ -112,22 +112,20 @@ The operations will be executed from left to right. Returns `nil`.
     (accumulate [to to key value (pairs from)]
       (doto to (tset key value)))))
 
-(fn append [...]
-  "Concatenate all the given sequential `tables`.
+(fn append! [tbl ...]
+  "Concatenate all the sequential `tables` into the first `table`.
 
-Return `nil` and a warning message in case of no arguments.
+The operations will be executed from left to right. Returns `nil`.
 
 # Examples
 
 ```fennel :skip-test
-(append [1] [2 3] [4]) ;=> [1 2 3 4]
+(doto [1] (append! [2 3] [4]) ;=> [1 2 3 4]
 ```"
-  {:fnl/arglist [& tables]}
-  (case (select "#" ...)
-    0 (values nil "append: no tables found in the arguments")
-    _ (do (assert-type :table ...)
-          (accumulate [result [] _ seq (ipairs [...])]
-            (accumulate [result result _ x (ipairs seq)]
-              (doto result (table.insert x)))))))
+  {:fnl/arglist [table & tables]}
+  (accumulate [to (assert-type :table tbl)
+               _ from (ipairs [(assert-type :table ...)])]
+    (accumulate [to to _ x (ipairs from)]
+      (doto to (table.insert x)))))
 
-{: copy : keys : items : update! : merge! : append}
+{: copy : keys : items : update! : merge! : append!}

@@ -39,9 +39,9 @@
   (t.= {:a 2 :b 2} (doto {:a 1} (bt.merge! {:a 2} {:b 2})))
   (t.error "table expected" #(bt.merge!)))
 
-(fn test-append []
-  (t.= [1 2 3] (bt.append [1] [2 3]))
-  (t.= nil (bt.append)))
+(fn test-append! []
+  (t.= [1 2 3 4] (doto [1] (bt.append! [2 3] [4])))
+  (t.error "table expected" #(bt.append!)))
 
 {: test-copy-non-table
  : test-copy-simple-table
@@ -51,4 +51,4 @@
  : test-items
  : test-update!
  : test-merge!
- : test-append}
+ : test-append!}

@@ -2,28 +2,28 @@
 
 **Table of contents**
 
-- [`append`](#append)
+- [`append!`](#append)
 - [`copy`](#copy)
 - [`items`](#items)
 - [`keys`](#keys)
 - [`merge!`](#merge)
 - [`update!`](#update)
 
-## `append`
+## `append!`
 Function signature:
 
 ```
-(append & tables)
+(append! table & tables)
 ```
 
-Concatenate all the given sequential `tables`.
+Concatenate all the sequential `tables` into the first `table`.
 
-Return `nil` and a warning message in case of no arguments.
+The operations will be executed from left to right. Returns `nil`.
 
 ### Examples
 
 ```fennel
-(append [1] [2 3] [4]) ;=> [1 2 3 4]
+(doto [1] (append! [2 3] [4]) ;=> [1 2 3 4]
 ```
 
 ## `copy`
