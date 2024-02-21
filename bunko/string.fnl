@@ -45,7 +45,7 @@ Namely, `^$()%.[]*+-?`.
 (escape-regex \"%\") ;=> \"%%\"
 ```"
    :fnl/arglist [string]}
-  (pick-values 1 (: (assert-type :string str)
-                    :gsub "([%^%$%(%)%%%.%[%]%*%+%-%?])" "%%%1")))
+  (pick-values 1 (: (assert-type :string str) :gsub
+                    "([%^%$%(%)%%%.%[%]%*%+%-%?])" "%%%1")))
 
 {: escape-regex}

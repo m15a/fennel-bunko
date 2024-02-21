@@ -58,8 +58,7 @@ Trailing `/`'s will remain.
 
 (fn %remove-suffix [path suffix]
   (let [stripped (path:match (.. "^(.*)" (escape-regex suffix) "$"))]
-    (if (or (= "" stripped)
-            (stripped:match "/$"))
+    (if (or (= "" stripped) (stripped:match "/$"))
         path
         stripped)))
 

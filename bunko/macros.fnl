@@ -59,15 +59,14 @@ So, it cannot be done like:
 ; => runtime error: number expected, got string
 ```"
   (assert-compile (= :string (type expected))
-                  "expected type invalid or missing"
-                  expected)
+                  "expected type invalid or missing" expected)
   (let [fmt (.. expected " expected, got %s")
         checks (accumulate [checks [] _ x (ipairs items)]
                  (doto checks
-                       (table.insert `(let [actual# (type ,x)]
-                                        (assert (= actual# ,expected)
-                                                (string.format ,fmt actual#))
-                                        ,x))))]
+                   (table.insert `(let [actual# (type ,x)]
+                                    (assert (= actual# ,expected)
+                                            (string.format ,fmt actual#))
+                                    ,x))))]
     (case (length checks)
       0 nil
       1 (. checks 1)
