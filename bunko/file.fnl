@@ -148,8 +148,7 @@ Raises an error if the file handle is closed or the file cannot be opened.
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually."
   (case (io.type file/path)
-    :file (file/path:read :*a)
-    "closed file" (error "attempt to use a closed file")
+    any (file/path:read :*a)
     _ (case (io.open file/path)
         file (file:read :*a)
         (_ msg) (error msg))))
@@ -168,8 +167,7 @@ Raises an error if the file handle is closed or the file cannot be opened.
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually."
   (case (io.type file/path)
-    :file (%read-lines-from-file file/path)
-    "closed file" (error "attempt to use a closed file")
+    any (%read-lines-from-file file/path)
     _ (case (io.open file/path)
         file (%read-lines-from-file file)
         (_ msg) (error msg))))
