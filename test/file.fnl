@@ -43,7 +43,7 @@
 
 (fn test-read-all []
   (t.= "he\nllo\n" (bf.read-all :./_assets/hello.txt))
-  (t.= nil (bf.read-all :./_assets/none.txt))
+  (t.error "No such file" #(bf.read-all :./_assets/none.txt))
   (let [file (io.open :./_assets/hello.txt)]
     (t.= "he\nllo\n" (bf.read-all file))
     (t.= :file (io.type file))
@@ -55,7 +55,7 @@
 
 (fn test-read-lines []
   (t.= [:he :llo] (bf.read-lines :./_assets/hello.txt))
-  (t.= nil (bf.read-lines :./_assets/none.txt))
+  (t.error "No such file" #(bf.read-lines :./_assets/none.txt))
   (let [file (io.open :./_assets/hello.txt)]
     (t.= [:he :llo] (bf.read-lines file))
     (t.= :file (io.type file))

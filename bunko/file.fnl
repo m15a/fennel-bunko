@@ -143,14 +143,16 @@ Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
 (fn read-all [file/path]
   "Read all contents from a file handle or a file path, specified by `file/path`.
 
+Raises an error if the file handle is closed or the file cannot be opened.
+
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually."
   (case (io.type file/path)
     :file (file/path:read :*a)
-    "closed file" (error "read-all: attempt to use a closed file")
+    "closed file" (error "attempt to use a closed file")
     _ (case (io.open file/path)
         file (file:read :*a)
-        (_ msg code) (values nil msg code))))
+        (_ msg) (error msg))))
 
 (fn %read-lines-from-file [file]
   (let [lines []]
@@ -161,14 +163,16 @@ in `with-open` macro or to close it manually."
 (fn read-lines [file/path]
   "Read all lines from a file handle or a file path, specified by `file/path`.
 
+Raises an error if the file handle is closed or the file cannot be opened.
+
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually."
   (case (io.type file/path)
     :file (%read-lines-from-file file/path)
-    "closed file" (error "read-lines: attempt to use a closed file")
+    "closed file" (error "attempt to use a closed file")
     _ (case (io.open file/path)
         file (%read-lines-from-file file)
-        (_ msg code) (values nil msg code))))
+        (_ msg) (error msg))))
 
 {: exists?
  : normalize
