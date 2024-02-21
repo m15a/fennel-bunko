@@ -2,13 +2,13 @@
 
 **Table of contents**
 
-- [`escape`](#escape)
+- [`escape-regex`](#escape-regex)
 
-## `escape`
+## `escape-regex`
 Function signature:
 
 ```
-(escape string)
+(escape-regex string)
 ```
 
 Escape magic characters of [patterns][1] in the `string`.
@@ -20,7 +20,7 @@ Namely, `^$()%.[]*+-?`.
 ### Examples
 
 ```fennel
-(escape "%") ;=> "%%"
+(escape-regex "%") ;=> "%%"
 ```
 
 

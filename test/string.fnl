@@ -1,7 +1,7 @@
 (local t (require :faith))
 (local bs (require :bunko.string))
 
-(fn test-escape []
-  (t.= "%^%$%(%)%%%.%[%]%*%+%-%?" (bs.escape "^$()%.[]*+-?")))
+(fn test-escape-regex []
+  (t.= "%^%$%(%)%%%.%[%]%*%+%-%?" (bs.escape-regex "^$()%.[]*+-?")))
 
-{: test-escape}
+{: test-escape-regex}

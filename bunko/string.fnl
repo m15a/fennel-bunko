@@ -32,7 +32,7 @@
 
 (import-macros {: assert-type} :bunko.macros)
 
-(fn escape [str]
+(fn escape-regex [str]
   {:fnl/docstring "Escape magic characters of [patterns][1] in the `string`.
 
 Namely, `^$()%.[]*+-?`.
@@ -42,10 +42,10 @@ Namely, `^$()%.[]*+-?`.
 # Examples
 
 ```fennel :skip-test
-(escape \"%\") ;=> \"%%\"
+(escape-regex \"%\") ;=> \"%%\"
 ```"
    :fnl/arglist [string]}
   (assert-type :string str)
   (pick-values 1 (str:gsub "([%^%$%(%)%%%.%[%]%*%+%-%?])" "%%%1")))
 
-{: escape}
+{: escape-regex}

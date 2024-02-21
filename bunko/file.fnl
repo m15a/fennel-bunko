@@ -32,7 +32,7 @@
 
 (local unpack (or table.unpack _G.unpack))
 (import-macros {: assert-type : map-values} :bunko.macros)
-(local {: escape} (require :bunko.string))
+(local {: escape-regex} (require :bunko.string))
 
 (fn exists? [path]
   "Return `true` if a file at the `path` exists."
@@ -58,7 +58,7 @@ Trailing `/`'s will remain.
   (map-values %normalize ...))
 
 (fn %remove-suffix [path suffix]
-  (let [stripped (path:match (.. "^(.*)" (escape suffix) "$"))]
+  (let [stripped (path:match (.. "^(.*)" (escape-regex suffix) "$"))]
     (if (or (= "" stripped) (stripped:match "/$"))
         path
         stripped)))
