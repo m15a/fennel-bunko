@@ -107,10 +107,10 @@ The operations will be executed from left to right. Returns `nil`.
 (doto {:a 1} (merge! {:a 0 :b 1} {:b 2})) ;=> {:a 0 :b 2}
 ```"
   {:fnl/arglist [table & tables]}
-  (accumulate [to (assert-type :table tbl)
-               _ from (ipairs [(assert-type :table ...)])]
-    (accumulate [to to key value (pairs from)]
-      (doto to (tset key value)))))
+  (let [to (assert-type :table tbl)]
+    (each [_ from (ipairs [(assert-type :table ...)])]
+      (each [key value (pairs from)]
+        (tset to key value)))))
 
 (fn append! [tbl ...]
   "Concatenate all the sequential `tables` into the first `table`.
@@ -123,9 +123,9 @@ The operations will be executed from left to right. Returns `nil`.
 (doto [1] (append! [2 3] [4]) ;=> [1 2 3 4]
 ```"
   {:fnl/arglist [table & tables]}
-  (accumulate [to (assert-type :table tbl)
-               _ from (ipairs [(assert-type :table ...)])]
-    (accumulate [to to _ x (ipairs from)]
-      (doto to (table.insert x)))))
+  (let [to (assert-type :table tbl)]
+    (each [_ from (ipairs [(assert-type :table ...)])]
+      (each [_ x (ipairs from)]
+        (table.insert to x)))))
 
 {: copy : keys : items : update! : merge! : append!}
