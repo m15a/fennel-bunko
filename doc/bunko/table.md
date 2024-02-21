@@ -6,7 +6,7 @@
 - [`copy`](#copy)
 - [`items`](#items)
 - [`keys`](#keys)
-- [`merge`](#merge)
+- [`merge!`](#merge)
 - [`update!`](#update)
 
 ## `append`
@@ -55,21 +55,21 @@ Function signature:
 
 Return all keys in the `table`.
 
-## `merge`
+## `merge!`
 Function signature:
 
 ```
-(merge & tables)
+(merge! table & tables)
 ```
 
-Merge all the given non-sequential `tables`.
+Merge all the non-sequential `tables` into the first `table`.
 
-Return `nil` and a warning message in case of no arguments.
+The operations will be executed from left to right. Returns `nil`.
 
 ### Examples
 
 ```fennel
-(merge {:a 1 :b 2} {:a 2 :c 3}) ;=> {:a 2 :b 2 :c 3}
+(doto {:a 1} (merge! {:a 0 :b 1} {:b 2})) ;=> {:a 0 :b 2}
 ```
 
 ## `update!`

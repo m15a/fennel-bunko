@@ -35,9 +35,9 @@
     (t.= x {:a 1 :b 1}))
   (t.= nil (bt.update! {} :a #$ :a)))
 
-(fn test-merge []
-  (t.= {:a 2 :b 2} (bt.merge {:a 1} {:a 2} {:b 2}))
-  (t.= nil (bt.merge)))
+(fn test-merge! []
+  (t.= {:a 2 :b 2} (doto {:a 1} (bt.merge! {:a 2} {:b 2})))
+  (t.error "table expected" #(bt.merge!)))
 
 (fn test-append []
   (t.= [1 2 3] (bt.append [1] [2 3]))
@@ -50,5 +50,5 @@
  : test-keys
  : test-items
  : test-update!
- : test-merge
+ : test-merge!
  : test-append}

@@ -96,23 +96,21 @@ t ;=> {:a 2}
    :fnl/arglist [table key function default]}
   (tset tbl key (function (or (. tbl key) default))))
 
-(fn merge [...]
-  "Merge all the given non-sequential `tables`.
+(fn merge! [tbl ...]
+  "Merge all the non-sequential `tables` into the first `table`.
 
-Return `nil` and a warning message in case of no arguments.
+The operations will be executed from left to right. Returns `nil`.
 
 # Examples
 
 ```fennel :skip-test
-(merge {:a 1 :b 2} {:a 2 :c 3}) ;=> {:a 2 :b 2 :c 3}
+(doto {:a 1} (merge! {:a 0 :b 1} {:b 2})) ;=> {:a 0 :b 2}
 ```"
-  {:fnl/arglist [& tables]}
-  (case (select "#" ...)
-    0 (values nil "merge: no tables found in the arguments")
-    _ (do (assert-type :table ...)
-          (accumulate [result {} _ tbl (ipairs [...])]
-            (accumulate [result result key value (pairs tbl)]
-              (doto result (tset key value)))))))
+  {:fnl/arglist [table & tables]}
+  (accumulate [to (assert-type :table tbl)
+               _ from (ipairs [(assert-type :table ...)])]
+    (accumulate [to to key value (pairs from)]
+      (doto to (tset key value)))))
 
 (fn append [...]
   "Concatenate all the given sequential `tables`.
@@ -132,4 +130,4 @@ Return `nil` and a warning message in case of no arguments.
             (accumulate [result result _ x (ipairs seq)]
               (doto result (table.insert x)))))))
 
-{: copy : keys : items : update! : merge : append}
+{: copy : keys : items : update! : merge! : append}
