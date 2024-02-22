@@ -107,9 +107,21 @@ and returns the copy.
 x ;=> {:a 1}
 ```"
   {:fnl/arglist [mutator! table & args]}
-  `(let [t# (require :bunko.table)
-         clone# (t#.copy ,tbl)]
-     (doto clone#
-       (,mutate! ,(unpack args)))))
+  (let [copy (if _G.next
+                 `(fn [tbl#]
+                    (let [clone# {}]
+                      (var index# nil)
+                      (var done?# false)
+                      (while (not done?#)
+                        (let [(k# v#) (next tbl# index#)]
+                          (if k#
+                              (do (set index# k#) (tset clone# k# v#))
+                              (set done?# true))))
+                      clone#))
+                 `(fn [tbl#]
+                    (collect [k# v# (pairs tbl#)] k# v#)))]
+    `(let [clone# (,copy ,tbl)]
+       (doto clone#
+         (,mutate! ,(unpack args))))))
 
 {: assert-type : map-values : unless : immutably}
