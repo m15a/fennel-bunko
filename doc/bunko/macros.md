@@ -50,7 +50,7 @@ Turn a `mutator!` that usually mutates a `table` into non-destructive one.
 
 The `mutator!` can be function or macro of signature `(mutator! table & args)`,
 for example `tset` or `table.insert`.
-It shallowly copies the `table` and apply the `mutator!` to the copy with the `args`,
+It shallowly copies the `table` and applies the `mutator!` to the copy with the `args`,
 and returns the copy.
 
 Note that it does not set the metatable of the copy to the original.
