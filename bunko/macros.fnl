@@ -91,4 +91,25 @@ but consumes varg directly.
   "If the `condition` is falsy, evaluate `body`."
   `(when (not ,condition) ,(unpack body)))
 
-{: assert-type : map-values : unless}
+(fn immutably [mutate! tbl & args]
+  "Turn a `mutator!` that usually mutates a `table` into non-destructive one.
+
+The `mutator!` can be function or macro of signature `(mutator! table & args)`,
+for example `tset` or `table.insert`.
+It copies the `table` and apply the `mutator!` to the copy with the `args`,
+and returns the copy.
+
+# Examples
+
+```fennel :skip-test
+(local x {:a 1})
+(immutably tset x :a 2) ;=> {:a 2}
+x ;=> {:a 1}
+```"
+  {:fnl/arglist [mutator! table & args]}
+  `(let [t# (require :bunko.table)
+         clone# (t#.copy ,tbl)]
+     (doto clone#
+       (,mutate! ,(unpack args)))))
+
+{: assert-type : map-values : unless : immutably}

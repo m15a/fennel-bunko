@@ -3,6 +3,7 @@
 **Table of contents**
 
 - [`assert-type`](#assert-type)
+- [`immutably`](#immutably)
 - [`map-values`](#map-values)
 - [`unless`](#unless)
 
@@ -36,6 +37,28 @@ So, it cannot be done like:
 (let [a 1 b :string c {:c :c}]
   (assert-type :number a b c))
 ; => runtime error: number expected, got string
+```
+
+## `immutably`
+Function signature:
+
+```
+(immutably mutator! table & args)
+```
+
+Turn a `mutator!` that usually mutates a `table` into non-destructive one.
+
+The `mutator!` can be function or macro of signature `(mutator! table & args)`,
+for example `tset` or `table.insert`.
+It copies the `table` and apply the `mutator!` to the copy with the `args`,
+and returns the copy.
+
+### Examples
+
+```fennel
+(local x {:a 1})
+(immutably tset x :a 2) ;=> {:a 2}
+x ;=> {:a 1}
 ```
 
 ## `map-values`
