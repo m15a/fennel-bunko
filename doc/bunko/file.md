@@ -100,6 +100,8 @@ Function signature:
 
 Read all contents from a file handle or a file path, specified by `file/path`.
 
+Raises an error if the file handle is closed or the file cannot be opened.
+
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually.
 
@@ -111,6 +113,8 @@ Function signature:
 ```
 
 Read all lines from a file handle or a file path, specified by `file/path`.
+
+Raises an error if the file handle is closed or the file cannot be opened.
 
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually.
