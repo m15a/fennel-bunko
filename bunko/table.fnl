@@ -53,7 +53,8 @@
 
 Optionally, if `?metatable` is truthy, set the same metatable as the original's."
    :fnl/arglist [table ?metatable]}
-  (let [clone (%copy (assert-type :table tbl))]
+  (let [tbl (assert-type :table tbl)
+        clone (%copy tbl)]
     (if ?metatable
         (setmetatable clone (getmetatable tbl))
         clone)))
