@@ -33,20 +33,11 @@
 (local unpack (or table.unpack _G.unpack))
 (import-macros {: assert-type} :bunko.macros)
 
-;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
 (macro %copy [tbl]
-  (if _G.next
-      `(let [clone# {}]
-         (var index# nil)
-         (var done?# false)
-         (while (not done?#)
-           (let [(k# v#) (next ,tbl index#)]
-             (if k#
-                 (do (set index# k#) (tset clone# k# v#))
-                 (set done?# true))))
-         clone#)
-      `(collect [k# v# (pairs ,tbl)]
-         (values k# v#))))
+  ;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
+  (let [%pairs `(fn [t#] (values next t# nil))]
+    `(collect [k# v# (,%pairs ,tbl)]
+       (values k# v#))))
 
 (fn copy [tbl ?metatable]
   {:fnl/docstring "Return a shallow copy of the `table`.

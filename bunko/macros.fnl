@@ -109,19 +109,10 @@ Note that it does not set the metatable of the copy to the original.
 x ;=> {:a 1}
 ```"
   {:fnl/arglist [mutator! table & args]}
-  (let [copy (if _G.next
-                 `(fn [tbl#]
-                    (let [clone# {}]
-                      (var index# nil)
-                      (var done?# false)
-                      (while (not done?#)
-                        (let [(k# v#) (next tbl# index#)]
-                          (if k#
-                              (do (set index# k#) (tset clone# k# v#))
-                              (set done?# true))))
-                      clone#))
-                 `(fn [tbl#]
-                    (collect [k# v# (pairs tbl#)] k# v#)))]
+  (let [%pairs `(fn [t#] (values next t# nil)) ; ignore __pairs metamethod
+        copy `(fn [tbl#]
+                (collect [k# v# (,%pairs tbl#)]
+                  (values k# v#)))]
     `(let [clone# (,copy ,tbl)]
        (doto clone#
          (,mutate! ,(unpack args))))))
