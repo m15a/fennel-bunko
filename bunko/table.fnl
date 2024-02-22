@@ -36,16 +36,15 @@
 ;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
 (macro %copy [tbl]
   (if _G.next
-      `(let [result# {}]
+      `(let [clone# {}]
          (var index# nil)
          (var done?# false)
          (while (not done?#)
            (let [(k# v#) (next ,tbl index#)]
              (if k#
-                 (do (set index# k#)
-                     (tset result# k# v#))
+                 (do (set index# k#) (tset clone# k# v#))
                  (set done?# true))))
-         result#)
+         clone#)
       `(collect [k# v# (pairs ,tbl)]
          (values k# v#))))
 
