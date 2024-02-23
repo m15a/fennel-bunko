@@ -33,9 +33,11 @@
 (import-macros {: assert-type} :bunko.macros)
 
 (fn escape-regex [str]
-  {:fnl/docstring "Escape magic characters of [patterns][1] in the `string`.
+  "Escape magic characters of Lua regex pattern in the `string`.
 
-Namely, `^$()%.[]*+-?`.
+Return the escaped string.
+The magic characters are namely `^$()%.[]*+-?`.
+See the [Lua manual][1] for more detail.
 
 [1]: https://www.lua.org/manual/5.4/manual.html#6.4.1
 
@@ -44,7 +46,7 @@ Namely, `^$()%.[]*+-?`.
 ```fennel :skip-test
 (escape-regex \"%\") ;=> \"%%\"
 ```"
-   :fnl/arglist [string]}
+  {:fnl/arglist [string]}
   (pick-values 1 (: (assert-type :string str) :gsub
                     "([%^%$%(%)%%%.%[%]%*%+%-%?])" "%%%1")))
 

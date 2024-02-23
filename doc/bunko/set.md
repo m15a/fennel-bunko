@@ -71,7 +71,9 @@ Function signature:
 (subset? left right)
 ```
 
-Check if the `left` table, regarded as a set, is subset of the `right` table.
+Return `true` if the `left` table, regarded as a set, is subset of the `right`.
+
+Return `false` otherwise.
 
 ## `union!`
 Function signature:

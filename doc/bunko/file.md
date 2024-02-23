@@ -19,14 +19,13 @@ Function signature:
 
 Remove leading directory components from the `path`.
 
-Compatible with GNU coreutils' `basename`.
-
 Trailing `/`'s are also removed unless the `path` is just `/`.
-
 Optionally, a trailing `?suffix` will be removed if specified. 
 However, if the basename of `path` and `?suffix` is identical,
 it does not remove suffix.
 This is for convenience on manipulating hidden files.
+
+Compatible with GNU coreutils' `basename`.
 
 ### Examples
 
@@ -51,9 +50,9 @@ Function signature:
 
 Remove the last non-slash component from each of the `paths`.
 
-Compatible with GNU coreutils' `dirname`.
-
 Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
+
+Compatible with GNU coreutils' `dirname`.
 
 ### Examples
 
@@ -101,7 +100,6 @@ Function signature:
 Read all contents from a file handle or a file path, specified by `file/path`.
 
 Raises an error if the file handle is closed or the file cannot be opened.
-
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually.
 
@@ -115,7 +113,6 @@ Function signature:
 Read all lines from a file handle or a file path, specified by `file/path`.
 
 Raises an error if the file handle is closed or the file cannot be opened.
-
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually.
 

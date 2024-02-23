@@ -34,16 +34,17 @@
 (import-macros {: assert-type} :bunko.macros)
 
 (macro %copy [tbl]
-  ;; Lua >=5.2: `__pairs` may be changed from its default, so we need to use `next`.
+  ;; Lua >=5.2: `__pairs` may be changed from its default,
+  ;; so we need to use `next`.
   (let [%pairs `(fn [t#] (values next t# nil))]
     `(collect [k# v# (,%pairs ,tbl)]
        (values k# v#))))
 
 (fn copy [tbl ?metatable]
-  {:fnl/docstring "Return a shallow copy of the `table`.
+  "Return a shallow copy of the `table`.
 
 Optionally, if `?metatable` is truthy, set the same metatable as the original's."
-   :fnl/arglist [table ?metatable]}
+  {:fnl/arglist [table ?metatable]}
   (let [tbl (assert-type :table tbl)
         clone (%copy tbl)]
     (if ?metatable
@@ -51,23 +52,23 @@ Optionally, if `?metatable` is truthy, set the same metatable as the original's.
         clone)))
 
 (fn keys [tbl]
-  {:fnl/docstring "Return all keys in the `table`." :fnl/arglist [table]}
-  (icollect [key _ (pairs tbl)]
-    key))
+  "Return all keys in the `table`."
+  {:fnl/arglist [table]}
+  (icollect [key _ (pairs tbl)] key))
 
 (fn items [tbl]
-  {:fnl/docstring "Return all values in the `table`." :fnl/arglist [table]}
-  (icollect [_ value (pairs tbl)]
-    value))
+  "Return all values in the `table`."
+  {:fnl/arglist [table]}
+  (icollect [_ value (pairs tbl)] value))
 
 (fn update! [tbl key function default]
-  {:fnl/docstring "Update the value of the `key` in the `table` using the `function`.
+  "Modify the `table` with the value of the `key` updated by the `function`.
 
-The `function` takes the value of the `key` as an argument and its returned value
-will replace the old value. If the value of the `key` is missing, the `default`
-value will be consumed by the `function`. Returns `nil`.
-
-Note that the target `table` will be mutated.
+The `function` takes the value of the `key` as an argument and its
+returned value will replace the old value.
+If the value of the `key` is missing, the `default` value will be
+consumed by the `function`.
+It finally returns `nil`.
 
 # Examples
 
@@ -83,13 +84,14 @@ t ;=> {:a 2}
   (doto counts (update! w #(+ 1 $) 0)))
 ;=> {:a 1 :b 2 :c 3}
 ```"
-   :fnl/arglist [table key function default]}
+  {:fnl/arglist [table key function default]}
   (tset tbl key (function (or (. tbl key) default))))
 
 (fn merge! [tbl ...]
   "Merge all the non-sequential `tables` into the first `table`.
 
-The operations will be executed from left to right. Returns `nil`.
+The operations will be executed from left to right.
+It returns `nil`.
 
 # Examples
 
@@ -105,7 +107,8 @@ The operations will be executed from left to right. Returns `nil`.
 (fn append! [tbl ...]
   "Concatenate all the sequential `tables` into the first `table`.
 
-The operations will be executed from left to right. Returns `nil`.
+The operations will be executed from left to right.
+It returns `nil`.
 
 # Examples
 

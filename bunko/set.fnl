@@ -34,7 +34,9 @@
 (local {: copy : merge! : append!} (require :bunko.table))
 
 (fn subset? [left right]
-  "Check if the `left` table, regarded as a set, is subset of the `right` table."
+  "Return `true` if the `left` table, regarded as a set, is subset of the `right`.
+
+Return `false` otherwise."
   (assert-type :table left right)
   (accumulate [yes true key _ (pairs left) &until (not yes)]
     (if (. right key) yes false)))

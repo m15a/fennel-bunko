@@ -33,11 +33,11 @@
 (local unpack (or table.unpack _G.unpack))
 (local fennel (require :fennel))
 
-(fn assert-type [expected & items]
-  "Check if each of `items` is of the `expected` type.
+(fn assert-type [expected & exprs]
+  "Check if each of `expressions` is of the `expected` type.
 
-Return `items` as multiple values if all the checks are passed;
-otherwise raise an error caused by the check failed first.
+Return evaluated `expressions` as multiple values if all the checks are passed;
+otherwise raise an error caused by the check which failed first.
 
 Note that the `expected` type should be determined at compile time.
 So, it cannot be done like:
@@ -58,25 +58,27 @@ So, it cannot be done like:
   (assert-type :number a b c))
 ; => runtime error: number expected, got string
 ```"
+  {:fnl/arglist [expected & expressions]}
   (assert-compile (= :string (type expected))
                   "expected type invalid or missing" expected)
   (let [fmt (.. expected " expected, got %s")
-        checks (accumulate [checks [] _ x (ipairs items)]
+        checks (accumulate [checks [] _ expr (ipairs exprs)]
                  (doto checks
-                   (table.insert `(let [actual# (type ,x)]
+                   (table.insert `(let [actual# (type ,expr)]
                                     (assert (= actual# ,expected)
                                             (string.format ,fmt actual#))
-                                    ,x))))]
+                                    ,expr))))]
     (case (length checks)
       0 nil
       1 (. checks 1)
       _ `(values ,(unpack checks)))))
 
 (fn map-values [function & varg]
-  "Apply the `function` on each of `varg`, and return the results as multiple values.
+  "Apply the `function` on each of `varg` and return the results as multiple values.
 
-This is similar to `map-values` in [SRFI-210](https://srfi.schemers.org/srfi-210/),
-but consumes varg directly.
+This is similar to `map-values` in [SRFI-210][1], but consumes `varg` directly.
+
+[1]: https://srfi.schemers.org/srfi-210/
 
 # Examples
 
@@ -88,16 +90,28 @@ but consumes varg directly.
                  (,function arg#)))))
 
 (fn unless [condition & body]
-  "If the `condition` is falsy, evaluate `body`."
+  "If the `condition` is falsy, evaluate each of `body` sequentially."
   `(when (not ,condition) ,(unpack body)))
 
 (fn immutably [mutate! tbl & args]
-  "Turn a `mutator!` that usually mutates a `table` into non-destructive one.
+  "Turn a `mutator!`, which usually mutates a `table`, into non-destructive one.
 
 The `mutator!` can be function or macro of signature `(mutator! table & args)`,
 for example `tset` or `table.insert`.
-It shallowly copies the `table` and applies the `mutator!` to the copy with the `args`,
-and returns the copy.
+It shallowly copies the `table`,
+applies the `mutator!` with the `args` to the copy,
+and returns the mutated copy.
+
+```fennel :skip-test
+(immutably mutate! tbl ...))
+```
+
+is equivalent to
+
+```fennel :skip-test
+(let [copy (fn [t] ...)] ; function to copy a table shallowly
+  (doto (copy tbl) (mutate! ...))
+```
 
 Note that it does not set the metatable of the copy to the original.
 

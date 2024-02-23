@@ -11,9 +11,11 @@ Function signature:
 (escape-regex string)
 ```
 
-Escape magic characters of [patterns][1] in the `string`.
+Escape magic characters of Lua regex pattern in the `string`.
 
-Namely, `^$()%.[]*+-?`.
+Return the escaped string.
+The magic characters are namely `^$()%.[]*+-?`.
+See the [Lua manual][1] for more detail.
 
 [1]: https://www.lua.org/manual/5.4/manual.html#6.4.1
 

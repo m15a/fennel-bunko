@@ -18,7 +18,8 @@ Function signature:
 
 Concatenate all the sequential `tables` into the first `table`.
 
-The operations will be executed from left to right. Returns `nil`.
+The operations will be executed from left to right.
+It returns `nil`.
 
 ### Examples
 
@@ -64,7 +65,8 @@ Function signature:
 
 Merge all the non-sequential `tables` into the first `table`.
 
-The operations will be executed from left to right. Returns `nil`.
+The operations will be executed from left to right.
+It returns `nil`.
 
 ### Examples
 
@@ -79,13 +81,13 @@ Function signature:
 (update! table key function default)
 ```
 
-Update the value of the `key` in the `table` using the `function`.
+Modify the `table` with the value of the `key` updated by the `function`.
 
-The `function` takes the value of the `key` as an argument and its returned value
-will replace the old value. If the value of the `key` is missing, the `default`
-value will be consumed by the `function`. Returns `nil`.
-
-Note that the target `table` will be mutated.
+The `function` takes the value of the `key` as an argument and its
+returned value will replace the old value.
+If the value of the `key` is missing, the `default` value will be
+consumed by the `function`.
+It finally returns `nil`.
 
 ### Examples
 
