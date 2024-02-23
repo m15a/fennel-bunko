@@ -1,8 +1,20 @@
+diff --git a/README.md b/README.md
+index c69fdff..f1433fe 100644
+--- a/README.md
++++ b/README.md
+@@ -7,6 +7,7 @@ Format your Fennel!
+     $ make install PREFIX=$HOME # or sudo make install in /usr/local
+     $ ./fnlfmt mycode.fnl # prints formatted code to standard out
+     $ ./fnlfmt --fix mycode.fnl # replaces the file with formatted code
++    $ ./fnlfmt --check mycode.fnl # checks if the file is formatted
+     $ curl localhost:8080/my-file.fnl | ./fnlfmt - # pipe to stdin
+ 
+ You can skip reformatting of top-level forms by placing a comment
 diff --git a/cli.fnl b/cli.fnl
-index 55d6c6d..76c536a 100644
+index 55d6c6d..bc082d8 100644
 --- a/cli.fnl
 +++ b/cli.fnl
-@@ -5,17 +5,39 @@
+@@ -5,17 +5,41 @@
  (local {: format-file : version} (require :fnlfmt))
  
  (fn help []
@@ -11,9 +23,9 @@ index 55d6c6d..76c536a 100644
 -  (print "and changes are made in-place; otherwise prints the")
 -  (print "formatted file to stdout."))
 +  (print "Usage: fnlfmt [--no-comments] [--indent-do-as-if] [--fix] [--check] FILENAME...")
-+  (print "With option --fix or --check, multiple files can be specified.")
-+  (print "With option --fix, formats all the files in-place;")
-+  (print "with option --check, only checks if all the files are formatted;")
++  (print "With the --fix or --check argument, multiple files can be specified.")
++  (print "With the --fix argument, formats all the files in-place;")
++  (print "with the --check argument, only checks if all the files are formatted;")
 +  (print "otherwise prints the formatted file to stdout."))
  
  (local options [])
@@ -32,28 +44,30 @@ index 55d6c6d..76c536a 100644
 +      (set options.indent-do-as-if true)
 +      (table.remove arg i))))
 +
-+(fn check [filename]
-+  (let [old (with-open [in (io.open filename)] (in:read :*all))
++(fn check-file [filename]
++  (let [old (with-open [in (assert (io.open filename))] (in:read :*a))
 +        new (format-file filename options)]
-+    (if (= old new)
-+        true
++    (or (= old new)
 +        (do
 +          (io.stderr:write (string.format "Not formatted: %s\n" filename))
 +          false))))
 +
-+(fn check-all [filenames]
++(fn check-files [filenames]
 +  (let [ok? (accumulate [ok? true _ filename (pairs filenames)]
-+              (and ok? (check filename)))]
-+    (when (not ok?)
-+      (os.exit false))))
++              (and ok? (check-file filename)))]
++    (if ok?
++        (do
++          (io.stderr:write "All files are formatted.\n")
++          (os.exit true))
++        (os.exit false))))
  
  (fn fix [filename]
    (let [new (format-file filename options)
-@@ -26,6 +48,7 @@
+@@ -26,6 +50,7 @@
  (match arg
    [:--version] (print (.. "fnlfmt version " version))
    [:--fix & filenames] (each [_ filename (pairs filenames)] (fix filename))
-+  [:--check & filenames] (check-all filenames)
++  [:--check & filenames] (check-files filenames)
    (where (or [:--help] ["-?"] [:-h])) (help)
    [filename nil] (io.stdout:write (format-file filename options))
    _ (help))
