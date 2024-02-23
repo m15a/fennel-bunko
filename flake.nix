@@ -55,7 +55,12 @@
                 pkgs.fnlfmt-unstable
               ];
             };
-
+            ci-generate-docs = pkgs.mkShell {
+              buildInputs = [
+                pkgs.fennel-luajit
+                pkgs.fenneldoc
+              ];
+            };
             default =
               let
                 fennel = pkgs.fennel-unstable-lua5_3;
