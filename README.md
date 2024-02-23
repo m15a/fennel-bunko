@@ -21,6 +21,11 @@ Mostly following Alexandria's philosophy, this library aims to be:
   not include any opinionated/specialized *languages* such as anaphoric macros.
 - **Portable**: Bunko works with any Lua version/implementation which Fennel supports.
 
+## Requirements
+
+- Fennel: 1.4.1+
+- Lua: PUC Lua 5.1–5.4, or LuaJIT
+
 ## License
 
 [The Unlicense](LICENSE)
