@@ -22,53 +22,56 @@
           ];
         };
 
-        mkTestShell = { fennel }:
-          pkgs.mkShell {
-            buildInputs = [
-              fennel
-              pkgs.faith-unstable
-            ];
-            FENNEL_PATH = "${pkgs.faith-unstable}/bin/?";
-          };
+        fennelVersions = [
+          "stable"
+          "unstable"
+        ];
 
         luaVersions = [
-          "luajit"
           "lua5_1"
           "lua5_2"
           "lua5_3"
           "lua5_4"
+          "luajit"
         ];
 
-        inherit (pkgs.lib) listToAttrs mapAttrs nameValuePair;
+        inherit (pkgs.lib) listToAttrs cartesianProductOfSets;
+
+        buildPackageSet = { builder, args }:
+          listToAttrs (map builder args);
       in
       {
-        devShells = (mapAttrs
-          (_: l: mkTestShell { fennel = pkgs."fennel-${l}"; })
-          (listToAttrs
-            (map (l: nameValuePair "ci-test-stable-${l}" l) luaVersions))) // {
-          ci-check-format = pkgs.mkShell {
-            buildInputs = [
-              pkgs.fennel-luajit
-              pkgs.fnlfmt-unstable
-            ];
-          };
-
-          default =
-            let
-              fennel = pkgs.fennel-unstable-lua5_3;
-            in
-            pkgs.mkShell {
-              buildInputs = [
-                fennel
-                pkgs.faith-unstable
-                pkgs.fnlfmt-unstable
-                pkgs.fenneldoc
-              ] ++ (with fennel.lua.pkgs; [
-                # NOTE: lua5_4.pkgs.readline is currently broken.
-                readline
-              ]);
-              FENNEL_PATH = "${pkgs.faith-unstable}/bin/?";
+        devShells =
+          (buildPackageSet {
+            builder = pkgs.mkTestShell;
+            args = cartesianProductOfSets {
+              fennelVersion = fennelVersions;
+              luaVersion = luaVersions;
             };
-        };
+          }) // {
+            ci-check-format = pkgs.mkShell {
+              buildInputs = [
+                pkgs.fennel-luajit
+                pkgs.fnlfmt-unstable
+              ];
+            };
+
+            default =
+              let
+                fennel = pkgs.fennel-unstable-lua5_3;
+              in
+              pkgs.mkShell {
+                buildInputs = [
+                  fennel
+                  pkgs.faith-unstable
+                  pkgs.fnlfmt-unstable
+                  pkgs.fenneldoc
+                ] ++ (with fennel.lua.pkgs; [
+                  # NOTE: lua5_4.pkgs.readline is currently broken.
+                  readline
+                ]);
+                FENNEL_PATH = "${pkgs.faith-unstable}/bin/?";
+              };
+          };
       });
 }

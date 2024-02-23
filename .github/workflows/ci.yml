@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        fennel:
+          - stable
+          - unstable
         lua:
           - luajit
           - lua5_1
@@ -24,9 +27,9 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: DeterminateSystems/magic-nix-cache-action@v3
 
-      - name: Run tests (${{ matrix.lua }})
+      - name: Run tests (fennel-${{ matrix.fennel }}-${{ matrix.lua }})
         run: |
-          nix develop .#ci-test-stable-${{ matrix.lua }} --command bash -c "./build.fnl test"
+          nix develop .#ci-test-${{ matrix.fennel }}-${{ matrix.lua }} --command bash -c "./build.fnl test"
   check-format:
     runs-on: ubuntu-latest
     steps:
