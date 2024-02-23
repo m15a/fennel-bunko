@@ -103,15 +103,16 @@ applies the `mutator!` with the `args` to the copy,
 and returns the mutated copy.
 
 ```fennel :skip-test
-(immutably mutate! tbl ...))
+(immutably mutate! tbl ...)
 ```
 
 is equivalent to
 
 ```fennel :skip-test
-(let [copy (fn [t] ...)] ; function to copy a table shallowly
-  (doto (copy tbl) (mutate! ...))
+(doto (copy tbl) (mutate! ...))
 ```
+
+where `copy` is a function to make a shallow copy of the `tbl`.
 
 Note that it does not set the metatable of the copy to the original.
 
