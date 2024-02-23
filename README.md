@@ -1,15 +1,18 @@
 # fennel-bunko
 
+[![ci][b1]][b2]
+[![fennel][b3]][b4]
+
+[b1]: https://github.com/m15a/fennel-bunko/actions/workflows/ci.yml/badge.svg
+[b2]: https://github.com/m15a/fennel-bunko/actions/workflows/ci.yml
+[b3]: https://img.shields.io/badge/Fennel-v1.4.1+-fff3d7.svg?style=flat-square
+[b4]: https://fennel-lang.org/
+
 ![hondana](_assets/tosyokan_book_tana.png)
 
 Fennel library of miscellaneous utilities, far from [Alexandria][1].
 
 ([Bunko][2] means a collection of books in Japanese.)
-
-[![ci][b1]][b2]
-
-[b1]: https://github.com/m15a/fennel-bunko/actions/workflows/ci.yml/badge.svg
-[b2]: https://github.com/m15a/fennel-bunko/actions/workflows/ci.yml
 
 ## Philosophy
 
