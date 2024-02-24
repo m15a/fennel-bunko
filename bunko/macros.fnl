@@ -48,12 +48,14 @@ So, it cannot be done like:
 
 # Examples
 
-```fennel :skip-test
+```fennel
 (let [x {:a 1}
       y {:b 2}]
   (assert-type :table x y))
 ; => {:a 1}\t{:b 2}
+```
 
+```fennel :skip-test
 (let [a 1 b :string c {:c :c}]
   (assert-type :number a b c))
 ; => runtime error: number expected, got string
@@ -82,8 +84,11 @@ This is similar to `map-values` in [SRFI-210][1], but consumes `varg` directly.
 
 # Examples
 
-```fennel :skip-test
-(map-values #(+ 1 $) 1 2 3) ;=> 2\t3\t4
+```fennel
+(let [(a b c)
+      (map-values #(+ 1 $) 1 2 3) ;=> 2\t3\t4
+      ]
+  (assert (and (= a 2) (= b 3) (= c 4))))
 ```"
   (let [%unpack (if table.unpack `table.unpack `unpack)]
     `(,%unpack (icollect [_# arg# (ipairs [,(unpack varg)])]
@@ -118,10 +123,12 @@ Note that it does not set the metatable of the copy to the original.
 
 # Examples
 
-```fennel :skip-test
-(local x {:a 1})
-(immutably tset x :a 2) ;=> {:a 2}
-x ;=> {:a 1}
+```fennel
+(let [x {:a 1}
+      y (immutably tset x :a 2) ;=> {:a 2}
+      ]
+  (assert (= y.a 2))
+  (assert (= x.a 1)))
 ```"
   {:fnl/arglist [mutator! table & args]}
   (let [%pairs `(fn [t#] (values next t# nil)) ; ignore __pairs metamethod

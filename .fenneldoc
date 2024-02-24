@@ -1,0 +1,17 @@
+;; -*- mode: fennel; -*- vi:ft=fennel
+;; Configuration file for Fenneldoc 1.0.1-dev-7960056
+;; https://gitlab.com/andreyorst/fenneldoc
+
+{:insert-copyright false
+
+ :test-requirements
+ {"bunko/macros.fnl"
+  "(import-macros {: assert-type : map-values : unless : immutably} :bunko.macros)"}
+
+ :modules-info
+ {"bunko/macros.fnl"
+  {:description "Miscellaneous macros."
+   :doc-order [:unless
+               :assert-type
+               :map-values
+               :immutably]}}}
