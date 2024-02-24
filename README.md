@@ -18,11 +18,17 @@ Fennel library of miscellaneous utilities, far from [Alexandria][1].
 
 Mostly following Alexandria's philosophy, this library aims to be:
 
-- **Utilities, not extensions**: Bunko sticks with Fennel's or Lua's basic language
-  conception. Bunko does not provide any extension such as macros for module system.
-- **Non-opinionated**: Bunko follows Fennel's or Lua's conventional way. Bunko does
-  not include any opinionated/specialized *languages* such as anaphoric macros.
-- **Portable**: Bunko works with any Lua version/implementation which Fennel supports.
+- **Utilities, not extensions**: Bunko sticks with the basic language
+  conception of Fennel or Lua, and limits itself to tools and utilities
+  that fit well within the framework of Fennel. Bunko will not contain
+  any extra features such as extended module systems, lazy sequence
+  libraries, test frameworks ,etc.
+- **Non-opinionated**: Bunko respects Fennel's or Lua's programming
+  conventions. Bunko does not include any opinionated/specialized
+  *languages*, e.g., anaphoric macros, and will try to be obvious and
+  clear in the eyes of Fennel programmers.
+- **Portable**: Bunko works with any Lua version/implementation which
+  Fennel supports.
 
 ## Requirements
 
