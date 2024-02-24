@@ -12,7 +12,9 @@
   "bunko/file.fnl"
   "(import-macros {: assert-type : map-values} :bunko.macros)"
   "bunko/table.fnl"
-  "(import-macros {: assert-type} :bunko.macros)"}
+  "(import-macros {: assert-type} :bunko.macros)"
+  "bunko/set.fnl"
+  "(import-macros {: assert-type : unless} :bunko.macros)"}
 
  :modules-info
  {"bunko/macros.fnl"
@@ -43,4 +45,12 @@
                :items
                :update!
                :merge!
-               :append!]}}}
+               :append!]}
+
+  "bunko/set.fnl"
+  {:description "Set algebra on Lua table, where each table is regarded as a set of keys."
+   :doc-order [:subset?
+               :union!
+               :intersection!
+               :difference!
+               :powerset]}}}

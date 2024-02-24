@@ -36,7 +36,18 @@
 (fn subset? [left right]
   "Return `true` if the `left` table, regarded as a set, is subset of the `right`.
 
-Return `false` otherwise."
+Return `false` otherwise.
+
+# Examples
+
+```fennel
+(let [x {:a 1}
+      y {:a true :b :b}
+      q1 (subset? x y) ;=> true
+      q2 (subset? y x) ;=> false
+      ]
+  (assert (and q1 (not q2))))
+```"
   (assert-type :table left right)
   (accumulate [yes true key _ (pairs left) &until (not yes)]
     (if (. right key) yes false)))
@@ -50,8 +61,11 @@ the elements (i.e., keys) exist in the set.
 
 # Examples 
 
-```fennel :skip-test
-(doto {:a :a} (union! {:a 1} {:b :b})) ;=> {:a 1 :b :b}
+```fennel
+(let [x (doto {:a :a} (union! {:a 1} {:b :b})) ;=> {:a 1 :b :b}
+      ]
+  (assert (and (= x.a 1)
+               (= x.b :b))))
 ```"
   {:fnl/arglist [table & tables]}
   (merge! ...))
@@ -64,8 +78,11 @@ the elements (i.e., keys) exist in the set.
 
 # Examples 
 
-```fennel :skip-test
-(doto {:a :a :b :b} (intersection! {:a 1})) ;=> {:a :a}
+```fennel
+(let [x (doto {:a :a :b :b} (intersection! {:a 1})) ;=> {:a :a}
+      ]
+  (assert (and (= x.a :a)
+               (= (. x :b) nil))))
 ```"
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
@@ -81,8 +98,11 @@ the elements (i.e., keys) exist in the set.
 
 # Examples 
 
-```fennel :skip-test
-(doto {:a :a :b :b} (difference! {:a 1} {:c :c})) ;=> {:b :b}
+```fennel
+(let [x (doto {:a :a :b :b} (difference! {:a 1} {:c :c})) ;=> {:b :b}
+      ]
+  (assert (and (= x.b :b)
+               (= (. x :a) nil))))
 ```"
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
@@ -98,10 +118,14 @@ the elements (i.e., keys) exist in the set.
 
 # Examples
 
-```fennel :skip-test
-(powerset {:a 1 :b :b})
-;=> [{} {:a 1} {:b :b} {:a 1 :b :b}]
-; CAVEAT: The order could be different from the above example.
+```fennel
+(let [origin {:a 1 :b :b}
+      pow (powerset origin)
+        ;=> [{} {:a 1} {:b :b} {:a 1 :b :b}]
+        ; CAVEAT: The order could be different from this!
+      ]
+  (each [_ x (ipairs pow)]
+    (assert (subset? x origin))))
 ```"
   {:fnl/arglist [table]}
   (accumulate [sets [{}] key value (pairs (assert-type :table tbl))]
