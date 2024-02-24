@@ -50,8 +50,11 @@ Trailing `/`'s will remain.
 
 # Examples
 
-```fennel :skip-test
-(normalize \"//a/b\" \"a//b/\") ;=> \"/a/b\"\t\"a/b/\"
+```fennel
+(let [(x y) (normalize \"//a/b\" \"a//b/\") ;=> \"/a/b\"\t\"a/b/\"
+      ]
+  (assert (and (= x \"/a/b\")
+               (= y \"a/b/\"))))
 ```"
   {:fnl/arglist [& paths]}
   (map-values %normalize (assert-type :string ...)))
@@ -71,9 +74,14 @@ This is for convenience on manipulating hidden files.
 
 # Examples
 
-```fennel :skip-test
-(remove-suffix \"/a/b.ext\" \".ext\") ;=> \"/a/b\"
-(remove-suffix \"/a/b/.ext\" \".ext\") ;=> \"/a/b/.ext\"
+```fennel
+(let [removed (remove-suffix \"/a/b.ext\" \".ext\") ;=> \"/a/b\"
+      ]
+  (assert (= removed \"/a/b\")))
+
+(let [removed (remove-suffix \"/a/b/.ext\" \".ext\") ;=> \"/a/b/.ext\"
+      ]
+  (assert (= removed \"/a/b/.ext\")))
 ```"
   (%remove-suffix (assert-type :string path suffix)))
 
@@ -90,16 +98,26 @@ Compatible with GNU coreutils' `basename`.
 
 # Examples
 
-```fennel :skip-test
-(basename \"/\")    ;=> \"/\"
-(basename \"/a/b\") ;=> \"b\"
-(basename \"a/b/\") ;=> \"b\"
-(basename \"\")     ;=> \"\"
-(basename \".\")    ;=> \".\"
-(basename \"..\")   ;=> \"..\"
-(basename \"/a/b.ext\" \".ext\")  ;=> \"b\"
-(basename \"/a/b.ext/\" \".ext\") ;=> \"b\"
-(basename \"/a/b/.ext\" \".ext\") ;=> \".ext\"
+```fennel
+(let [a (basename \"/\")    ;=> \"/\"
+      b (basename \"/a/b\") ;=> \"b\"
+      c (basename \"a/b/\") ;=> \"b\"
+      d (basename \"\")     ;=> \"\"
+      e (basename \".\")    ;=> \".\"
+      f (basename \"..\")   ;=> \"..\"
+      g (basename \"/a/b.ext\" \".ext\")  ;=> \"b\"
+      h (basename \"/a/b.ext/\" \".ext\") ;=> \"b\"
+      i (basename \"/a/b/.ext\" \".ext\") ;=> \".ext\"
+      ]
+    (assert (and (= a \"/\")
+                 (= b \"b\")
+                 (= c \"b\")
+                 (= d \"\")
+                 (= e \".\")
+                 (= f \"..\")
+                 (= g \"b\")
+                 (= h \"b\")
+                 (= i \".ext\"))))
 ```"
   (let [path (%normalize (assert-type :string path))]
     (if (= "/" path)
@@ -129,12 +147,18 @@ Compatible with GNU coreutils' `dirname`.
 
 # Examples
 
-```fennel :skip-test
-(dirname \"/\")            ;=> \"/\"
-(dirname \"/a/b\" \"/a/b/\") ;=> \"/a\"\t\"/a\"
-(dirname \"a/b\" \"a/b/\")   ;=> \"a\"\t\"a\"
-(dirname \"a\" \"a/\")       ;=> \".\"\t\".\"
-(dirname \"\" \".\" \"..\")    ;=> \".\"\t\".\"\t\".\"
+```fennel
+(let [a (dirname \"/\")                ;=> \"/\"
+      (b c) (dirname \"/a/b\" \"/a/b/\") ;=> \"/a\"\t\"/a\"
+      (d e) (dirname \"a/b\" \"a/b/\")   ;=> \"a\"\t\"a\"
+      (f g) (dirname \"a\" \"a/\")       ;=> \".\"\t\".\"
+      (h i j) (dirname \"\" \".\" \"..\")  ;=> \".\"\t\".\"\t\".\"
+      ]
+  (assert (and (= a \"/\")
+               (= b \"/a\") (= c \"/a\")
+               (= d \"a\") (= e \"a\")
+               (= f \".\") (= g \".\")
+               (= h \".\") (= i \".\") (= j \".\"))))
 ```"
   {:fnl/arglist [& paths]}
   (map-values %dirname (assert-type :string ...)))

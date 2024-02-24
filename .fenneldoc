@@ -9,6 +9,8 @@
   "(import-macros {: assert-type : map-values : unless : immutably} :bunko.macros)"
   "bunko/string.fnl"
   "(import-macros {: assert-type} :bunko.macros)"
+  "bunko/file.fnl"
+  "(import-macros {: assert-type : map-values} :bunko.macros)"
   "bunko/table.fnl"
   "(import-macros {: assert-type} :bunko.macros)"}
 
@@ -23,6 +25,16 @@
   "bunko/string.fnl"
   {:description "Utilities for string manipulation."
    :doc-order [:escape-regex]}
+
+  "bunko/file.fnl"
+  {:description "File and file path utilities."
+   :doc-order [:exists?
+               :normalize
+               :remove-suffix
+               :basename
+               :dirname
+               :read-all
+               :read-lines]}
 
   "bunko/table.fnl"
   {:description "Table extras."
