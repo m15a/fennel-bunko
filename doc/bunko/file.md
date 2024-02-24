@@ -1,4 +1,4 @@
-# File.fnl
+# File.fnl (0.1.0)
 File and file path utilities.
 
 **Table of contents**
@@ -160,6 +160,11 @@ Read all lines from a file handle or a file path, specified by `file/path`.
 Raises an error if the file handle is closed or the file cannot be opened.
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually.
+
+
+---
+
+License: Unlicense
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev-7960056

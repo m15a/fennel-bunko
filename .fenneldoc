@@ -3,6 +3,8 @@
 ;; https://gitlab.com/andreyorst/fenneldoc
 
 {:insert-copyright false
+ :project-license :Unlicense
+ :project-version :0.1.0
 
  :test-requirements
  {"bunko/macros.fnl"

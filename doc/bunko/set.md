@@ -1,4 +1,4 @@
-# Set.fnl
+# Set.fnl (0.1.0)
 Set algebra on Lua table, where each table is regarded as a set of keys.
 
 **Table of contents**
@@ -118,6 +118,11 @@ the elements (i.e., keys) exist in the set.
   (each [_ x (ipairs pow)]
     (assert (subset? x origin))))
 ```
+
+
+---
+
+License: Unlicense
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev-7960056

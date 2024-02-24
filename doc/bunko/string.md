@@ -1,4 +1,4 @@
-# String.fnl
+# String.fnl (0.1.0)
 Utilities for string manipulation.
 
 **Table of contents**
@@ -27,6 +27,11 @@ See the [Lua manual][1] for more detail.
       escaped (escape-regex original)]
   (assert (= escaped "%.fnl%$")))
 ```
+
+
+---
+
+License: Unlicense
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev-7960056

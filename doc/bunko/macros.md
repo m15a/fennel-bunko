@@ -1,4 +1,4 @@
-# Macros.fnl
+# Macros.fnl (0.1.0)
 Miscellaneous macros.
 
 **Table of contents**
@@ -111,6 +111,11 @@ Note that it does not set the metatable of the copy to the original.
   (assert (= y.a 2))
   (assert (= x.a 1)))
 ```
+
+
+---
+
+License: Unlicense
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev-7960056

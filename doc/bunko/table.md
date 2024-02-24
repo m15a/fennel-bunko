@@ -1,4 +1,4 @@
-# Table.fnl
+# Table.fnl (0.1.0)
 Table extras.
 
 **Table of contents**
@@ -119,6 +119,11 @@ It returns `nil`.
                (= (. x 3) 3)
                (= (. x 4) 4))))
 ```
+
+
+---
+
+License: Unlicense
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev-7960056
