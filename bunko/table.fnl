@@ -72,17 +72,24 @@ It finally returns `nil`.
 
 # Examples
 
-```fennel :skip-test
-(local t {:a 1})
-(update! t :a #(+ $ 1)) ;=> nil
-t ;=> {:a 2}
+```fennel
+(let [t {:a 1}
+      returned (update! t :a #(+ $ 1)) ;=> nil
+      ]
+  (assert (and (= t.a 2)
+               (= returned nil))))
 
-(doto {} (update! :a #(+ $ 1) 0)) ;=> {:a 1}
+(let [x (doto {} (update! :a #(+ $ 1) 0)) ;=> {:a 1}
+      ]
+  (assert (= x.a 1)))
 
-(accumulate [counts {}
-             _ w (ipairs [:a :b :c :b :c :c])]
-  (doto counts (update! w #(+ 1 $) 0)))
-;=> {:a 1 :b 2 :c 3}
+(let [xs [:a :b :c :b :c :c]
+      counts (accumulate [c {} _ x (ipairs xs)]
+               (doto c (update! x #(+ 1 $) 0))) ;=> {:a 1 :b 2 :c 3}
+      ]
+  (assert (and (= counts.a 1)
+               (= counts.b 2)
+               (= counts.c 3))))
 ```"
   {:fnl/arglist [table key function default]}
   (tset tbl key (function (or (. tbl key) default))))
@@ -95,8 +102,11 @@ It returns `nil`.
 
 # Examples
 
-```fennel :skip-test
-(doto {:a 1} (merge! {:a 0 :b 1} {:b 2})) ;=> {:a 0 :b 2}
+```fennel
+(let [x (doto {:a 1} (merge! {:a nil :b 1} {:b 2})) ;=> {:a 1 :b 2}
+      ]
+  (assert (and (= x.a 1)
+               (= x.b 2))))
 ```"
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
@@ -112,8 +122,13 @@ It returns `nil`.
 
 # Examples
 
-```fennel :skip-test
-(doto [1] (append! [2 3] [4]) ;=> [1 2 3 4]
+```fennel
+(let [x (doto [1] (append! [2 3] [4])) ;=> [1 2 3 4]
+      ]
+  (assert (and (= (. x 1) 1)
+               (= (. x 2) 2)
+               (= (. x 3) 3)
+               (= (. x 4) 4))))
 ```"
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
