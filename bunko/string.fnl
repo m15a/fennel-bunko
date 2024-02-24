@@ -43,8 +43,10 @@ See the [Lua manual][1] for more detail.
 
 # Examples
 
-```fennel :skip-test
-(escape-regex \"%\") ;=> \"%%\"
+```fennel
+(let [original \".fnl$\"
+      escaped (escape-regex original)]
+  (assert (= escaped \"%.fnl%$\")))
 ```"
   {:fnl/arglist [string]}
   (pick-values 1 (: (assert-type :string str) :gsub
