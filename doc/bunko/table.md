@@ -1,31 +1,14 @@
 # Table.fnl
+Table extras.
 
 **Table of contents**
 
-- [`append!`](#append)
 - [`copy`](#copy)
-- [`items`](#items)
 - [`keys`](#keys)
-- [`merge!`](#merge)
+- [`items`](#items)
 - [`update!`](#update)
-
-## `append!`
-Function signature:
-
-```
-(append! table & tables)
-```
-
-Concatenate all the sequential `tables` into the first `table`.
-
-The operations will be executed from left to right.
-It returns `nil`.
-
-### Examples
-
-```fennel
-(doto [1] (append! [2 3] [4]) ;=> [1 2 3 4]
-```
+- [`merge!`](#merge)
+- [`append!`](#append)
 
 ## `copy`
 Function signature:
@@ -38,15 +21,6 @@ Return a shallow copy of the `table`.
 
 Optionally, if `?metatable` is truthy, set the same metatable as the original's.
 
-## `items`
-Function signature:
-
-```
-(items table)
-```
-
-Return all values in the `table`.
-
 ## `keys`
 Function signature:
 
@@ -56,23 +30,14 @@ Function signature:
 
 Return all keys in the `table`.
 
-## `merge!`
+## `items`
 Function signature:
 
 ```
-(merge! table & tables)
+(items table)
 ```
 
-Merge all the non-sequential `tables` into the first `table`.
-
-The operations will be executed from left to right.
-It returns `nil`.
-
-### Examples
-
-```fennel
-(doto {:a 1} (merge! {:a 0 :b 1} {:b 2})) ;=> {:a 0 :b 2}
-```
+Return all values in the `table`.
 
 ## `update!`
 Function signature:
@@ -92,16 +57,67 @@ It finally returns `nil`.
 ### Examples
 
 ```fennel
-(local t {:a 1})
-(update! t :a #(+ $ 1)) ;=> nil
-t ;=> {:a 2}
+(let [t {:a 1}
+      returned (update! t :a #(+ $ 1)) ;=> nil
+      ]
+  (assert (and (= t.a 2)
+               (= returned nil))))
 
-(doto {} (update! :a #(+ $ 1) 0)) ;=> {:a 1}
+(let [x (doto {} (update! :a #(+ $ 1) 0)) ;=> {:a 1}
+      ]
+  (assert (= x.a 1)))
 
-(accumulate [counts {}
-             _ w (ipairs [:a :b :c :b :c :c])]
-  (doto counts (update! w #(+ 1 $) 0)))
-;=> {:a 1 :b 2 :c 3}
+(let [xs [:a :b :c :b :c :c]
+      counts (accumulate [c {} _ x (ipairs xs)]
+               (doto c (update! x #(+ 1 $) 0))) ;=> {:a 1 :b 2 :c 3}
+      ]
+  (assert (and (= counts.a 1)
+               (= counts.b 2)
+               (= counts.c 3))))
+```
+
+## `merge!`
+Function signature:
+
+```
+(merge! table & tables)
+```
+
+Merge all the non-sequential `tables` into the first `table`.
+
+The operations will be executed from left to right.
+It returns `nil`.
+
+### Examples
+
+```fennel
+(let [x (doto {:a 1} (merge! {:a nil :b 1} {:b 2})) ;=> {:a 1 :b 2}
+      ]
+  (assert (and (= x.a 1)
+               (= x.b 2))))
+```
+
+## `append!`
+Function signature:
+
+```
+(append! table & tables)
+```
+
+Concatenate all the sequential `tables` into the first `table`.
+
+The operations will be executed from left to right.
+It returns `nil`.
+
+### Examples
+
+```fennel
+(let [x (doto [1] (append! [2 3] [4])) ;=> [1 2 3 4]
+      ]
+  (assert (and (= (. x 1) 1)
+               (= (. x 2) 2)
+               (= (. x 3) 3)
+               (= (. x 4) 4))))
 ```
 
 

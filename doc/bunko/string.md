@@ -1,4 +1,5 @@
 # String.fnl
+Utilities for string manipulation.
 
 **Table of contents**
 
@@ -22,7 +23,9 @@ See the [Lua manual][1] for more detail.
 ### Examples
 
 ```fennel
-(escape-regex "%") ;=> "%%"
+(let [original ".fnl$"
+      escaped (escape-regex original)]
+  (assert (= escaped "%.fnl%$")))
 ```
 
 

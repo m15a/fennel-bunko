@@ -1,68 +1,15 @@
 # File.fnl
+File and file path utilities.
 
 **Table of contents**
 
-- [`basename`](#basename)
-- [`dirname`](#dirname)
 - [`exists?`](#exists)
 - [`normalize`](#normalize)
+- [`remove-suffix`](#remove-suffix)
+- [`basename`](#basename)
+- [`dirname`](#dirname)
 - [`read-all`](#read-all)
 - [`read-lines`](#read-lines)
-- [`remove-suffix`](#remove-suffix)
-
-## `basename`
-Function signature:
-
-```
-(basename path ?suffix)
-```
-
-Remove leading directory components from the `path`.
-
-Trailing `/`'s are also removed unless the `path` is just `/`.
-Optionally, a trailing `?suffix` will be removed if specified. 
-However, if the basename of `path` and `?suffix` is identical,
-it does not remove suffix.
-This is for convenience on manipulating hidden files.
-
-Compatible with GNU coreutils' `basename`.
-
-### Examples
-
-```fennel
-(basename "/")    ;=> "/"
-(basename "/a/b") ;=> "b"
-(basename "a/b/") ;=> "b"
-(basename "")     ;=> ""
-(basename ".")    ;=> "."
-(basename "..")   ;=> ".."
-(basename "/a/b.ext" ".ext")  ;=> "b"
-(basename "/a/b.ext/" ".ext") ;=> "b"
-(basename "/a/b/.ext" ".ext") ;=> ".ext"
-```
-
-## `dirname`
-Function signature:
-
-```
-(dirname & paths)
-```
-
-Remove the last non-slash component from each of the `paths`.
-
-Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
-
-Compatible with GNU coreutils' `dirname`.
-
-### Examples
-
-```fennel
-(dirname "/")            ;=> "/"
-(dirname "/a/b" "/a/b/") ;=> "/a"	"/a"
-(dirname "a/b" "a/b/")   ;=> "a"	"a"
-(dirname "a" "a/")       ;=> "."	"."
-(dirname "" "." "..")    ;=> "."	"."	"."
-```
 
 ## `exists?`
 Function signature:
@@ -87,7 +34,105 @@ Trailing `/`'s will remain.
 ### Examples
 
 ```fennel
-(normalize "//a/b" "a//b/") ;=> "/a/b"	"a/b/"
+(let [(x y) (normalize "//a/b" "a//b/") ;=> "/a/b"	"a/b/"
+      ]
+  (assert (and (= x "/a/b")
+               (= y "a/b/"))))
+```
+
+## `remove-suffix`
+Function signature:
+
+```
+(remove-suffix path suffix)
+```
+
+Remove `suffix` from the `path`.
+
+If the basename of `path` and `suffix` is identical,
+it does not remove suffix.
+This is for convenience on manipulating hidden files.
+
+### Examples
+
+```fennel
+(let [removed (remove-suffix "/a/b.ext" ".ext") ;=> "/a/b"
+      ]
+  (assert (= removed "/a/b")))
+
+(let [removed (remove-suffix "/a/b/.ext" ".ext") ;=> "/a/b/.ext"
+      ]
+  (assert (= removed "/a/b/.ext")))
+```
+
+## `basename`
+Function signature:
+
+```
+(basename path ?suffix)
+```
+
+Remove leading directory components from the `path`.
+
+Trailing `/`'s are also removed unless the `path` is just `/`.
+Optionally, a trailing `?suffix` will be removed if specified. 
+However, if the basename of `path` and `?suffix` is identical,
+it does not remove suffix.
+This is for convenience on manipulating hidden files.
+
+Compatible with GNU coreutils' `basename`.
+
+### Examples
+
+```fennel
+(let [a (basename "/")    ;=> "/"
+      b (basename "/a/b") ;=> "b"
+      c (basename "a/b/") ;=> "b"
+      d (basename "")     ;=> ""
+      e (basename ".")    ;=> "."
+      f (basename "..")   ;=> ".."
+      g (basename "/a/b.ext" ".ext")  ;=> "b"
+      h (basename "/a/b.ext/" ".ext") ;=> "b"
+      i (basename "/a/b/.ext" ".ext") ;=> ".ext"
+      ]
+    (assert (and (= a "/")
+                 (= b "b")
+                 (= c "b")
+                 (= d "")
+                 (= e ".")
+                 (= f "..")
+                 (= g "b")
+                 (= h "b")
+                 (= i ".ext"))))
+```
+
+## `dirname`
+Function signature:
+
+```
+(dirname & paths)
+```
+
+Remove the last non-slash component from each of the `paths`.
+
+Trailing `/`'s are removed. If the path contains no `/`'s, it returns `.`.
+
+Compatible with GNU coreutils' `dirname`.
+
+### Examples
+
+```fennel
+(let [a (dirname "/")                ;=> "/"
+      (b c) (dirname "/a/b" "/a/b/") ;=> "/a"	"/a"
+      (d e) (dirname "a/b" "a/b/")   ;=> "a"	"a"
+      (f g) (dirname "a" "a/")       ;=> "."	"."
+      (h i j) (dirname "" "." "..")  ;=> "."	"."	"."
+      ]
+  (assert (and (= a "/")
+               (= b "/a") (= c "/a")
+               (= d "a") (= e "a")
+               (= f ".") (= g ".")
+               (= h ".") (= i ".") (= j "."))))
 ```
 
 ## `read-all`
@@ -115,26 +160,6 @@ Read all lines from a file handle or a file path, specified by `file/path`.
 Raises an error if the file handle is closed or the file cannot be opened.
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually.
-
-## `remove-suffix`
-Function signature:
-
-```
-(remove-suffix path suffix)
-```
-
-Remove `suffix` from the `path`.
-
-If the basename of `path` and `suffix` is identical,
-it does not remove suffix.
-This is for convenience on manipulating hidden files.
-
-### Examples
-
-```fennel
-(remove-suffix "/a/b.ext" ".ext") ;=> "/a/b"
-(remove-suffix "/a/b/.ext" ".ext") ;=> "/a/b/.ext"
-```
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev-7960056

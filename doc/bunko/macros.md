@@ -1,11 +1,21 @@
 # Macros.fnl
+Miscellaneous macros.
 
 **Table of contents**
 
-- [`assert-type`](#assert-type)
-- [`immutably`](#immutably)
-- [`map-values`](#map-values)
 - [`unless`](#unless)
+- [`assert-type`](#assert-type)
+- [`map-values`](#map-values)
+- [`immutably`](#immutably)
+
+## `unless`
+Function signature:
+
+```
+(unless condition & body)
+```
+
+If the `condition` is falsy, evaluate each of `body` sequentially.
 
 ## `assert-type`
 Function signature:
@@ -33,10 +43,34 @@ So, it cannot be done like:
       y {:b 2}]
   (assert-type :table x y))
 ; => {:a 1}	{:b 2}
+```
 
+```fennel
 (let [a 1 b :string c {:c :c}]
   (assert-type :number a b c))
 ; => runtime error: number expected, got string
+```
+
+## `map-values`
+Function signature:
+
+```
+(map-values function & varg)
+```
+
+Apply the `function` on each of `varg` and return the results as multiple values.
+
+This is similar to `map-values` in [SRFI-210][1], but consumes `varg` directly.
+
+[1]: https://srfi.schemers.org/srfi-210/
+
+### Examples
+
+```fennel
+(let [(a b c)
+      (map-values #(+ 1 $) 1 2 3) ;=> 2	3	4
+      ]
+  (assert (and (= a 2) (= b 3) (= c 4))))
 ```
 
 ## `immutably`
@@ -71,38 +105,12 @@ Note that it does not set the metatable of the copy to the original.
 ### Examples
 
 ```fennel
-(local x {:a 1})
-(immutably tset x :a 2) ;=> {:a 2}
-x ;=> {:a 1}
+(let [x {:a 1}
+      y (immutably tset x :a 2) ;=> {:a 2}
+      ]
+  (assert (= y.a 2))
+  (assert (= x.a 1)))
 ```
-
-## `map-values`
-Function signature:
-
-```
-(map-values function & varg)
-```
-
-Apply the `function` on each of `varg` and return the results as multiple values.
-
-This is similar to `map-values` in [SRFI-210][1], but consumes `varg` directly.
-
-[1]: https://srfi.schemers.org/srfi-210/
-
-### Examples
-
-```fennel
-(map-values #(+ 1 $) 1 2 3) ;=> 2	3	4
-```
-
-## `unless`
-Function signature:
-
-```
-(unless condition & body)
-```
-
-If the `condition` is falsy, evaluate each of `body` sequentially.
 
 
 <!-- Generated with Fenneldoc 1.0.1-dev-7960056
