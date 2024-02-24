@@ -37,7 +37,7 @@ Mostly following Alexandria's philosophy, this library aims to be:
 
 ## API documentation
 
-Read the Markdown files in the [`doc`](./doc) directory.
+Read the Markdown files in the [`doc`](./doc/bunko) directory.
 
 ## License
 
