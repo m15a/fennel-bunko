@@ -29,6 +29,10 @@ Mostly following Alexandria's philosophy, this library aims to be:
 - Fennel: 1.4.1+
 - Lua: PUC Lua 5.1–5.4, or LuaJIT
 
+## API documentation
+
+Read the Markdown files in the [`doc`](./doc) directory.
+
 ## License
 
 [The Unlicense](LICENSE)
