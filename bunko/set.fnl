@@ -30,7 +30,7 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(import-macros {: assert-type : unless : immutably} :bunko.macros)
+(import-macros {: assert-type : unless} :bunko.macros)
 (local {: copy : merge! : append!} (require :bunko.table))
 
 (fn subset? [left right]
