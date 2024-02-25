@@ -216,4 +216,41 @@ implicitly in this macro.
                    (table.insert found))]
     `(accumulate ,iter-tbl (if ,pred-expr true ,found))))
 
-{: assert-type : map-values : unless : immutably : find-some : for-some?}
+(fn for-all? [iter-tbl pred-expr ...]
+  "Test if a predicate expression is truthy for all yielded by an iterator.
+
+Similar to `for-some`, but it checks whether a `predicate-expression` is truthy
+for all yielded by the iterator. If so, it returns `true`, otherwise returns `false`.
+
+Note that the `bindings` cannot have `&until` clause as the clause will be inserted
+implicitly in this macro.
+
+# Examples
+
+```fennel
+(let [q (for-all? [_ n (ipairs [:a 1 {} 2])]
+          (= (type n) :number)) ;=> false
+      ]
+  (assert (= false q)))
+```"
+  {:fnl/arglist [bindings predicate-expression]}
+  (assert (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
+          "expected iterator binding table")
+  (assert (not= nil pred-expr) "expected predicate expression")
+  (assert (= nil ...)
+          "expected only one expression; wrap multiple expressions with do")
+  (let [found `found#
+        iter-tbl (doto (copy iter-tbl)
+                   (table.insert 1 found)
+                   (table.insert 2 `true)
+                   (table.insert `&until)
+                   (table.insert `(not ,found)))]
+    `(accumulate ,iter-tbl (if ,pred-expr ,found false))))
+
+{: assert-type
+ : map-values
+ : unless
+ : immutably
+ : find-some
+ : for-some?
+ : for-all?}

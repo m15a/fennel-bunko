@@ -4,7 +4,8 @@
                 : unless
                 : immutably
                 : find-some
-                : for-some?} :bunko.macros)
+                : for-some?
+                : for-all?} :bunko.macros)
 
 (fn test-assert-type []
   (let [x {:a 1}
@@ -49,9 +50,15 @@
   (t.= false (for-some? [k v (pairs {:a 1 :b 2})] (= k :z)))
   (t.= false (for-some? [_ n (ipairs [])] (= (% n 2) 1))))
 
+(fn test-for-all? []
+  (t.= true (for-all? [_ n (ipairs [1 3 3 5])] (= (% n 2) 1)))
+  (t.= false (for-all? [k v (pairs {:a 1 :b 2})] (= k :a)))
+  (t.= true (for-all? [_ n (ipairs [])] (= (% n 2) 1)))) ; vacuous truth
+
 {: test-assert-type
  : test-map-values
  : test-unless
  : test-immutably
  : test-find-some
- : test-for-some?}
+ : test-for-some?
+ : test-for-all?}
