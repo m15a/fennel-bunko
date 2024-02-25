@@ -31,7 +31,7 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-(local fennel (require :fennel))
+(local %unpack (if table.unpack `table.unpack `unpack))
 
 (fn assert-type [expected & exprs]
   "Check if each of `expressions` is of the `expected` type.
@@ -90,9 +90,8 @@ This is similar to `map-values` in [SRFI-210][1], but consumes `varg` directly.
       ]
   (assert (and (= a 2) (= b 3) (= c 4))))
 ```"
-  (let [%unpack (if table.unpack `table.unpack `unpack)]
-    `(,%unpack (icollect [_# arg# (ipairs [,(unpack varg)])]
-                 (,function arg#)))))
+  `(,%unpack (icollect [_# arg# (ipairs [,(unpack varg)])]
+               (,function arg#))))
 
 (fn unless [condition & body]
   "If the `condition` is falsy, evaluate each of `body` sequentially."
