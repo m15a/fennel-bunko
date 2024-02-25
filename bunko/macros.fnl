@@ -144,8 +144,8 @@ Note that it does not set the metatable of the copy to the original.
        (doto clone#
          (,mutate! ,(unpack args))))))
 
-(fn find-any [iter-tbl pred-expr ...]
-  "Find any values yielded by an iterator on which a predicate expression returns true.
+(fn find-some [iter-tbl pred-expr ...]
+  "Find some values yielded by an iterator on which a predicate expression returns true.
 
 It runs through an iterator and in each step evaluates a `predicate-expression`.
 If the evaluated result is truthy, it immediately returns the (multiple) values
@@ -157,12 +157,12 @@ implicitly in this macro.
 # Examples
 
 ```fennel
-(let [(i v) (find-any [_ n (ipairs [:a 1 {} 2])]
+(let [(i v) (find-some [_ n (ipairs [:a 1 {} 2])]
               (= (type n) :number)) ;=> 2\t1
       ]
   (assert (and (= i 2) (= v 1))))
 
-(let [(k v) (find-any [k v (pairs {:a :A :b {} :c :cc})]
+(let [(k v) (find-some [k v (pairs {:a :A :b {} :c :cc})]
               (and (= (type v) :string)
                    (: v :match (.. \"^\" k)))) ;=> :c\t:cc
       ]
@@ -184,10 +184,10 @@ implicitly in this macro.
     `(let [found# (accumulate ,iter-tbl (when ,pred-expr ,kv-tbl))]
        (when found# (,%unpack found#)))))
 
-(fn any [iter-tbl pred-expr ...]
-  "Test if a predicate expression is truthy for any example yielded by an iterator.
+(fn for-some? [iter-tbl pred-expr ...]
+  "Test if a predicate expression is truthy for some example yielded by an iterator.
 
-Similar to `find-any`, it runs through an iterator and in each step evaluates a
+Similar to `find-some`, it runs through an iterator and in each step evaluates a
 `predicate-expression`. If the evaluated result is truthy, it immediately returns
 `true`; otherwise returns `false`.
 
@@ -197,7 +197,7 @@ implicitly in this macro.
 # Examples
 
 ```fennel
-(let [q (any [_ n (ipairs [:a 1 {} 2])]
+(let [q (for-some? [_ n (ipairs [:a 1 {} 2])]
           (= (type n) :number)) ;=> true
       ]
   (assert (= true q)))
@@ -216,4 +216,4 @@ implicitly in this macro.
                    (table.insert found))]
     `(accumulate ,iter-tbl (if ,pred-expr true ,found))))
 
-{: assert-type : map-values : unless : immutably : find-any : any}
+{: assert-type : map-values : unless : immutably : find-some : for-some?}

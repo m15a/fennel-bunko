@@ -3,8 +3,8 @@
                 : map-values
                 : unless
                 : immutably
-                : find-any
-                : any} :bunko.macros)
+                : find-some
+                : for-some?} :bunko.macros)
 
 (fn test-assert-type []
   (let [x {:a 1}
@@ -36,22 +36,22 @@
     (t.= [1 2] (immutably table.insert x 2))
     (t.= [1] x)))
 
-(fn test-find-any []
-  (let [(k v) (find-any [_ n (ipairs [2 2 3 5])] (= (% n 2) 1))]
+(fn test-find-some []
+  (let [(k v) (find-some [_ n (ipairs [2 2 3 5])] (= (% n 2) 1))]
     (t.= 3 k)
     (t.= 3 v))
-  (let [(k v) (find-any [k v (pairs {:a 1 :b :b :c :b})] (= v :b))]
+  (let [(k v) (find-some [k v (pairs {:a 1 :b :b :c :b})] (= v :b))]
     (t.is (or (= :b k) (= :c k))) ; Iterator may generate values in random order.
     (t.= :b v)))
 
-(fn test-any []
-  (t.= true (any [_ n (ipairs [2 2 3 5])] (= (% n 2) 1)))
-  (t.= false (any [k v (pairs {:a 1 :b 2})] (= k :z)))
-  (t.= false (any [_ n (ipairs [])] (= (% n 2) 1))))
+(fn test-for-some? []
+  (t.= true (for-some? [_ n (ipairs [2 2 3 5])] (= (% n 2) 1)))
+  (t.= false (for-some? [k v (pairs {:a 1 :b 2})] (= k :z)))
+  (t.= false (for-some? [_ n (ipairs [])] (= (% n 2) 1))))
 
 {: test-assert-type
  : test-map-values
  : test-unless
  : test-immutably
- : test-find-any
- : test-any}
+ : test-find-some
+ : test-for-some?}

@@ -8,7 +8,7 @@
 
  :test-requirements
  {"bunko/macros.fnl"
-  "(import-macros {: assert-type : map-values : unless : immutably : find-any : any} :bunko.macros)"
+  "(import-macros {: assert-type : map-values : unless : immutably : find-some : for-some?} :bunko.macros)"
   "bunko/string.fnl"
   "(import-macros {: assert-type} :bunko.macros)"
   "bunko/file.fnl"
@@ -25,8 +25,8 @@
                :assert-type
                :map-values
                :immutably
-               :find-any
-               :any]}
+               :find-some
+               :for-some?]}
 
   "bunko/string.fnl"
   {:description "Utilities for string manipulation."
