@@ -7,6 +7,9 @@ Miscellaneous macros.
 - [`assert-type`](#assert-type)
 - [`map-values`](#map-values)
 - [`immutably`](#immutably)
+- [`find-some`](#find-some)
+- [`for-some?`](#for-some)
+- [`for-all?`](#for-all)
 
 ## `unless`
 Function signature:
@@ -110,6 +113,86 @@ Note that it does not set the metatable of the copy to the original.
       ]
   (assert (= y.a 2))
   (assert (= x.a 1)))
+```
+
+## `find-some`
+Function signature:
+
+```
+(find-some bindings predicate-expression)
+```
+
+Find some values yielded by an iterator on which a predicate expression is truthy.
+
+It runs through an iterator and in each step evaluates a `predicate-expression`.
+If the evaluated result is truthy, it immediately returns the value(s) yielded
+by the iterator.
+
+Note that the `bindings` cannot have `&until` clause as the clause will be inserted
+implicitly in this macro.
+
+### Examples
+
+```fennel
+(let [(i v) (find-some [_ n (ipairs [:a 1 {} 2])]
+              (= (type n) :number)) ;=> 2	1
+      ]
+  (assert (and (= i 2) (= v 1))))
+
+(let [(k v) (find-some [k v (pairs {:a :A :b {} :c :cc})]
+              (and (= (type v) :string)
+                   (: v :match (.. "^" k)))) ;=> :c	:cc
+      ]
+  (assert (and (= k :c) (= v :cc))))
+```
+
+## `for-some?`
+Function signature:
+
+```
+(for-some? bindings predicate-expression)
+```
+
+Test if a predicate expression is truthy for some example yielded by an iterator.
+
+Similar to `find-some`, it runs through an iterator and in each step evaluates a
+`predicate-expression`. If the evaluated result is truthy, it immediately returns
+`true`; otherwise returns `false`.
+
+Note that the `bindings` cannot have `&until` clause as the clause will be inserted
+implicitly in this macro.
+
+### Examples
+
+```fennel
+(let [q (for-some? [_ n (ipairs [:a 1 {} 2])]
+          (= (type n) :number)) ;=> true
+      ]
+  (assert (= true q)))
+```
+
+## `for-all?`
+Function signature:
+
+```
+(for-all? bindings predicate-expression)
+```
+
+Test if a predicate expression is truthy for all yielded by an iterator.
+
+Similar to `for-some?`, but it checks whether a `predicate-expression` is truthy
+for all yielded by the iterator. If so, it returns `true`, otherwise returns `false`.
+
+Note that the `bindings` cannot have `&until` clause as the clause will be inserted
+implicitly in this macro.
+
+### Examples
+
+```fennel
+(let [q (for-all? [_ n (ipairs [:a 1 {} 2])]
+          (= (type n) :number)) ;=> false
+      ]
+  (assert (= false q)))
 ```
 
 
