@@ -122,8 +122,6 @@ is equivalent to
 
 where `copy` is a function to make a shallow copy of the `tbl`.
 
-Note that it does not set the metatable of the copy to the original.
-
 # Examples
 
 ```fennel
