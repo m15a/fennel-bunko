@@ -184,4 +184,36 @@ implicitly in this macro.
     `(let [found# (accumulate ,iter-tbl (when ,pred-expr ,kv-tbl))]
        (when found# (,%unpack found#)))))
 
-{: assert-type : map-values : unless : immutably : find-any}
+(fn any [iter-tbl pred-expr ...]
+  "Test if a predicate expression is truthy for any example yielded by an iterator.
+
+Similar to `find-any`, it runs through an iterator and in each step evaluates a
+`predicate-expression`. If the evaluated result is truthy, it immediately returns
+`true`; otherwise returns `false`.
+
+Note that the `bindings` cannot have `&until` clause as the clause will be inserted
+implicitly in this macro.
+
+# Examples
+
+```fennel
+(let [q (any [_ n (ipairs [:a 1 {} 2])]
+          (= (type n) :number)) ;=> true
+      ]
+  (assert (= true q)))
+```"
+  {:fnl/arglist [bindings predicate-expression]}
+  (assert (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
+          "expected iterator binding table")
+  (assert (not= nil pred-expr) "expected predicate expression")
+  (assert (= nil ...)
+          "expected only one expression; wrap multiple expressions with do")
+  (let [found `found#
+        iter-tbl (doto (copy iter-tbl)
+                   (table.insert 1 found)
+                   (table.insert 2 `false)
+                   (table.insert `&until)
+                   (table.insert found))]
+    `(accumulate ,iter-tbl (if ,pred-expr true ,found))))
+
+{: assert-type : map-values : unless : immutably : find-any : any}
