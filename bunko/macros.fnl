@@ -145,11 +145,11 @@ Note that it does not set the metatable of the copy to the original.
          (,mutate! ,(unpack args))))))
 
 (fn find-some [iter-tbl pred-expr ...]
-  "Find some values yielded by an iterator on which a predicate expression returns true.
+  "Find some values yielded by an iterator on which a predicate expression is truthy.
 
 It runs through an iterator and in each step evaluates a `predicate-expression`.
-If the evaluated result is truthy, it immediately returns the (multiple) values
-yielded by the iterator.
+If the evaluated result is truthy, it immediately returns the value(s) yielded
+by the iterator.
 
 Note that the `bindings` cannot have `&until` clause as the clause will be inserted
 implicitly in this macro.
@@ -219,7 +219,7 @@ implicitly in this macro.
 (fn for-all? [iter-tbl pred-expr ...]
   "Test if a predicate expression is truthy for all yielded by an iterator.
 
-Similar to `for-some`, but it checks whether a `predicate-expression` is truthy
+Similar to `for-some?`, but it checks whether a `predicate-expression` is truthy
 for all yielded by the iterator. If so, it returns `true`, otherwise returns `false`.
 
 Note that the `bindings` cannot have `&until` clause as the clause will be inserted
