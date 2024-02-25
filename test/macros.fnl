@@ -1,5 +1,6 @@
 (local t (require :faith))
-(import-macros {: assert-type : map-values : unless : immutably} :bunko.macros)
+(import-macros {: assert-type : map-values : unless : immutably : find-any}
+               :bunko.macros)
 
 (fn test-assert-type []
   (let [x {:a 1}
@@ -31,4 +32,16 @@
     (t.= [1 2] (immutably table.insert x 2))
     (t.= [1] x)))
 
-{: test-assert-type : test-map-values : test-unless : test-immutably}
+(fn test-find-any []
+  (let [(k v) (find-any [_ n (ipairs [2 2 3 5])] (= (% n 2) 1))]
+    (t.= 3 k)
+    (t.= 3 v))
+  (let [(k v) (find-any [k v (pairs {:a 1 :b :b :c :b})] (= v :b))]
+    (t.is (or (= :b k) (= :c k))) ; Iterator may generate values in random order.
+    (t.= :b v)))
+
+{: test-assert-type
+ : test-map-values
+ : test-unless
+ : test-immutably
+ : test-find-any}
