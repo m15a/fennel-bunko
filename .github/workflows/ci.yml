@@ -42,22 +42,3 @@ jobs:
       - name: Check format
         run: |
           nix develop .#ci-check-format --command bash -c "./build.fnl check-format"
-  generate-docs:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v25
-        with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: DeterminateSystems/magic-nix-cache-action@v3
-
-      - name: Generate docs
-        run: |
-          nix develop .#ci-generate-docs --command bash -c "./build.fnl docs"
-
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "auto: generate docs"
-          branch: ${{ github.head_ref }}
