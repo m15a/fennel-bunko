@@ -144,4 +144,113 @@ Note that it does not set the metatable of the copy to the original.
        (doto clone#
          (,mutate! ,(unpack args))))))
 
-{: assert-type : map-values : unless : immutably}
+(fn find-some [iter-tbl pred-expr ...]
+  "Find some values yielded by an iterator on which a predicate expression is truthy.
+
+It runs through an iterator and in each step evaluates a `predicate-expression`.
+If the evaluated result is truthy, it immediately returns the value(s) yielded
+by the iterator.
+
+Note that the `bindings` cannot have `&until` clause as the clause will be inserted
+implicitly in this macro.
+
+# Examples
+
+```fennel
+(let [(i v) (find-some [_ n (ipairs [:a 1 {} 2])]
+              (= (type n) :number)) ;=> 2\t1
+      ]
+  (assert (and (= i 2) (= v 1))))
+
+(let [(k v) (find-some [k v (pairs {:a :A :b {} :c :cc})]
+              (and (= (type v) :string)
+                   (: v :match (.. \"^\" k)))) ;=> :c\t:cc
+      ]
+  (assert (and (= k :c) (= v :cc))))
+```"
+  {:fnl/arglist [bindings predicate-expression]}
+  (assert (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
+          "expected iterator binding table")
+  (assert (not= nil pred-expr) "expected predicate expression")
+  (assert (= nil ...)
+          "expected only one expression; wrap multiple expressions with do")
+  (let [kv-tbl (fcollect [i 1 (- (length iter-tbl) 1)]
+                 (. iter-tbl i))
+        iter-tbl (doto (copy iter-tbl)
+                   (table.insert 1 `found#)
+                   (table.insert 2 `nil)
+                   (table.insert `&until)
+                   (table.insert `found#))]
+    `(let [found# (accumulate ,iter-tbl (when ,pred-expr ,kv-tbl))]
+       (when found# (,%unpack found#)))))
+
+(fn for-some? [iter-tbl pred-expr ...]
+  "Test if a predicate expression is truthy for some example yielded by an iterator.
+
+Similar to `find-some`, it runs through an iterator and in each step evaluates a
+`predicate-expression`. If the evaluated result is truthy, it immediately returns
+`true`; otherwise returns `false`.
+
+Note that the `bindings` cannot have `&until` clause as the clause will be inserted
+implicitly in this macro.
+
+# Examples
+
+```fennel
+(let [q (for-some? [_ n (ipairs [:a 1 {} 2])]
+          (= (type n) :number)) ;=> true
+      ]
+  (assert (= true q)))
+```"
+  {:fnl/arglist [bindings predicate-expression]}
+  (assert (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
+          "expected iterator binding table")
+  (assert (not= nil pred-expr) "expected predicate expression")
+  (assert (= nil ...)
+          "expected only one expression; wrap multiple expressions with do")
+  (let [found `found#
+        iter-tbl (doto (copy iter-tbl)
+                   (table.insert 1 found)
+                   (table.insert 2 `false)
+                   (table.insert `&until)
+                   (table.insert found))]
+    `(accumulate ,iter-tbl (if ,pred-expr true ,found))))
+
+(fn for-all? [iter-tbl pred-expr ...]
+  "Test if a predicate expression is truthy for all yielded by an iterator.
+
+Similar to `for-some?`, but it checks whether a `predicate-expression` is truthy
+for all yielded by the iterator. If so, it returns `true`, otherwise returns `false`.
+
+Note that the `bindings` cannot have `&until` clause as the clause will be inserted
+implicitly in this macro.
+
+# Examples
+
+```fennel
+(let [q (for-all? [_ n (ipairs [:a 1 {} 2])]
+          (= (type n) :number)) ;=> false
+      ]
+  (assert (= false q)))
+```"
+  {:fnl/arglist [bindings predicate-expression]}
+  (assert (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
+          "expected iterator binding table")
+  (assert (not= nil pred-expr) "expected predicate expression")
+  (assert (= nil ...)
+          "expected only one expression; wrap multiple expressions with do")
+  (let [found `found#
+        iter-tbl (doto (copy iter-tbl)
+                   (table.insert 1 found)
+                   (table.insert 2 `true)
+                   (table.insert `&until)
+                   (table.insert `(not ,found)))]
+    `(accumulate ,iter-tbl (if ,pred-expr ,found false))))
+
+{: assert-type
+ : map-values
+ : unless
+ : immutably
+ : find-some
+ : for-some?
+ : for-all?}
