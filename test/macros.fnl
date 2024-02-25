@@ -53,7 +53,8 @@
 (fn test-for-all? []
   (t.= true (for-all? [_ n (ipairs [1 3 3 5])] (= (% n 2) 1)))
   (t.= false (for-all? [k v (pairs {:a 1 :b 2})] (= k :a)))
-  (t.= true (for-all? [_ n (ipairs [])] (= (% n 2) 1)))) ; vacuous truth
+  ;; vacuous truth
+  (t.= true (for-all? [_ n (ipairs [])] (= (% n 2) 1))))
 
 {: test-assert-type
  : test-map-values
