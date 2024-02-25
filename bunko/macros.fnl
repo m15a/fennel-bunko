@@ -33,6 +33,10 @@
 (local unpack (or table.unpack _G.unpack))
 (local %unpack (if table.unpack `table.unpack `unpack))
 
+(fn copy [tbl]
+  (let [clone (collect [k v (pairs tbl)] k v)]
+    (setmetatable clone (getmetatable tbl))))
+
 (fn assert-type [expected & exprs]
   "Check if each of `expressions` is of the `expected` type.
 
@@ -131,10 +135,12 @@ Note that it does not set the metatable of the copy to the original.
 ```"
   {:fnl/arglist [mutator! table & args]}
   (let [%pairs `(fn [t#] (values next t# nil)) ; ignore __pairs metamethod
-        copy `(fn [tbl#]
-                (collect [k# v# (,%pairs tbl#)]
-                  (values k# v#)))]
-    `(let [clone# (,copy ,tbl)]
+        %copy `(fn [tbl#]
+                 (let [clone# (collect [k# v# (,%pairs tbl#)]
+                                k#
+                                v#)]
+                   (setmetatable clone# (getmetatable tbl#))))]
+    `(let [clone# (,%copy ,tbl)]
        (doto clone#
          (,mutate! ,(unpack args))))))
 
