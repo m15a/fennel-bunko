@@ -23,6 +23,14 @@
   (let [s (bm.standard-deviation [1])]
     (t.= nil s)))
 
+(fn test-standard-error []
+  (let [e (bm.standard-error [1 2 3 4 3 3 5 7])]
+    (t.almost= 0.6546537 e 1e-06))
+  (let [e (bm.standard-error [])]
+    (t.= nil e))
+  (let [e (bm.standard-error [1])]
+    (t.= nil e)))
+
 (fn test-median []
   (let [m (bm.median [1 2 3 4])]
     (t.almost= 2.5 m 1e-06))
@@ -33,4 +41,8 @@
   (let [m (bm.median [])]
     (t.= nil m)))
 
-{: test-mean : test-variance : test-standard-deviation}
+{: test-mean
+ : test-variance
+ : test-standard-deviation
+ : test-standard-error
+ : test-median}

@@ -67,6 +67,13 @@
   (case (variance sample)
     v (math.sqrt v)))
 
+(fn standard-error [sample]
+  "Return the standard error of numbers in a sequential `table`."
+  {:fnl/arglist [table]}
+  (case (variance sample)
+    v (let [n (length sample)]
+        (math.sqrt (/ v n)))))
+
 (fn median [sample]
   "Return the median of numbers in a sequential `table`."
   {:fnl/arglist [table]}
@@ -77,4 +84,4 @@
           (. sorted (/ (+ n 1) 2))
           (/ (+ (. sorted (/ n 2)) (. sorted (+ 1 (/ n 2)))) 2)))))
 
-{: mean : variance : standard-deviation : median}
+{: mean : variance : standard-deviation : standard-error : median}

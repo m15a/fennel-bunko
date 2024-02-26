@@ -72,4 +72,5 @@
    :doc-order [:mean
                :variance
                :standard-deviation
+               :standard-error
                :median]}}}
