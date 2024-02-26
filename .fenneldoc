@@ -65,4 +65,11 @@
                :union!
                :intersection!
                :difference!
-               :powerset]}}}
+               :powerset]}
+
+  "bunko/math.fnl"
+  {:description "Mathematical and statistical functions."
+   :doc-order [:mean
+               :variance
+               :standard-deviation
+               :median]}}}
