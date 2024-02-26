@@ -8,11 +8,19 @@
     (t.= nil m)))
 
 (fn test-variance []
-  (let [m (bm.variance [1 2 3 4])]
-    (t.almost= 1.66666667 m 1e-06))
-  (let [m (bm.variance [])]
-    (t.= nil m))
-  (let [m (bm.variance [1])]
-    (t.= nil m)))
+  (let [v (bm.variance [1 2 3 4])]
+    (t.almost= 1.66666667 v 1e-06))
+  (let [v (bm.variance [])]
+    (t.= nil v))
+  (let [v (bm.variance [1])]
+    (t.= nil v)))
 
-{: test-mean : test-variance}
+(fn test-standard-deviation []
+  (let [s (bm.standard-deviation [1 2 3 4])]
+    (t.almost= 1.290994 s 1e-06))
+  (let [s (bm.standard-deviation [])]
+    (t.= nil s))
+  (let [s (bm.standard-deviation [1])]
+    (t.= nil s)))
+
+{: test-mean : test-variance : test-standard-deviation}

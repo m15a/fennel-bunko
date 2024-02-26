@@ -60,4 +60,10 @@
           sigma2 (- (. mu 2) (^ (. mu 1) 2))]
       (* (/ n (- n 1)) sigma2))))
 
-{: mean : variance}
+(fn standard-deviation [sample]
+  "Return the standard deviation of numbers in a sequential `table`."
+  {:fnl/arglist [table]}
+  (case (variance sample)
+    v (math.sqrt v)))
+
+{: mean : variance : standard-deviation}
