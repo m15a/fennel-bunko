@@ -31,6 +31,7 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
+(import-macros {: immutably} :bunko.macros)
 
 (macro sample-has? [n sample]
   "Check if the `sample` has at least `n` examples."
@@ -66,4 +67,14 @@
   (case (variance sample)
     v (math.sqrt v)))
 
-{: mean : variance : standard-deviation}
+(fn median [sample]
+  "Return the median of numbers in a sequential `table`."
+  {:fnl/arglist [table]}
+  (when (sample-has? 1 sample)
+    (let [sorted (immutably table.sort sample)
+          n (length sample)]
+      (if (= 1 (% n 2))
+          (. sorted (/ (+ n 1) 2))
+          (/ (+ (. sorted (/ n 2)) (. sorted (+ 1 (/ n 2)))) 2)))))
+
+{: mean : variance : standard-deviation : median}
