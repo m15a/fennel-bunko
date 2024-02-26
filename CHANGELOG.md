@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning][2].
     - `find-some` finds one example that satisfies a given predicate expression,
     - `for-some?` tests the above and returns boolean instead, and
     - `for-all?` tests a predicate expression is satisfied for all examples.
+- Basic statistical functions in `bunko.math` module: `mean`, `variance`,
+  `standard-deviation`, `standard-error`, and `median`.
 
 ## [0.1.0][v0.1.0] (2024-02-24)
 
