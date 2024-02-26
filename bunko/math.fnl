@@ -40,16 +40,20 @@
     `(and ,(unpack checks))))
 
 (fn mean [sample]
-  "Return the mean of numbers in a sequential `table`."
-  {:fnl/arglist [table]}
+  "Return the `sample` mean.
+
+`sample` should be a sequential table of numbers, containing at least one.
+Otherwise, it returns `nil`."
   (when (sample-has? 1 sample)
     (accumulate [mu 0 i x (ipairs sample)]
       (let [alpha (/ 1 i)]
         (+ (* (- 1 alpha) mu) (* alpha x))))))
 
 (fn variance [sample]
-  "Return the unbiased variance of numbers in a sequential `table`."
-  {:fnl/arglist [table]}
+  "Return the unbiased `sample` variance.
+
+`sample` should be a sequential table of numbers, containing at least two.
+Otherwise, it returns `nil`."
   (when (sample-has? 2 sample)
     (let [mu (accumulate [mu (doto [0 0] (tset 0 0)) i x (ipairs sample)]
                (let [alpha (/ 1 i)
@@ -62,21 +66,28 @@
       (* (/ n (- n 1)) sigma2))))
 
 (fn standard-deviation [sample]
-  "Return the standard deviation of numbers in a sequential `table`."
-  {:fnl/arglist [table]}
+  "Return the `sample` standard deviation.
+
+This is just the square root of unbiased sample variance.
+`sample` should be a sequential table of numbers, containing at least two.
+Otherwise, it returns `nil`."
   (case (variance sample)
     v (math.sqrt v)))
 
 (fn standard-error [sample]
-  "Return the standard error of numbers in a sequential `table`."
-  {:fnl/arglist [table]}
+  "Return the `sample` standard error.
+
+`sample` should be a sequential table of numbers, containing at least two.
+Otherwise, it returns `nil`."
   (case (variance sample)
     v (let [n (length sample)]
         (math.sqrt (/ v n)))))
 
 (fn median [sample]
-  "Return the median of numbers in a sequential `table`."
-  {:fnl/arglist [table]}
+  "Return the `sample` median.
+
+`sample` should be a sequential table of numbers, containing at least one.
+Otherwise, it returns `nil`."
   (when (sample-has? 1 sample)
     (let [sorted (immutably table.sort sample)
           n (length sample)]
