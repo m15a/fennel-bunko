@@ -71,6 +71,7 @@
                   pkgs.faith-unstable
                   pkgs.fnlfmt-unstable
                   pkgs.fenneldoc
+                  pkgs.fennel-ls
                 ] ++ (with fennel.lua.pkgs; [
                   # NOTE: lua5_4.pkgs.readline is currently broken.
                   readline
