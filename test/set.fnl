@@ -47,6 +47,21 @@
            (bs.difference! (doto {:a 1}
                              (bs.union! {:a true :c {}})))))))
 
+(fn every? [pred? xs]
+  (accumulate [yes true _ x (ipairs xs) &until (not yes)]
+    (if (pred? x) yes false)))
+
+(fn some? [pred? xs]
+  (accumulate [yes false _ x (ipairs xs) &until yes]
+    (if (pred? x) true yes)))
+
+(fn set= [x y]
+  (and (accumulate [yes true k _ (pairs x) &until (not yes)] (. y k))
+       (accumulate [yes true k _ (pairs y) &until (not yes)] (. x k))))
+
+(fn member? [e xs]
+  (some? (partial set= e) xs))
+
 (fn test-powerset []
   (let [x {:a :yes :b :no :c 1}
         actual (bs.powerset x)
@@ -57,21 +72,9 @@
                   {:a :yes :b :no}
                   {:b :no :c 1}
                   {:c 1 :a :yes}
-                  {:a :yes :b :no :c 1}]
-        table= (fn [x y]
-                 (and (= (length x) (length y))
-                      (accumulate [_ true k v (pairs x)]
-                        (= v (. y k)))))
-        all? (fn [pred? xs]
-               (accumulate [yes true _ x (ipairs xs) &until (not yes)]
-                 (if (pred? x) yes false)))
-        any? (fn [pred? xs]
-               (accumulate [yes false _ x (ipairs xs) &until yes]
-                 (if (pred? x) true yes)))
-        elem? (fn [e xs]
-                (any? #(table= e $) xs))]
-    (t.is (and (all? #(elem? $ actual) expected)
-               (all? #(elem? $ expected) actual)))))
+                  {:a :yes :b :no :c 1}]]
+    (t.is (and (every? #(member? $ actual) expected)
+               (every? #(member? $ expected) actual)))))
 
 {: test-subset?
  : test-union!
