@@ -47,12 +47,12 @@
 
 (fn test-for-some? []
   (t.= true (for-some? [_ n (ipairs [2 2 3 5])] (= (% n 2) 1)))
-  (t.= false (for-some? [k v (pairs {:a 1 :b 2})] (= k :z)))
+  (t.= false (for-some? [k _ (pairs {:a 1 :b 2})] (= k :z)))
   (t.= false (for-some? [_ n (ipairs [])] (= (% n 2) 1))))
 
 (fn test-for-all? []
   (t.= true (for-all? [_ n (ipairs [1 3 3 5])] (= (% n 2) 1)))
-  (t.= false (for-all? [k v (pairs {:a 1 :b 2})] (= k :a)))
+  (t.= false (for-all? [k _ (pairs {:a 1 :b 2})] (= k :a)))
   ;; vacuous truth
   (t.= true (for-all? [_ n (ipairs [])] (= (% n 2) 1))))
 

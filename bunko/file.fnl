@@ -30,7 +30,6 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(local unpack (or table.unpack _G.unpack))
 (import-macros {: assert-type : map-values} :bunko.macros)
 (local {: escape-regex} (require :bunko.string))
 
@@ -169,9 +168,9 @@ Compatible with GNU coreutils' `dirname`.
 Raises an error if the file handle is closed or the file cannot be opened.
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually."
-  (case (io.type file/path)
-    any (file/path:read :*a)
-    _ (case (io.open file/path)
+  (if (io.type file/path)
+      (file/path:read :*a)
+      (case (io.open file/path)
         file (file:read :*a)
         (_ msg) (error msg))))
 
@@ -187,9 +186,9 @@ in `with-open` macro or to close it manually."
 Raises an error if the file handle is closed or the file cannot be opened.
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually."
-  (case (io.type file/path)
-    any (%read-lines-from-file file/path)
-    _ (case (io.open file/path)
+  (if (io.type file/path)
+      (%read-lines-from-file file/path)
+      (case (io.open file/path)
         file (%read-lines-from-file file)
         (_ msg) (error msg))))
 

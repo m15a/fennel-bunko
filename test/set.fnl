@@ -60,7 +60,7 @@
                   {:a :yes :b :no :c 1}]
         table= (fn [x y]
                  (and (= (length x) (length y))
-                      (accumulate [yes true k v (pairs x)]
+                      (accumulate [_ true k v (pairs x)]
                         (= v (. y k)))))
         all? (fn [pred? xs]
                (accumulate [yes true _ x (ipairs xs) &until (not yes)]

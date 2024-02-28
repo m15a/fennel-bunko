@@ -30,7 +30,6 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(local unpack (or table.unpack _G.unpack))
 (import-macros {: assert-type} :bunko.macros)
 
 (macro %copy [tbl]
