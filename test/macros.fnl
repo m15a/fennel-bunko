@@ -5,7 +5,7 @@
                 : immutably
                 : find-some
                 : for-some?
-                : for-all?} :bunko.macros)
+                : for-all?} :bunko)
 
 (fn test-assert-type []
   (let [x {:a 1}

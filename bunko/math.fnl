@@ -31,7 +31,7 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-(import-macros {: immutably} :bunko.macros)
+(import-macros {: immutably} :bunko)
 
 (macro sample-has? [n sample]
   "Check if the `sample` has at least `n` examples."

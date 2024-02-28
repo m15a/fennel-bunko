@@ -30,7 +30,7 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(import-macros {: assert-type} :bunko.macros)
+(import-macros {: assert-type} :bunko)
 
 (fn escape-regex [str]
   "Escape magic characters of Lua regex pattern in the `string`.

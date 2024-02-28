@@ -30,7 +30,7 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(import-macros {: assert-type} :bunko.macros)
+(import-macros {: assert-type} :bunko)
 
 (macro %copy [tbl]
   ;; Lua >=5.2: `__pairs` may be changed from its default,

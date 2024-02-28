@@ -30,7 +30,7 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(import-macros {: assert-type : map-values} :bunko.macros)
+(import-macros {: assert-type : map-values} :bunko)
 (local {: escape-regex} (require :bunko.string))
 
 (fn exists? [path]

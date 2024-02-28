@@ -7,7 +7,7 @@
  :project-version :0.1.0
 
  :test-requirements
- {"bunko/macros.fnl"
+ {"bunko/init-macros.fnl"
   "(import-macros {: assert-type
                    : map-values
                    : unless
@@ -15,18 +15,18 @@
                    : find-some
                    : for-some?
                    : for-all?}
-                  :bunko.macros)"
+                  :bunko)"
   "bunko/string.fnl"
-  "(import-macros {: assert-type} :bunko.macros)"
+  "(import-macros {: assert-type} :bunko)"
   "bunko/file.fnl"
-  "(import-macros {: assert-type : map-values} :bunko.macros)"
+  "(import-macros {: assert-type : map-values} :bunko)"
   "bunko/table.fnl"
-  "(import-macros {: assert-type} :bunko.macros)"
+  "(import-macros {: assert-type} :bunko)"
   "bunko/set.fnl"
-  "(import-macros {: assert-type : unless} :bunko.macros)"}
+  "(import-macros {: assert-type : unless} :bunko)"}
 
  :modules-info
- {"bunko/macros.fnl"
+ {"bunko/init-macros.fnl"
   {:description "Miscellaneous macros."
    :doc-order [:unless
                :assert-type

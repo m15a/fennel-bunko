@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning][2].
 
 ## Unreleased
 
+### Changed
+
+- To import macros, do `(import-macros {: macro-name} :bunko)` now.
+
 ### Added
 
 - `find-some`, `for-some?`, and `for-all?` macros
