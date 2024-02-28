@@ -1,4 +1,4 @@
-# Macros.fnl (0.1.0)
+# Init-macros.fnl (0.1.0)
 Miscellaneous macros.
 
 **Table of contents**
