@@ -1,4 +1,4 @@
-# Math.fnl (0.1.0)
+# Math.fnl (1.0.0)
 Mathematical and statistical functions.
 
 **Table of contents**

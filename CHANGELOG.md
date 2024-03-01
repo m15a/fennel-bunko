@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning][2].
 
 ## Unreleased
 
+## [1.0.0][v1.0.0] (2024-03-01)
+
 ### Changed
 
 - To import macros, do `(import-macros {: macro-name} :bunko)` now.
@@ -36,4 +38,5 @@ and this project adheres to [Semantic Versioning][2].
 
 - Initial release of development version.
 
+[v1.0.0]: https://github.com/m15a/fennel-bunko/tree/v1.0.0
 [v0.1.0]: https://github.com/m15a/fennel-bunko/tree/v0.1.0

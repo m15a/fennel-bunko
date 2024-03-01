@@ -1,4 +1,4 @@
-# Set.fnl (0.1.0)
+# Set.fnl (1.0.0)
 Set algebra on Lua table.
 
 Here, each table is regarded as a set of keys. A non-nil value, including

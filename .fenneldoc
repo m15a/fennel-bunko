@@ -4,7 +4,7 @@
 
 {:insert-copyright false
  :project-license :Unlicense
- :project-version :0.1.0
+ :project-version :1.0.0
 
  :test-requirements
  {"bunko/init-macros.fnl"

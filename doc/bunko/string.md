@@ -1,4 +1,4 @@
-# String.fnl (0.1.0)
+# String.fnl (1.0.0)
 Utilities for string manipulation.
 
 **Table of contents**

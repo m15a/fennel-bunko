@@ -1,4 +1,4 @@
-# File.fnl (0.1.0)
+# File.fnl (1.0.0)
 File and file path utilities.
 
 **Table of contents**

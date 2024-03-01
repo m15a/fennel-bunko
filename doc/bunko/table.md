@@ -1,4 +1,4 @@
-# Table.fnl (0.1.0)
+# Table.fnl (1.0.0)
 Table extras.
 
 **Table of contents**

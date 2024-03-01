@@ -1,4 +1,4 @@
-# Init.fnl (0.1.0)
+# Init.fnl (1.0.0)
 General utilities.
 
 **Table of contents**
