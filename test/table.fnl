@@ -32,11 +32,14 @@
 (fn test-update! []
   (let [x {:a 1}]
     (bt.update! x :b #(+ 1 $) 0)
-    (t.= x {:a 1 :b 1}))
+    (t.= {:a 1 :b 1} x))
+  (let [x {:a false}]
+    (bt.update! x :a #$ true)
+    (t.= {:a false} x))
   (t.= nil (bt.update! {} :a #$ :a)))
 
 (fn test-merge! []
-  (t.= {:a 2 :b 2} (doto {:a 1} (bt.merge! {:a 2} {:b 2})))
+  (t.= {:a false :b 2} (doto {:a 1} (bt.merge! {:a false} {:b 2})))
   (t.= nil (bt.merge! {} {}))
   (t.error "table expected" #(bt.merge!)))
 

@@ -91,7 +91,10 @@ It finally returns `nil`.
                (= counts.c 3))))
 ```"
   {:fnl/arglist [table key function default]}
-  (tset tbl key (function (or (. tbl key) default))))
+  (tset tbl key (function (let [found (. tbl key)]
+                            (if (not= nil found)
+                                found
+                                default)))))
 
 (fn merge! [tbl ...]
   "Merge all the non-sequential `tables` into the first `table`.

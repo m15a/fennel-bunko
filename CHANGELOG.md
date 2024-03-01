@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning][2].
 - Basic statistical functions in `bunko.math` module: `mean`, `variance`,
   `standard-deviation`, `standard-error`, and `median`.
 
+### Fixed
+
+- `bunko.table.update!`: fix a bug that `false` value was replaced with the default.
+
 ## [0.1.0][v0.1.0] (2024-02-24)
 
 - Initial release of development version.
