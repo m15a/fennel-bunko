@@ -60,7 +60,10 @@
                :append!]}
 
   "bunko/set.fnl"
-  {:description "Set algebra on Lua table, where each table is regarded as a set of keys."
+  {:description "Set algebra on Lua table.
+
+Here, each table is regarded as a set of keys. A non-nil value, including
+`false`, indicates that the corresponding key exists in the set."
    :doc-order [:subset?
                :union!
                :intersection!

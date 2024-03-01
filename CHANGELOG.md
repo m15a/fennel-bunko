@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning][2].
 ### Fixed
 
 - `bunko.table.update!`: fix a bug that `false` value was replaced with the default.
+- `bunko.set.{subset?,intersection!}`: fix a bug that `false` value indicates no
+  element in a set.
 
 ## [0.1.0][v0.1.0] (2024-02-24)
 

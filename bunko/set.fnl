@@ -1,5 +1,8 @@
 ;;;; ==========================================================================
-;;;; Set algebra on Lua table, where each table is regarded as a set of keys.
+;;;; Set algebra on Lua table.
+;;;;
+;;;; Here, each table is regarded as a set of keys. A non-nil value, including
+;;;; `false`, indicates that the corresponding key exists in the set.
 ;;;; ==========================================================================
 ;;;; 
 ;;;; URL: https://github.com/m15a/fennel-bunko
@@ -34,15 +37,15 @@
 (local {: copy : merge! : append!} (require :bunko.table))
 
 (fn subset? [left right]
-  "Return `true` if the `left` table, regarded as a set, is subset of the `right`.
+  "Return `true` if the `left` table as a set is subset of the `right` table as a set.
 
 Return `false` otherwise.
 
 # Examples
 
 ```fennel
-(let [x {:a 1}
-      y {:a true :b :b}
+(let [x {:a true}
+      y {:a false :b :b}
       q1 (subset? x y) ;=> true
       q2 (subset? y x) ;=> false
       ]
@@ -50,14 +53,12 @@ Return `false` otherwise.
 ```"
   (assert-type :table left right)
   (accumulate [yes true key _ (pairs left) &until (not yes)]
-    (if (. right key) yes false)))
+    (if (not= nil (. right key)) yes false)))
 
 (fn union! [...]
   "Modify the `table` to be the union of all the `table` and `tables`.
 
-Each table is regarded as a set of keys, and its values just indicate that
-the elements (i.e., keys) exist in the set.
-`union!` is actually equivalent to `bunko.table.merge!`.
+It is actually equivalent to `bunko.table.merge!`.
 
 # Examples 
 
@@ -73,13 +74,12 @@ the elements (i.e., keys) exist in the set.
 (fn intersection! [tbl ...]
   "Modify the `table` to be the intersection of all the `table` and `tables`.
 
-Each table is regarded as a set of keys, and its values just indicate that
-the elements (i.e., keys) exist in the set.
+Note that even a `false` value indicates the corresponding key exists in the set.
 
 # Examples 
 
 ```fennel
-(let [x (doto {:a :a :b :b} (intersection! {:a 1})) ;=> {:a :a}
+(let [x (doto {:a :a :b :b} (intersection! {:a false})) ;=> {:a :a}
       ]
   (assert (and (= x.a :a)
                (= (. x :b) nil))))
@@ -88,18 +88,17 @@ the elements (i.e., keys) exist in the set.
   (let [to (assert-type :table tbl)]
     (each [_ from (ipairs [(assert-type :table ...)])]
       (each [key _ (pairs to)]
-        (unless (. from key) (tset to key nil))))))
+        (unless (not= nil (. from key)) (tset to key nil))))))
 
 (fn difference! [tbl ...]
   "Modify the `table` to be the difference between the `table` and the `tables`.
 
-Each table is regarded as a set of keys, and its values just indicate that
-the elements (i.e., keys) exist in the set.
+Note that even a `false` value indicates the corresponding key exists in the set.
 
 # Examples 
 
 ```fennel
-(let [x (doto {:a :a :b :b} (difference! {:a 1} {:c :c})) ;=> {:b :b}
+(let [x (doto {:a :a :b :b} (difference! {:a false} {:c :c})) ;=> {:b :b}
       ]
   (assert (and (= x.b :b)
                (= (. x :a) nil))))
@@ -112,9 +111,6 @@ the elements (i.e., keys) exist in the set.
 
 (fn powerset [tbl]
   "Return, as a sequential table, the power set of the `table`.
-
-Each table is regarded as a set of keys, and its values just indicate that
-the elements (i.e., keys) exist in the set.
 
 # Examples
 
