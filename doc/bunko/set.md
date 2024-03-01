@@ -7,6 +7,7 @@ Here, each table is regarded as a set of keys. A non-nil value, including
 **Table of contents**
 
 - [`subset?`](#subset)
+- [`set=`](#set)
 - [`union!`](#union)
 - [`intersection!`](#intersection)
 - [`difference!`](#difference)
@@ -32,6 +33,26 @@ Return `false` otherwise.
       q2 (subset? y x) ;=> false
       ]
   (assert (and q1 (not q2))))
+```
+
+## `set=`
+Function signature:
+
+```
+(set= & tables)
+```
+
+Return `true` if all the `tables` are of the same set.
+
+### Examples
+
+```fennel
+(let [x {:a false}
+      y {:a true}
+      z {:a 1}
+      q (set= x y z) ;=> true
+      ]
+  (assert (= q true)))
 ```
 
 ## `union!`
