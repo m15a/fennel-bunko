@@ -16,6 +16,8 @@
                    : for-some?
                    : for-all?}
                   :bunko)"
+  "bunko/init.fnl"
+  "(import-macros {: for-all?} :bunko)"
   "bunko/string.fnl"
   "(import-macros {: assert-type} :bunko)"
   "bunko/file.fnl"
@@ -35,6 +37,10 @@
                :find-some
                :for-some?
                :for-all?]}
+
+  "bunko/init.fnl"
+  {:description "General utilities."
+   :doc-order [:equal?]}
 
   "bunko/string.fnl"
   {:description "Utilities for string manipulation."

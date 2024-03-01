@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning][2].
 - Basic statistical functions in `bunko.math` module: `mean`, `variance`,
   `standard-deviation`, `standard-error`, and `median`.
 - `bunko.set.set=` for equality check between tables as sets.
+- `bunko.equal?` for recursive table comparison.
 
 ### Fixed
 
