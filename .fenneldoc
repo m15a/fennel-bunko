@@ -15,17 +15,7 @@
                    : find-some
                    : for-some?
                    : for-all?}
-                  :bunko)"
-  "bunko/init.fnl"
-  "(import-macros {: for-all?} :bunko)"
-  "bunko/string.fnl"
-  "(import-macros {: assert-type} :bunko)"
-  "bunko/file.fnl"
-  "(import-macros {: assert-type : map-values} :bunko)"
-  "bunko/table.fnl"
-  "(import-macros {: assert-type} :bunko)"
-  "bunko/set.fnl"
-  "(import-macros {: assert-type : unless : for-all?} :bunko)"}
+                  :bunko)"}
 
  :modules-info
  {"bunko/init-macros.fnl"
