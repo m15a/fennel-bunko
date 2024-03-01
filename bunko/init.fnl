@@ -37,8 +37,9 @@
 (fn M.table= [x y]
   (let [checked-x-keys {}]
     (and (for-all? [x-key x-value (pairs x)]
-                   (do (tset checked-x-keys x-key true)
-                       (M.rec= x-value (. y x-key))))
+                   (do
+                     (tset checked-x-keys x-key true)
+                     (M.rec= x-value (. y x-key))))
          (for-all? [y-key _ (pairs y)] (. checked-x-keys y-key)))))
 
 (fn M.rec= [x y]

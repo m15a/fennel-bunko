@@ -36,7 +36,8 @@
 (fn exists? [path]
   "Return `true` if a file at the `path` exists."
   (case (io.open path)
-    any (do (any:close) true)
+    any (do
+          (any:close) true)
     _ false))
 
 (fn %normalize [path]

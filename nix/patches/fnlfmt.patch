@@ -11,10 +11,10 @@ index c69fdff..f1433fe 100644
  
  You can skip reformatting of top-level forms by placing a comment
 diff --git a/cli.fnl b/cli.fnl
-index 55d6c6d..bc082d8 100644
+index 55d6c6d..520ec0b 100644
 --- a/cli.fnl
 +++ b/cli.fnl
-@@ -5,17 +5,41 @@
+@@ -5,10 +5,11 @@
  (local {: format-file : version} (require :fnlfmt))
  
  (fn help []
@@ -22,7 +22,7 @@ index 55d6c6d..bc082d8 100644
 -  (print "With the --fix argument, multiple files can be specified")
 -  (print "and changes are made in-place; otherwise prints the")
 -  (print "formatted file to stdout."))
-+  (print "Usage: fnlfmt [--no-comments] [--indent-do-as-if] [--fix] [--check] FILENAME...")
++  (print "Usage: fnlfmt [--no-comments] [--fix] [--check] FILENAME...")
 +  (print "With the --fix or --check argument, multiple files can be specified.")
 +  (print "With the --fix argument, formats all the files in-place;")
 +  (print "with the --check argument, only checks if all the files are formatted;")
@@ -30,20 +30,10 @@ index 55d6c6d..bc082d8 100644
  
  (local options [])
  
- (for [i (length arg) 1 -1]
--  (when (= :--no-comments (. arg i))
--    (set options.no-comments true)
--    (table.remove arg i)))
-+  (match (. arg i)
-+    :--no-comments
-+    (do
-+      (set options.no-comments true)
-+      (table.remove arg i))
-+    :--indent-do-as-if
-+    (do
-+      (set options.indent-do-as-if true)
-+      (table.remove arg i))))
-+
+@@ -17,6 +18,23 @@
+     (set options.no-comments true)
+     (table.remove arg i)))
+ 
 +(fn check-file [filename]
 +  (let [old (with-open [in (assert (io.open filename))] (in:read :*a))
 +        new (format-file filename options)]
@@ -60,10 +50,11 @@ index 55d6c6d..bc082d8 100644
 +          (io.stderr:write "All files are formatted.\n")
 +          (os.exit true))
 +        (os.exit false))))
- 
++
  (fn fix [filename]
    (let [new (format-file filename options)
-@@ -26,6 +50,7 @@
+         f (assert (io.open filename :w))]
+@@ -26,6 +44,7 @@
  (match arg
    [:--version] (print (.. "fnlfmt version " version))
    [:--fix & filenames] (each [_ filename (pairs filenames)] (fix filename))
@@ -71,20 +62,3 @@ index 55d6c6d..bc082d8 100644
    (where (or [:--help] ["-?"] [:-h])) (help)
    [filename nil] (io.stdout:write (format-file filename options))
    _ (help))
-diff --git a/fnlfmt.fnl b/fnlfmt.fnl
-index 07d6d5c..8112b71 100644
---- a/fnlfmt.fnl
-+++ b/fnlfmt.fnl
-@@ -389,8 +389,11 @@ When f returns a truthy value, recursively walks the children."
-   (io.stderr:write (string.format "File not found: %s\n" filename))
-   (os.exit 1))
- 
--(fn format-file [filename {: no-comments}]
-+(fn format-file [filename {: no-comments : indent-do-as-if}]
-   "Read source from a file and return formatted source."
-+  (when indent-do-as-if
-+    (set force-initial-newline.do nil)
-+    (set one-element-per-line-forms.do true))
-   (let [f (match filename
-             "-" io.stdin
-             _ (or (io.open filename :r) (abort filename)))
