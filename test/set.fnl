@@ -15,6 +15,19 @@
     (t.= false (bs.subset? c b))
     (t.= true (bs.subset? c c))))
 
+(fn test-set= []
+  (let [a {}
+        a* {}
+        b {:a true}
+        b* {:a false}
+        c {:a b :b a}
+        c* {:a b :b a*}
+        c** {:a b :b a*}]
+    (t.= true (bs.set= a a*))
+    (t.= true (bs.set= b b*))
+    (t.= true (bs.set= c c* c**))
+    (t.= false (bs.set= a b c))))
+
 (fn test-union! []
   (let [a {:a 1}
         b {:b :b}
@@ -82,6 +95,7 @@
                (every? #(member? $ expected) actual)))))
 
 {: test-subset?
+ : test-set=
  : test-union!
  : test-intersection!
  : test-difference!

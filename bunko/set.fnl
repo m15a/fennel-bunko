@@ -33,7 +33,7 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(import-macros {: assert-type : unless} :bunko)
+(import-macros {: assert-type : unless : for-all?} :bunko)
 (local {: copy : merge! : append!} (require :bunko.table))
 
 (fn subset? [left right]
@@ -54,6 +54,23 @@ Return `false` otherwise.
   (assert-type :table left right)
   (accumulate [yes true key _ (pairs left) &until (not yes)]
     (if (not= nil (. right key)) yes false)))
+
+(fn set= [...]
+  "Return `true` if all the `tables` are of the same set.
+
+# Examples
+
+```fennel
+(let [x {:a false}
+      y {:a true}
+      z {:a 1}
+      q (set= x y z) ;=> true
+      ]
+  (assert (= q true)))
+```"
+  {:fnl/arglist [& tables]}
+  (for-all? [_ x (ipairs [...])]
+            (for-all? [_ y (ipairs [...])] (or (= x y) (subset? x y)))))
 
 (fn union! [...]
   "Modify the `table` to be the union of all the `table` and `tables`.
@@ -129,4 +146,4 @@ Note that even a `false` value indicates the corresponding key exists in the set
       (append! (icollect [_ s (ipairs sets)]
                  (doto (copy s) (tset key value)))))))
 
-{: subset? : union! : intersection! : difference! : powerset}
+{: subset? : set= : union! : intersection! : difference! : powerset}

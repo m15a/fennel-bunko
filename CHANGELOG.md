@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning][2].
     - `for-all?` tests a predicate expression is satisfied for all examples.
 - Basic statistical functions in `bunko.math` module: `mean`, `variance`,
   `standard-deviation`, `standard-error`, and `median`.
+- `bunko.set.set=` for equality check between tables as sets.
 
 ### Fixed
 

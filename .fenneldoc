@@ -23,7 +23,7 @@
   "bunko/table.fnl"
   "(import-macros {: assert-type} :bunko)"
   "bunko/set.fnl"
-  "(import-macros {: assert-type : unless} :bunko)"}
+  "(import-macros {: assert-type : unless : for-all?} :bunko)"}
 
  :modules-info
  {"bunko/init-macros.fnl"
@@ -65,6 +65,7 @@
 Here, each table is regarded as a set of keys. A non-nil value, including
 `false`, indicates that the corresponding key exists in the set."
    :doc-order [:subset?
+               :set=
                :union!
                :intersection!
                :difference!
