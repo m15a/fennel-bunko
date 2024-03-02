@@ -70,7 +70,8 @@ Return `false` otherwise.
 ```"
   {:fnl/arglist [& tables]}
   (for-all? [_ x (ipairs [...])]
-            (for-all? [_ y (ipairs [...])] (or (= x y) (subset? x y)))))
+    (for-all? [_ y (ipairs [...])]
+      (or (= x y) (subset? x y)))))
 
 (fn union! [...]
   "Modify the `table` to be the union of all the `table` and `tables`.
