@@ -43,11 +43,11 @@
 
 (shell-task :format
   "Format sources."
-  "fnlfmt --fix bunko/*.fnl test/*.fnl")
+  "fnlfmt --custom-body-forms unless,find-some,for-some?,for-all? --fix bunko/*.fnl test/*.fnl")
 
 (shell-task :check-format
   "Check if all sources are formatted."
-  "fnlfmt --check bunko/*.fnl test/*.fnl")
+  "fnlfmt --custom-body-forms unless,find-some,for-some?,for-all? --check bunko/*.fnl test/*.fnl")
 
 (shell-task :docs
   "Build API documents from sources."
