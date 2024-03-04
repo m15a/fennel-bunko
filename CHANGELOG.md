@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning][2].
 
 ## Unreleased
 
+### Added
+
+- `bunko.table.unpack-then`: a helper to fill `unquote-splicing`'s nich.
+
 ## [1.0.0][v1.0.0] (2024-03-01)
 
 ### Changed
