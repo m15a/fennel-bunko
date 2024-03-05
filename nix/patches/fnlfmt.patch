@@ -1,39 +1,21 @@
-diff --git a/README.md b/README.md
-index c69fdff..f1433fe 100644
---- a/README.md
-+++ b/README.md
-@@ -7,6 +7,7 @@ Format your Fennel!
-     $ make install PREFIX=$HOME # or sudo make install in /usr/local
-     $ ./fnlfmt mycode.fnl # prints formatted code to standard out
-     $ ./fnlfmt --fix mycode.fnl # replaces the file with formatted code
-+    $ ./fnlfmt --check mycode.fnl # checks if the file is formatted
-     $ curl localhost:8080/my-file.fnl | ./fnlfmt - # pipe to stdin
- 
- You can skip reformatting of top-level forms by placing a comment
 diff --git a/cli.fnl b/cli.fnl
-index 55d6c6d..11ea332 100644
+index 069a2f0..55c2e75 100644
 --- a/cli.fnl
 +++ b/cli.fnl
-@@ -5,17 +5,47 @@
+@@ -5,7 +5,11 @@
  (local {: format-file : version} (require :fnlfmt))
  
  (fn help []
--  (print "Usage: fnlfmt [--no-comments] [--fix] FILENAME...")
--  (print "With the --fix argument, multiple files can be specified")
--  (print "and changes are made in-place; otherwise prints the")
--  (print "formatted file to stdout."))
+-  (print "Usage: fnlfmt [--no-comments] [--fix] [--check] FILENAME...")
 +  (print "Usage: fnlfmt [--no-comments] [--custom-body-forms LIST] [--fix] [--check] FILENAME...")
 +  (print "With the --custom-body-forms argument, formats extra forms")
 +  (print "as body forms such like those starting with `with-` or `def`.")
 +  (print "The custom body forms are specified by LIST, a comma separated list")
 +  (print "of symbols each of which begins each custom body form.")
-+  (print "With the --fix or --check argument, multiple files can be specified.")
-+  (print "With the --fix argument, formats all the files in-place;")
-+  (print "with the --check argument, only checks if all the files are formatted;")
-+  (print "otherwise prints the formatted file to stdout."))
- 
- (local options [])
- 
+   (print "With the --fix or --check argument, multiple files can be specified.")
+   (print "With the --fix argument, formats all the files in-place;")
+   (print "with the --check argument, only checks if all the files are formatted;")
+@@ -16,7 +20,15 @@
  (for [i (length arg) 1 -1]
    (when (= :--no-comments (. arg i))
      (set options.no-comments true)
@@ -47,34 +29,9 @@ index 55d6c6d..11ea332 100644
 +           (each [s (string.gmatch comma-separated-symbols "[^,]+")]
 +             (tset symbols-set s true))
 +           symbols-set))))
-+
-+(fn check-file [filename]
-+  (let [old (with-open [in (assert (io.open filename))] (in:read :*a))
-+        new (format-file filename options)]
-+    (or (= old new)
-+        (do
-+          (io.stderr:write (string.format "Not formatted: %s\n" filename))
-+          false))))
-+
-+(fn check-files [filenames]
-+  (let [ok? (accumulate [ok? true _ filename (pairs filenames)]
-+              (and ok? (check-file filename)))]
-+    (if ok?
-+        (do
-+          (io.stderr:write "All files are formatted.\n")
-+          (os.exit true))
-+        (os.exit false))))
  
- (fn fix [filename]
-   (let [new (format-file filename options)
-@@ -26,6 +56,7 @@
- (match arg
-   [:--version] (print (.. "fnlfmt version " version))
-   [:--fix & filenames] (each [_ filename (pairs filenames)] (fix filename))
-+  [:--check & filenames] (check-files filenames)
-   (where (or [:--help] ["-?"] [:-h])) (help)
-   [filename nil] (io.stdout:write (format-file filename options))
-   _ (help))
+ (fn check-file [filename]
+   (let [old (with-open [in (assert (io.open filename))] (in:read :*a))
 diff --git a/fnlfmt.fnl b/fnlfmt.fnl
 index 07d6d5c..103710f 100644
 --- a/fnlfmt.fnl
