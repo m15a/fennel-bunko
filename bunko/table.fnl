@@ -144,48 +144,56 @@ It returns `nil`.
   "Append the rest arguments to the `table` and then unpack it.
 
 Fennel does not have `unquote-splicing`, which most Lisp family languages use to
-manipulate forms in macros. Instead, Fennel employs `unpack`, or `table.unpack`, to
+manipulate forms in macros. Instead, Fennel employs `unpack` (or `table.unpack`) to
 achieve this. However, `unpack` splices all table contents only if that occurs at the
 tail position in a form. Otherwise, merely the first content will be spliced.
 For example,
 
 ```fennel :skip-test
-(local unpack (or table.unpack _G.unpack))
-
-(fn every? [iter-tbl pred-expr]
-  `(accumulate [ok?# true ,(unpack iter-tbl) &until (not ok?#)]
-     (if ,pred-expr ok?# false)))
+>> (macro every? [iter-tbl pred-expr]
+     (let [unpack (or table.unpack _G.unpack)]
+       `(accumulate [ok?# true ,(unpack iter-tbl) &until (not ok?#)]
+         (if ,pred-expr true false))))
+nil
+>> (every? [_ x (ipairs [])] x)
+Compile error: unknown:4:?: Compile error: invalid character: &
 ```
 
-In the above macro, the tail forms `&until (not ok?#)` will be lost. This behavior
-might be counter-intuitive for Lispers. To be correct, we may want to write a kind of
+Counter-intuitively, the tail forms `&until (not ok?#)` will be lost. To be correct,
+we may want to write a kind of
 
 ```fennel :skip-test
-(fn every? [iter-tbl pred-expr]
-  (let [ok? `ok?#
-        iter-tbl* (doto (copy iter-tbl)
-                    (table.insert `&until)
-                    (table.insert `(not ,ok?)))]
-    `(accumulate [,ok? true ,(unpack iter-tbl*)]
-       (if ,pred-expr ,ok? false))))
+>> (macro every? [iter-tbl pred-expr]
+     (let [unpack (or table.unpack _G.unpack)
+           copy (fn [tbl] (collect [k v (pairs tbl)] k v))
+           ok? `ok?#
+           iter-tbl* (doto (copy iter-tbl)
+                       (table.insert `&until)
+                       (table.insert `(not ,ok?)))]
+       `(accumulate [,ok? true ,(unpack iter-tbl*)]
+          (if ,pred-expr true false))))
+nil
+>> (every? [_ x (ipairs [true false true])] x)
+false
 ```
 
-which is a bit tedious. `unpack-then` is a helper to slightly improve this situation.
+This is a bit tedious. `unpack-then` is a helper to slightly improve this situation.
 Using `unpack-then`, we can write
 
 ```fennel :skip-test
-(fn every? [iter-tbl pred-expr]
-  (let [ok? `ok?#]
+(macro every? [iter-tbl pred-expr]
+  (let [{: unpack-then} (require :bunko.table)
+        ok? `ok?#]
     `(accumulate [,ok? true ,(unpack-then iter-tbl `&until `(not ,ok?))]
-       (if ,pred-expr ,ok? false))))
+       (if ,pred-expr true false))))
 ```
 
-Even though, `unquote-splicing`, i.e. `,@`, should be far better:
+Even though, if `unquote-splicing`, i.e. `,@`, were available, it should be nicer:
 
 ```fennel :skip-test
 (macro every? [iter-tbl pred-expr]
   `(accumulate [ok?# true ,@iter-tbl &until (not ok?#)]
-     (if ,pred-expr ok?# false)
+     (if ,pred-expr true false)
 ```"
   {:fnl/arglist [table ...]}
   (unpack (immutably append! tbl [...])))
