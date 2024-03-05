@@ -139,7 +139,7 @@ For example,
 ```fennel
 >> (macro every? [iter-tbl pred-expr]
      (let [unpack (or table.unpack _G.unpack)]
-       `(accumulate [ok?### true ,(unpack iter-tbl) &until (not ok?#)]
+       `(accumulate [ok?# true ,(unpack iter-tbl) &until (not ok?#)]
          (if ,pred-expr true false))))
 nil
 >> (every? [_ x (ipairs [])] x)
@@ -185,7 +185,7 @@ Even though, if `unquote-splicing`, i.e. `,@`, were available, it should be nice
 
 ```fennel
 (macro every? [iter-tbl pred-expr]
-  `(accumulate [ok?### true ,@iter-tbl &until (not ok?#)]
+  `(accumulate [ok?# true ,@iter-tbl &until (not ok?#)]
      (if ,pred-expr true false)
 ```
 
