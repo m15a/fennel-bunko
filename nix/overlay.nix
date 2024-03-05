@@ -37,4 +37,8 @@ in
   fnlfmt-unstable = prev.fnlfmt-unstable.overrideAttrs (_: {
     patches = [ ./patches/fnlfmt.patch ];
   });
+
+  fenneldoc = prev.fenneldoc.overrideAttrs (_: {
+    patches = [ ./patches/fenneldoc.patch ];
+  });
 }

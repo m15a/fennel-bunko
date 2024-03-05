@@ -1,0 +1,38 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index aa62fd4..e3ffcaf 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,5 +1,6 @@
+ ## Fenneldoc 1.0.1 (???)
+ 
++- Fix gensym hash increment (e.g. `x#` -> `x###`) in markdown fences.
+ - Update cljlib
+ 
+ ## Fenneldoc 1.0.0 (2023-05-16)
+diff --git a/src/markdown.fnl b/src/markdown.fnl
+index 5b2006b..e6617e1 100644
+--- a/src/markdown.fnl
++++ b/src/markdown.fnl
+@@ -70,6 +70,13 @@
+       (pick-values 1 (string.gsub docstring "(\n?%s*```%s*fennel)[ \t]+:skip%-test" "%1"))
+       docstring))
+ 
++(defn- increment-section-header-level [docstring]
++  (if (string.match docstring "^%s*# ")
++      (pick-values 1 (string.gsub docstring "(^%s*#) " "%1## "))
++      (string.match docstring "\n%s*# ")
++      (pick-values 1 (string.gsub docstring "(\n%s*#) " "%1## "))
++      docstring))
++
+ (defn- gen-item-documentation*
+   "Generate documentation from `docstring` and `conj` it to `lines`.
+ 
+@@ -81,7 +88,7 @@
+         (if (string? docstring)
+             (-> docstring
+                 (remove-test-skip)
+-                (: :gsub "# " "### ")
++                (increment-section-header-level)
+                 (gen-cross-links toc mode))
+             "**Undocumented**")
+         ""))
