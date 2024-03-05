@@ -146,8 +146,14 @@ nil
 Compile error: unknown:4:?: Compile error: invalid character: &
 ```
 
-Counter-intuitively, the tail forms `&until (not ok?#)` will be lost. To be correct,
-we may want to write a kind of
+Counter-intuitively, the tail forms in `iter-tbl` will be lost:
+
+```fennel
+>> (macrodebug (every? [_ x (ipairs [])] x))
+(do (var ok?_2_auto true) (each [_ &until (not ok?_2_auto)] (set ok?_2_auto (if x true false))) ok?_2_auto)
+```
+
+To be correct, we may want to write a kind of
 
 ```fennel
 >> (macro every? [iter-tbl pred-expr]
