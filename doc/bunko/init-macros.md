@@ -4,7 +4,6 @@ Miscellaneous macros.
 **Table of contents**
 
 - [`unless`](#unless)
-- [`assert-type`](#assert-type)
 - [`map-values`](#map-values)
 - [`immutably`](#immutably)
 - [`find-some`](#find-some)
@@ -19,40 +18,6 @@ Function signature:
 ```
 
 If the `condition` is falsy, evaluate each of `body` sequentially.
-
-## `assert-type`
-Function signature:
-
-```
-(assert-type expected & expressions)
-```
-
-Check if each of `expressions` is of the `expected` type.
-
-Return evaluated `expressions` as multiple values if all the checks are passed;
-otherwise raise an error caused by the check which failed first.
-
-Note that the `expected` type should be determined at compile time.
-So, it cannot be done like:
-
-```fennel
-(assert-type (if condition :string :number) x)
-```
-
-### Examples
-
-```fennel
-(let [x {:a 1}
-      y {:b 2}]
-  (assert-type :table x y))
-; => {:a 1}	{:b 2}
-```
-
-```fennel
-(let [a 1 b :string c {:c :c}]
-  (assert-type :number a b c))
-; => runtime error: number expected, got string
-```
 
 ## `map-values`
 Function signature:
