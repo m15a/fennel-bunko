@@ -30,7 +30,37 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
+(local {: view} (require :fennel))
 (import-macros {: for-all?} :bunko)
+
+(fn assert-type [expected x]
+  "Check if `x` is of the `expected` type.
+
+Return evaluated `x` if passed the check; otherwise raise an error.
+
+# Examples
+
+```fennel
+(let [x {:a 1}] (assert-type :table x)) ; => {:a 1}
+```
+
+```fennel :skip-test
+(let [b :string] (assert-type :number b))
+; => runtime error: number expected, got \"string\"
+```"
+  (assert (case expected
+            :nil true
+            :boolean true
+            :number true
+            :string true
+            :function true
+            :userdata true
+            :thread true
+            :table true)
+          (string.format "expected type invalid: %s" (view expected)))
+  (let [fmt (.. expected " expected, got %s")]
+    (assert (= expected (type x)) (string.format fmt (view x)))
+    x))
 
 (local M {})
 
@@ -68,4 +98,4 @@ otherwise returns `false`.
   (for-all? [_ t (ipairs [y ...])]
     (M.rec= x t)))
 
-{: equal?}
+{: assert-type : equal?}

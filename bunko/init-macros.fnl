@@ -38,48 +38,6 @@
   (let [clone (collect [k v (pairs tbl)] k v)]
     (setmetatable clone (getmetatable tbl))))
 
-(fn assert-type [expected & exprs]
-  "Check if each of `expressions` is of the `expected` type.
-
-Return evaluated `expressions` as multiple values if all the checks are passed;
-otherwise raise an error caused by the check which failed first.
-
-Note that the `expected` type should be determined at compile time.
-So, it cannot be done like:
-
-```fennel :skip-test
-(assert-type (if condition :string :number) x)
-```
-
-# Examples
-
-```fennel
-(let [x {:a 1}
-      y {:b 2}]
-  (assert-type :table x y))
-; => {:a 1}\t{:b 2}
-```
-
-```fennel :skip-test
-(let [a 1 b :string c {:c :c}]
-  (assert-type :number a b c))
-; => runtime error: number expected, got string
-```"
-  {:fnl/arglist [expected & expressions]}
-  (assert-compile (= :string (type expected))
-                  "expected type invalid or missing" expected)
-  (let [fmt (.. expected " expected, got %s")
-        checks (accumulate [checks [] _ expr (ipairs exprs)]
-                 (doto checks
-                   (table.insert `(let [actual# (type ,expr)]
-                                    (assert (= actual# ,expected)
-                                            (string.format ,fmt actual#))
-                                    ,expr))))]
-    (case (length checks)
-      0 nil
-      1 (. checks 1)
-      _ `(values ,(unpack checks)))))
-
 (fn map-values [function & varg]
   "Apply the `function` on each of `varg` and return the results as multiple values.
 
@@ -246,10 +204,4 @@ implicitly in this macro.
                    (table.insert `(not ,found)))]
     `(accumulate ,iter-tbl (if ,pred-expr ,found false))))
 
-{: assert-type
- : map-values
- : unless
- : immutably
- : find-some
- : for-some?
- : for-all?}
+{: map-values : unless : immutably : find-some : for-some? : for-all?}

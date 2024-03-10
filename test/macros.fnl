@@ -1,22 +1,10 @@
 (local t (require :faith))
-(import-macros {: assert-type
-                : map-values
+(import-macros {: map-values
                 : unless
                 : immutably
                 : find-some
                 : for-some?
                 : for-all?} :bunko)
-
-(fn test-assert-type []
-  (let [x {:a 1}
-        y {:b 2}
-        (x_ y_) (assert-type :table x y)]
-    (t.= x x_)
-    (t.= y y_))
-  (let [a 1
-        b :bee
-        c {:c true}]
-    (t.error "number expected, got string" #(assert-type :number a b c))))
 
 (fn test-map-values []
   (let [(x y z) (map-values #(+ 1 $) 1 2 3)]
@@ -64,8 +52,7 @@
   (t.= true (for-all? [_ n (ipairs [])]
               (= (% n 2) 1))))
 
-{: test-assert-type
- : test-map-values
+{: test-map-values
  : test-unless
  : test-immutably
  : test-find-some

@@ -33,7 +33,8 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(import-macros {: assert-type : unless : for-all?} :bunko)
+(import-macros {: unless : for-all?} :bunko)
+(local {: assert-type} (require :bunko))
 (local {: copy : merge! : append!} (require :bunko.table))
 
 (fn subset? [left right]
@@ -51,7 +52,8 @@ Return `false` otherwise.
       ]
   (assert (and q1 (not q2))))
 ```"
-  (assert-type :table left right)
+  (assert-type :table left)
+  (assert-type :table right)
   (accumulate [yes true key _ (pairs left) &until (not yes)]
     (if (not= nil (. right key)) yes false)))
 
@@ -104,9 +106,10 @@ Note that even a `false` value indicates the corresponding key exists in the set
 ```"
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
-    (each [_ from (ipairs [(assert-type :table ...)])]
-      (each [key _ (pairs to)]
-        (unless (not= nil (. from key)) (tset to key nil))))))
+    (each [_ from (ipairs [...])]
+       (assert-type :table from) 
+       (each [key _ (pairs to)]
+         (unless (not= nil (. from key)) (tset to key nil))))))
 
 (fn difference! [tbl ...]
   "Modify the `table` to be the difference between the `table` and the `tables`.
@@ -123,7 +126,8 @@ Note that even a `false` value indicates the corresponding key exists in the set
 ```"
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
-    (each [_ from (ipairs [(assert-type :table ...)])]
+    (each [_ from (ipairs [...])]
+      (assert-type :table from) 
       (each [key _ (pairs from)]
         (tset to key nil)))))
 

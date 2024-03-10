@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning][2].
 
 ## Unreleased
 
+### Changed
+
+- `assert-type` is now a function instead of macro. In addition, it doesn't handle
+  `...`. This is because, for example, what is intended in `(assert-type :number nil)`
+  and `(assert-type :number ...)` when `...` is `nil` is unclear. In the former case,
+  one would want to check if the `nil` value's type is `number`, and in the latter
+  case, skipping assertions would be the goal.
+
 ### Added
 
 - `bunko.table.unpack-then`: a helper to fill `unquote-splicing`'s nich.

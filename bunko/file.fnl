@@ -30,7 +30,8 @@
 ;;;; 
 ;;;; For more information, please refer to <https://unlicense.org>
 
-(import-macros {: assert-type : map-values} :bunko)
+(import-macros {: map-values} :bunko)
+(local {: assert-type} (require :bunko))
 (local {: escape-regex} (require :bunko.string))
 
 (fn exists? [path]
@@ -41,6 +42,7 @@
     _ false))
 
 (fn %normalize [path]
+  (assert-type :string path)
   (pick-values 1 (path:gsub "/+" "/")))
 
 (fn normalize [...]
@@ -57,7 +59,7 @@ Trailing `/`'s will remain.
                (= y \"a/b/\"))))
 ```"
   {:fnl/arglist [& paths]}
-  (map-values %normalize (assert-type :string ...)))
+  (map-values %normalize ...))
 
 (fn %remove-suffix [path suffix]
   (let [stripped (path:match (.. "^(.*)" (escape-regex suffix) "$"))]
@@ -83,7 +85,9 @@ This is for convenience on manipulating hidden files.
       ]
   (assert (= removed \"/a/b/.ext\")))
 ```"
-  (%remove-suffix (assert-type :string path suffix)))
+  (assert-type :string path)
+  (assert-type :string suffix)
+  (%remove-suffix path suffix))
 
 (fn basename [path ?suffix]
   "Remove leading directory components from the `path`.
@@ -119,7 +123,7 @@ Compatible with GNU coreutils' `basename`.
                  (= h \"b\")
                  (= i \".ext\"))))
 ```"
-  (let [path (%normalize (assert-type :string path))]
+  (let [path (%normalize path)]
     (if (= "/" path)
         path
         (case-try (path:match "([^/]*)/?$")
@@ -161,7 +165,7 @@ Compatible with GNU coreutils' `dirname`.
                (= h \".\") (= i \".\") (= j \".\"))))
 ```"
   {:fnl/arglist [& paths]}
-  (map-values %dirname (assert-type :string ...)))
+  (map-values %dirname ...))
 
 (fn read-all [file/path]
   "Read all contents from a file handle or a file path, specified by `file/path`.

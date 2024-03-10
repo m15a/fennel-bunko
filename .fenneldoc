@@ -8,8 +8,7 @@
 
  :test-requirements
  {"bunko/init-macros.fnl"
-  "(import-macros {: assert-type
-                   : map-values
+  "(import-macros {: map-values
                    : unless
                    : immutably
                    : find-some
@@ -21,7 +20,6 @@
  {"bunko/init-macros.fnl"
   {:description "Miscellaneous macros."
    :doc-order [:unless
-               :assert-type
                :map-values
                :immutably
                :find-some
@@ -30,7 +28,8 @@
 
   "bunko/init.fnl"
   {:description "General utilities."
-   :doc-order [:equal?]}
+   :doc-order [:assert-type
+               :equal?]}
 
   "bunko/string.fnl"
   {:description "Utilities for string manipulation."

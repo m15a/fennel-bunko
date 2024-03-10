@@ -31,8 +31,8 @@
 ;;;; For more information, please refer to <https://unlicense.org>
 
 (local unpack (or table.unpack _G.unpack))
-
-(import-macros {: assert-type : immutably} :bunko)
+(import-macros {: immutably} :bunko)
+(local {: assert-type} (require :bunko))
 
 (macro %copy [tbl]
   ;; Lua >=5.2: `__pairs` may be changed from its default,
@@ -114,8 +114,8 @@ It returns `nil`.
 ```"
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
-    (each [_ from (ipairs [(assert-type :table ...)])]
-      (each [key value (pairs from)]
+    (each [_ from (ipairs [...])]
+      (each [key value (pairs (assert-type :table from))]
         (tset to key value)))))
 
 (fn append! [tbl ...]
@@ -136,8 +136,8 @@ It returns `nil`.
 ```"
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
-    (each [_ from (ipairs [(assert-type :table ...)])]
-      (each [_ x (ipairs from)]
+    (each [_ from (ipairs [...])]
+      (each [_ x (ipairs (assert-type :table from))]
         (table.insert to x)))))
 
 (fn unpack-then [tbl ...]
