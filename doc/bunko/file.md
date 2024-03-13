@@ -27,17 +27,25 @@ Function signature:
 (normalize & paths)
 ```
 
-Remove duplicated `/`'s in the `paths`.
+Return normalized `paths`.
 
-Trailing `/`'s will remain.
+The following things will be done.
+
+1. remove duplicated separators such like `a//b///c`;
+3. resolve parent directory path element (i.e., `a/b/../d` => `a/d`);
+2. remove current directory path element (i.e., `a/./b` => `a/b`); and
+4. finally, if `path` gets empty string, replace it with `.`. However,
+   if `path` is empty string at the beginning, it returns as is.
+
+Trailing slash will be left as is.
 
 ### Examples
 
 ```fennel
-(let [(x y) (normalize "//a/b" "a//b/") ;=> "/a/b"	"a/b/"
+(let [(x y) (normalize "//a/b" "a/./../b/") ;=> "/a/b"	"b/"
       ]
   (assert (and (= x "/a/b")
-               (= y "a/b/"))))
+               (= y "b/"))))
 ```
 
 ## `remove-suffix`

@@ -34,6 +34,8 @@
 (local {: assert-type} (require :bunko))
 (local {: escape-regex} (require :bunko.string))
 
+(local path-separator (package.config:sub 1 1))
+
 (fn exists? [path]
   "Return `true` if a file at the `path` exists."
   (case (io.open path)
@@ -43,20 +45,43 @@
 
 (fn %normalize [path]
   (assert-type :string path)
-  (pick-values 1 (path:gsub "/+" "/")))
+  (if (= "" path)
+      ""
+      (let [sep path-separator
+            trailing-sep? (path:match (.. sep "$"))
+            sandwiched-dot (.. sep "%." sep)]
+        (var path (path:gsub (.. sep "+") sep)) ; // => /
+        (while (path:match sandwiched-dot)
+          (set path (path:gsub sandwiched-dot sep))) ; /./ => /
+        (set path (path:gsub (.. "[^" sep "]+" sep "%.%.") ".")) ; a/.. => .
+        (while (path:match sandwiched-dot)
+          (set path (path:gsub sandwiched-dot sep))) ; /./ => / again!
+        (set path (path:gsub (.. "^%." sep) "")) ; ^./ => ""
+        (set path (path:gsub (.. sep "%.$") "")) ; /.$ => ""
+        (if (path:match (.. sep "$")) path
+            (= "" path) (if trailing-sep? (.. "." sep) ".")
+            (if trailing-sep? (.. path sep) path)))))
 
 (fn normalize [...]
-  "Remove duplicated `/`'s in the `paths`.
+  "Return normalized `paths`.
 
-Trailing `/`'s will remain.
+The following things will be done.
+
+1. remove duplicated separators such like `a//b///c`;
+3. resolve parent directory path element (i.e., `a/b/../d` => `a/d`);
+2. remove current directory path element (i.e., `a/./b` => `a/b`); and
+4. finally, if `path` gets empty string, replace it with `.`. However,
+   if `path` is empty string at the beginning, it returns as is.
+
+Trailing slash will be left as is.
 
 # Examples
 
 ```fennel
-(let [(x y) (normalize \"//a/b\" \"a//b/\") ;=> \"/a/b\"\t\"a/b/\"
+(let [(x y) (normalize \"//a/b\" \"a/./../b/\") ;=> \"/a/b\"\t\"b/\"
       ]
   (assert (and (= x \"/a/b\")
-               (= y \"a/b/\"))))
+               (= y \"b/\"))))
 ```"
   {:fnl/arglist [& paths]}
   (map-values %normalize ...))

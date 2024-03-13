@@ -8,7 +8,14 @@
 (fn test-normalize []
   (let [(x y) (bf.normalize ://a/b :a//b/)]
     (t.= :/a/b x)
-    (t.= :a/b/ y)))
+    (t.= :a/b/ y))
+  (t.= :a/b/c/ (bf.normalize :a//b///c/))
+  (t.= :a/d (bf.normalize :a/b/../d))
+  (t.= :a/ (bf.normalize :a/b/../))
+  (t.= "../" (bf.normalize "../"))
+  (t.= "./" (bf.normalize "./"))
+  (t.= "./" (bf.normalize :./a/../))
+  (t.= "." (bf.normalize "./.")))
 
 (fn test-remove-suffix []
   (t.= :/a/b (bf.remove-suffix :/a/b.ext :.ext))

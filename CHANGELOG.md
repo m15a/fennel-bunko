@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning][2].
 
 ### Added
 
+- `bunko.file.normalize` is extended to handle not only duplicated path separators
+  but also redundant current directory element (e.g., `././`) and parent directory
+  element (e.g., `a/b/..`).
 - `bunko.table.unpack-then`: a helper to fill `unquote-splicing`'s nich.
 
 ## [1.0.0][v1.0.0] (2024-03-01)
