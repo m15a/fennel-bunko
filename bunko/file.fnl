@@ -87,8 +87,9 @@ Trailing slash will be left as is.
   (map-values %normalize ...))
 
 (fn %remove-suffix [path suffix]
-  (let [stripped (path:match (.. "^(.*)" (escape-regex suffix) "$"))]
-    (if (or (= "" stripped) (stripped:match "/$"))
+  (let [sep path-separator
+        stripped (path:match (.. "^(.*)" (escape-regex suffix) "$"))]
+    (if (or (= "" stripped) (stripped:match (.. sep "$")))
         path
         stripped)))
 
@@ -148,10 +149,11 @@ Compatible with GNU coreutils' `basename`.
                  (= h \"b\")
                  (= i \".ext\"))))
 ```"
-  (let [path (%normalize path)]
-    (if (= "/" path)
+  (let [sep path-separator
+        path (%normalize path)]
+    (if (= sep path)
         path
-        (case-try (path:match "([^/]*)/?$")
+        (case-try (path:match (.. "([^" sep "]*)" sep "?$"))
           path (if ?suffix
                    (%remove-suffix path (assert-type :string ?suffix))
                    path)
@@ -159,11 +161,12 @@ Compatible with GNU coreutils' `basename`.
           (catch _ (error "unknown path matching error"))))))
 
 (fn %dirname [path]
-  (let [path (%normalize path)]
-    (if (= "/" path)
+  (let [sep path-separator
+        path (%normalize path)]
+    (if (= sep path)
         path
-        (case-try (path:match "(.-)/?$")
-          path (path:match "^(.*)/")
+        (case-try (path:match (.. "(.-)" sep "?$"))
+          path (path:match (.. "^(.*)" sep))
           path path
           (catch _ ".")))))
 

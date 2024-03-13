@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning][2].
   element (e.g., `a/b/..`).
 - `bunko.table.unpack-then`: a helper to fill `unquote-splicing`'s nich.
 
+### Fixed
+
+- Functions in `bunko.file` now handle both POSIX and Windows path separators.
+
 ## [1.0.0][v1.0.0] (2024-03-01)
 
 ### Changed
