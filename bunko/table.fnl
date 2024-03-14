@@ -140,7 +140,7 @@ It returns `nil`.
       (each [_ x (ipairs (assert-type :table from))]
         (table.insert to x)))))
 
-(fn unpack-then [tbl ...]
+(fn unpack/then [tbl ...]
   "Append the rest arguments to the `table` and then unpack it.
 
 Fennel does not have `unquote-splicing`, which most Lisp family languages use to
@@ -183,14 +183,14 @@ nil
 false
 ```
 
-This is a bit tedious. `unpack-then` is a helper to slightly improve this situation.
-Using `unpack-then`, we can write
+This is a bit tedious. `unpack/then` is a helper to slightly improve this situation.
+Using `unpack/then`, we can write
 
 ```fennel :skip-test
 (macro every? [iter-tbl pred-expr]
-  (let [{: unpack-then} (require :bunko.table)
+  (let [{: unpack/then} (require :bunko.table)
         ok? `ok?#]
-    `(accumulate [,ok? true ,(unpack-then iter-tbl `&until `(not ,ok?))]
+    `(accumulate [,ok? true ,(unpack/then iter-tbl `&until `(not ,ok?))]
        (if ,pred-expr true false))))
 ```
 
@@ -204,4 +204,4 @@ Even though, if `unquote-splicing`, i.e. `,@`, were available, it should be nice
   {:fnl/arglist [table ...]}
   (unpack (immutably append! tbl [...])))
 
-{: copy : keys : items : update! : merge! : append! : unpack-then}
+{: copy : keys : items : update! : merge! : append! : unpack/then}

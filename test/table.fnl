@@ -48,12 +48,12 @@
   (t.= nil (bt.append! [] []))
   (t.error "table expected" #(bt.append!)))
 
-(fn test-unpack-then []
+(fn test-unpack/then []
   (let [ns [1 2 3]]
-    (t.= 4 (math.max (bt.unpack-then ns 4)))
+    (t.= 4 (math.max (bt.unpack/then ns 4)))
     (t.= [1 2 3] ns))
   (let [ws [:a :b]]
-    (t.= "a b" (string.format "%s %s" (bt.unpack-then ws :c)))))
+    (t.= "a b" (string.format "%s %s" (bt.unpack/then ws :c)))))
 
 {: test-copy-non-table
  : test-copy-simple-table
@@ -64,4 +64,4 @@
  : test-update!
  : test-merge!
  : test-append!
- : test-unpack-then}
+ : test-unpack/then}

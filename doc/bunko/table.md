@@ -9,7 +9,7 @@ Table extras.
 - [`update!`](#update)
 - [`merge!`](#merge)
 - [`append!`](#append)
-- [`unpack-then`](#unpack-then)
+- [`unpack/then`](#unpackthen)
 
 ## `copy`
 Function signature:
@@ -121,11 +121,11 @@ It returns `nil`.
                (= (. x 4) 4))))
 ```
 
-## `unpack-then`
+## `unpack/then`
 Function signature:
 
 ```
-(unpack-then table ...)
+(unpack/then table ...)
 ```
 
 Append the rest arguments to the `table` and then unpack it.
@@ -170,14 +170,14 @@ nil
 false
 ```
 
-This is a bit tedious. `unpack-then` is a helper to slightly improve this situation.
-Using `unpack-then`, we can write
+This is a bit tedious. `unpack/then` is a helper to slightly improve this situation.
+Using `unpack/then`, we can write
 
 ```fennel
 (macro every? [iter-tbl pred-expr]
-  (let [{: unpack-then} (require :bunko.table)
+  (let [{: unpack/then} (require :bunko.table)
         ok? `ok?#]
-    `(accumulate [,ok? true ,(unpack-then iter-tbl `&until `(not ,ok?))]
+    `(accumulate [,ok? true ,(unpack/then iter-tbl `&until `(not ,ok?))]
        (if ,pred-expr true false))))
 ```
 

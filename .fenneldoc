@@ -53,7 +53,7 @@
                :update!
                :merge!
                :append!
-               :unpack-then]}
+               :unpack/then]}
 
   "bunko/set.fnl"
   {:description "Set algebra on Lua table.
