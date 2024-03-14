@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning][2].
 
 ### Added
 
+- `bunko.file.make-directory`: a wrapper for `mkdir`.
 - `bunko.file.normalize` is extended to handle not only duplicated path separators
   but also redundant current directory element (e.g., `././`) and parent directory
   element (e.g., `a/b/..`).
