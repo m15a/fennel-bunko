@@ -10,6 +10,7 @@ File and file path utilities.
 - [`dirname`](#dirname)
 - [`read-all`](#read-all)
 - [`read-lines`](#read-lines)
+- [`make-directory`](#make-directory)
 
 ## `exists?`
 Function signature:
@@ -168,6 +169,22 @@ Read all lines from a file handle or a file path, specified by `file/path`.
 Raises an error if the file handle is closed or the file cannot be opened.
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually.
+
+## `make-directory`
+Function signature:
+
+```
+(make-directory path parents? mode)
+```
+
+Make a directory of the `path`. Just a thin wrapper for `mkdir` command.
+
+If `parents?` is truthy, add `--parents` option. If `mode` is string or
+number, add `--mode` option with the `mode`.
+
+It returns multiple values. The first value is `true` or `nil`, indicating
+whether succeeded or failed to make the directory; the second string teaches
+you the type of the third value, which is exit status or terminated signal.
 
 
 ---
