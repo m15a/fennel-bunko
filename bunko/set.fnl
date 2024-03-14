@@ -107,9 +107,9 @@ Note that even a `false` value indicates the corresponding key exists in the set
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
     (each [_ from (ipairs [...])]
-       (assert-type :table from) 
-       (each [key _ (pairs to)]
-         (unless (not= nil (. from key)) (tset to key nil))))))
+      (assert-type :table from)
+      (each [key _ (pairs to)]
+        (unless (not= nil (. from key)) (tset to key nil))))))
 
 (fn difference! [tbl ...]
   "Modify the `table` to be the difference between the `table` and the `tables`.
@@ -127,7 +127,7 @@ Note that even a `false` value indicates the corresponding key exists in the set
   {:fnl/arglist [table & tables]}
   (let [to (assert-type :table tbl)]
     (each [_ from (ipairs [...])]
-      (assert-type :table from) 
+      (assert-type :table from)
       (each [key _ (pairs from)]
         (tset to key nil)))))
 

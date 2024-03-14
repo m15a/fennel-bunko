@@ -6,20 +6,17 @@
         x_ (b.assert-type :table x)]
     (t.= x x_))
   (let [y :bee]
-    (t.error "number expected, got \"bee\""
-             #(b.assert-type :number y))))
+    (t.error "number expected, got \"bee\"" #(b.assert-type :number y))))
 
 (fn test-assert-type-checks-nil []
-  (t.error "number expected, got nil"
-           #(b.assert-type :number nil)))
+  (t.error "number expected, got nil" #(b.assert-type :number nil)))
 
 (fn test-assert-type-evaluates-target-only-once []
   (let [x []
         y []
-        x_1 (b.assert-type :table
-                            (do
-                              (table.insert y 1)
-                              x))]
+        x_1 (b.assert-type :table (do
+                                    (table.insert y 1)
+                                    x))]
     (t.= x x_1)
     (t.= [1] y)))
 
