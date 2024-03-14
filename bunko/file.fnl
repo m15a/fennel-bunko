@@ -43,24 +43,36 @@
           (any:close) true)
     _ false))
 
+(fn trailing-sep? [path]
+  (if (path:match (.. path-separator "$")) true false))
+
 (fn %normalize [path]
-  (assert-type :string path)
-  (if (= "" path)
-      ""
-      (let [sep path-separator
-            trailing-sep? (path:match (.. sep "$"))
-            sandwiched-dot (.. sep "%." sep)]
-        (var path (path:gsub (.. sep "+") sep)) ; // => /
-        (while (path:match sandwiched-dot)
-          (set path (path:gsub sandwiched-dot sep))) ; /./ => /
-        (set path (path:gsub (.. "[^" sep "]+" sep "%.%.") ".")) ; a/.. => .
-        (while (path:match sandwiched-dot)
-          (set path (path:gsub sandwiched-dot sep))) ; /./ => / again!
-        (set path (path:gsub (.. "^%." sep) "")) ; ^./ => ""
-        (set path (path:gsub (.. sep "%.$") "")) ; /.$ => ""
-        (if (path:match (.. sep "$")) path
-            (= "" path) (if trailing-sep? (.. "." sep) ".")
-            (if trailing-sep? (.. path sep) path)))))
+  (case (assert-type :string path)
+    "" ""
+    path (let [s path-separator
+               had-trailing-sep? (trailing-sep? path)
+               sds (.. s "%." s) ; /./
+               ss->s #($:gsub (.. s "+") s)
+               sds->s! #(do
+                          (while ($:match sds) (set $ ($:gsub sds s)))
+                          $)
+               asdd->d #($:gsub (.. "[^" s "]+" s "%.%.") ".")
+               ^ds-> #($:gsub (.. "^%." s) "")
+               sd$-> #($:gsub (.. s "%.$") "")
+               ->d #(if (= "" $) "." $)
+               path (-> path
+                        (ss->s)   ; //  -> /
+                        (sds->s!) ; /./ -> /
+                        (asdd->d) ; any-dir/.. -> .
+                        (sds->s!) ; again!
+                        (^ds->)   ; ^./ -> ''
+                        (sd$->)   ; /.$ -> ''
+                        (->d))]   ; '' -> .
+           (if (trailing-sep? path)
+               path
+               (if had-trailing-sep?
+                   (.. path s)
+                   path)))))
 
 (fn normalize [...]
   "Return normalized `paths`.
@@ -87,9 +99,8 @@ Trailing slash will be left as is.
   (map-values %normalize ...))
 
 (fn %remove-suffix [path suffix]
-  (let [sep path-separator
-        stripped (path:match (.. "^(.*)" (escape-regex suffix) "$"))]
-    (if (or (= "" stripped) (stripped:match (.. sep "$")))
+  (let [stripped (path:match (.. "^(.*)" (escape-regex suffix) "$"))]
+    (if (or (= "" stripped) (trailing-sep? stripped))
         path
         stripped)))
 
