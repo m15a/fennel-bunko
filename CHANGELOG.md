@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning][2].
 
 ### Fixed
 
+- `bunko.file.remove-suffix`: error when suffix does not match.
 - Functions in `bunko.file` now handle both POSIX and Windows path separators.
 
 ## [1.0.0][v1.0.0] (2024-03-01)

@@ -18,8 +18,10 @@
   (t.= "." (bf.normalize "./.")))
 
 (fn test-remove-suffix []
+  (t.= :.ext (bf.remove-suffix :.ext :.ext))
   (t.= :/a/b (bf.remove-suffix :/a/b.ext :.ext))
-  (t.= :/a/b/.ext (bf.remove-suffix :/a/b/.ext :.ext)))
+  (t.= :/a/b/.ext (bf.remove-suffix :/a/b/.ext :.ext))
+  (t.= :/a/b.exta (bf.remove-suffix :/a/b.exta :.ext)))
 
 (fn test-basename []
   (t.= "/" (bf.basename "/"))
