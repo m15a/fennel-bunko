@@ -6,9 +6,10 @@
       url = "github:m15a/flake-fennel-tools";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fnldoc.url = "sourcehut:~m15a/fnldoc";
   };
 
-  outputs = { self, nixpkgs, flake-utils, fennel-tools, ... }:
+  outputs = inputs @ { self, nixpkgs, flake-utils, fennel-tools, ... }:
     let
       overlay = import ./nix/overlay.nix;
     in
@@ -18,6 +19,7 @@
           inherit system;
           overlays = [
             fennel-tools.overlays.default
+            inputs.fnldoc.overlays.default
             overlay
           ];
         };
@@ -58,7 +60,7 @@
             ci-generate-docs = pkgs.mkShell {
               buildInputs = [
                 pkgs.fennel-luajit
-                pkgs.fenneldoc
+                pkgs.fnldoc
               ];
             };
             default =
@@ -70,7 +72,7 @@
                   fennel
                   pkgs.faith-unstable
                   pkgs.fnlfmt-unstable
-                  pkgs.fenneldoc
+                  pkgs.fnldoc
                   pkgs.fennel-ls
                 ] ++ (with fennel.lua.pkgs; [
                   # NOTE: lua5_4.pkgs.readline is currently broken.

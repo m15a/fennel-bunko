@@ -19,58 +19,58 @@
  :modules-info
  {"bunko/init-macros.fnl"
   {:description "Miscellaneous macros."
-   :doc-order [:unless
-               :map-values
-               :immutably
-               :find-some
-               :for-some?
-               :for-all?]}
+   :order [:unless
+           :map-values
+           :immutably
+           :find-some
+           :for-some?
+           :for-all?]}
 
   "bunko/init.fnl"
   {:description "General utilities."
-   :doc-order [:assert-type
-               :equal?]}
+   :order [:assert-type
+           :equal?]}
 
   "bunko/string.fnl"
   {:description "Utilities for string manipulation."
-   :doc-order [:escape-regex]}
+   :order [:escape-regex]}
 
   "bunko/file.fnl"
   {:description "File and file path utilities."
-   :doc-order [:exists?
-               :normalize
-               :remove-suffix
-               :basename
-               :dirname
-               :read-all
-               :read-lines]}
+   :order [:exists?
+           :normalize
+           :remove-suffix
+           :basename
+           :dirname
+           :read-all
+           :read-lines]}
 
   "bunko/table.fnl"
   {:description "Table extras."
-   :doc-order [:copy
-               :keys
-               :items
-               :update!
-               :merge!
-               :append!
-               :unpack/then]}
+   :order [:copy
+           :keys
+           :items
+           :update!
+           :merge!
+           :append!
+           :unpack/then]}
 
   "bunko/set.fnl"
   {:description "Set algebra on Lua table.
 
 Here, each table is regarded as a set of keys. A non-nil value, including
 `false`, indicates that the corresponding key exists in the set."
-   :doc-order [:subset?
-               :set=
-               :union!
-               :intersection!
-               :difference!
-               :powerset]}
+   :order [:subset?
+           :set=
+           :union!
+           :intersection!
+           :difference!
+           :powerset]}
 
   "bunko/math.fnl"
   {:description "Mathematical and statistical functions."
-   :doc-order [:mean
-               :variance
-               :standard-deviation
-               :standard-error
-               :median]}}}
+   :order [:mean
+           :variance
+           :standard-deviation
+           :standard-error
+           :median]}}}

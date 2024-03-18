@@ -51,7 +51,7 @@
 
 (shell-task :docs
   "Build API documents from sources."
-  "rm -rf doc/ && fenneldoc --no-sandbox bunko/*.fnl")
+  "rm -rf doc/ && fnldoc --no-sandbox bunko/*.fnl")
 
 (let [script-name (. arg 0)
       [command & rest] arg]
