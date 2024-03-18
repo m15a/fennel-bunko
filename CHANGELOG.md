@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning][2].
 - `bunko.file.remove-suffix`: error when suffix does not match.
 - Functions in `bunko.file` now handle both POSIX and Windows path separators.
 
-## [1.0.0][v1.0.0] (2024-03-01)
+## [1.0.0] (2024-03-01)
 
 ### Changed
 
@@ -55,9 +55,9 @@ and this project adheres to [Semantic Versioning][2].
 - `bunko.set.{subset?,intersection!}`: fix a bug that `false` value indicates no
   element in a set.
 
-## [0.1.0][v0.1.0] (2024-02-24)
+## [0.1.0] (2024-02-24)
 
 - Initial release of development version.
 
-[v1.0.0]: https://github.com/m15a/fennel-bunko/tree/v1.0.0
-[v0.1.0]: https://github.com/m15a/fennel-bunko/tree/v0.1.0
+[1.0.0]: https://github.com/m15a/fennel-bunko/tree/v1.0.0
+[0.1.0]: https://github.com/m15a/fennel-bunko/tree/v0.1.0
