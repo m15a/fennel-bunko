@@ -18,8 +18,7 @@
 
  :modules-info
  {"bunko/init-macros.fnl"
-  {:description "Miscellaneous macros."
-   :order [:unless
+  {:order [:unless
            :map-values
            :immutably
            :find-some
@@ -27,17 +26,14 @@
            :for-all?]}
 
   "bunko/init.fnl"
-  {:description "General utilities."
-   :order [:assert-type
+  {:order [:assert-type
            :equal?]}
 
   "bunko/string.fnl"
-  {:description "Utilities for string manipulation."
-   :order [:escape-regex]}
+  {:order [:escape-regex]}
 
   "bunko/file.fnl"
-  {:description "File and file path utilities."
-   :order [:exists?
+  {:order [:exists?
            :normalize
            :remove-suffix
            :basename
@@ -46,8 +42,7 @@
            :read-lines]}
 
   "bunko/table.fnl"
-  {:description "Table extras."
-   :order [:copy
+  {:order [:copy
            :keys
            :items
            :update!
@@ -56,11 +51,7 @@
            :unpack/then]}
 
   "bunko/set.fnl"
-  {:description "Set algebra on Lua table.
-
-Here, each table is regarded as a set of keys. A non-nil value, including
-`false`, indicates that the corresponding key exists in the set."
-   :order [:subset?
+  {:order [:subset?
            :set=
            :union!
            :intersection!
@@ -68,8 +59,7 @@ Here, each table is regarded as a set of keys. A non-nil value, including
            :powerset]}
 
   "bunko/math.fnl"
-  {:description "Mathematical and statistical functions."
-   :order [:mean
+  {:order [:mean
            :variance
            :standard-deviation
            :standard-error
