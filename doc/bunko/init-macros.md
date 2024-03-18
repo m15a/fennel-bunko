@@ -1,17 +1,18 @@
 # Init-macros.fnl (1.0.0)
+
+
 Miscellaneous macros.
 
 **Table of contents**
 
-- [`unless`](#unless)
-- [`map-values`](#map-values)
-- [`immutably`](#immutably)
-- [`find-some`](#find-some)
-- [`for-some?`](#for-some)
-- [`for-all?`](#for-all)
+- Macro: [`unless`](#macro-unless)
+- Macro: [`map-values`](#macro-map-values)
+- Macro: [`immutably`](#macro-immutably)
+- Macro: [`find-some`](#macro-find-some)
+- Macro: [`for-some?`](#macro-for-some)
+- Macro: [`for-all?`](#macro-for-all)
 
-## `unless`
-Function signature:
+## Macro: `unless`
 
 ```
 (unless condition & body)
@@ -19,8 +20,7 @@ Function signature:
 
 If the `condition` is falsy, evaluate each of `body` sequentially.
 
-## `map-values`
-Function signature:
+## Macro: `map-values`
 
 ```
 (map-values function & varg)
@@ -41,8 +41,7 @@ This is similar to `map-values` in [SRFI-210][1], but consumes `varg` directly.
   (assert (and (= a 2) (= b 3) (= c 4))))
 ```
 
-## `immutably`
-Function signature:
+## Macro: `immutably`
 
 ```
 (immutably mutator! table & args)
@@ -78,8 +77,7 @@ where `copy` is a function to make a shallow copy of the `tbl`.
   (assert (= x.a 1)))
 ```
 
-## `find-some`
-Function signature:
+## Macro: `find-some`
 
 ```
 (find-some bindings predicate-expression)
@@ -109,8 +107,7 @@ implicitly in this macro.
   (assert (and (= k :c) (= v :cc))))
 ```
 
-## `for-some?`
-Function signature:
+## Macro: `for-some?`
 
 ```
 (for-some? bindings predicate-expression)
@@ -134,8 +131,7 @@ implicitly in this macro.
   (assert (= true q)))
 ```
 
-## `for-all?`
-Function signature:
+## Macro: `for-all?`
 
 ```
 (for-all? bindings predicate-expression)
@@ -158,11 +154,9 @@ implicitly in this macro.
   (assert (= false q)))
 ```
 
-
 ---
 
 License: Unlicense
 
-
-<!-- Generated with Fenneldoc 1.0.1-dev-7960056
-     https://gitlab.com/andreyorst/fenneldoc -->
+<!-- Generated with Fnldoc 1.1.0-dev-66c2ee5
+     https://sr.ht/~m15a/fnldoc/ -->

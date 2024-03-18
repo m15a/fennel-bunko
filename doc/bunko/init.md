@@ -1,13 +1,13 @@
 # Init.fnl (1.0.0)
+
 General utilities.
 
 **Table of contents**
 
-- [`assert-type`](#assert-type)
-- [`equal?`](#equal)
+- Function: [`assert-type`](#function-assert-type)
+- Function: [`equal?`](#function-equal)
 
-## `assert-type`
-Function signature:
+## Function: `assert-type`
 
 ```
 (assert-type expected x)
@@ -28,8 +28,7 @@ Return evaluated `x` if passed the check; otherwise raise an error.
 ; => runtime error: number expected, got "string"
 ```
 
-## `equal?`
-Function signature:
+## Function: `equal?`
 
 ```
 (equal? x y ...)
@@ -53,11 +52,9 @@ otherwise returns `false`.
 (assert (= false (equal? {:a {:a :a}} {:a {:a :a}} {:a {:a 1}})))
 ```
 
-
 ---
 
 License: Unlicense
 
-
-<!-- Generated with Fenneldoc 1.0.1-dev-7960056
-     https://gitlab.com/andreyorst/fenneldoc -->
+<!-- Generated with Fnldoc 1.1.0-dev-66c2ee5
+     https://sr.ht/~m15a/fnldoc/ -->

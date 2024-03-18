@@ -1,16 +1,16 @@
 # Math.fnl (1.0.0)
+
 Mathematical and statistical functions.
 
 **Table of contents**
 
-- [`mean`](#mean)
-- [`variance`](#variance)
-- [`standard-deviation`](#standard-deviation)
-- [`standard-error`](#standard-error)
-- [`median`](#median)
+- Function: [`mean`](#function-mean)
+- Function: [`variance`](#function-variance)
+- Function: [`standard-deviation`](#function-standard-deviation)
+- Function: [`standard-error`](#function-standard-error)
+- Function: [`median`](#function-median)
 
-## `mean`
-Function signature:
+## Function: `mean`
 
 ```
 (mean sample)
@@ -21,8 +21,7 @@ Return the `sample` mean.
 `sample` should be a sequential table of numbers, containing at least one.
 Otherwise, it returns `nil`.
 
-## `variance`
-Function signature:
+## Function: `variance`
 
 ```
 (variance sample)
@@ -33,8 +32,7 @@ Return the unbiased `sample` variance.
 `sample` should be a sequential table of numbers, containing at least two.
 Otherwise, it returns `nil`.
 
-## `standard-deviation`
-Function signature:
+## Function: `standard-deviation`
 
 ```
 (standard-deviation sample)
@@ -46,8 +44,7 @@ This is just the square root of unbiased sample variance.
 `sample` should be a sequential table of numbers, containing at least two.
 Otherwise, it returns `nil`.
 
-## `standard-error`
-Function signature:
+## Function: `standard-error`
 
 ```
 (standard-error sample)
@@ -58,8 +55,7 @@ Return the `sample` standard error.
 `sample` should be a sequential table of numbers, containing at least two.
 Otherwise, it returns `nil`.
 
-## `median`
-Function signature:
+## Function: `median`
 
 ```
 (median sample)
@@ -70,11 +66,9 @@ Return the `sample` median.
 `sample` should be a sequential table of numbers, containing at least one.
 Otherwise, it returns `nil`.
 
-
 ---
 
 License: Unlicense
 
-
-<!-- Generated with Fenneldoc 1.0.1-dev-7960056
-     https://gitlab.com/andreyorst/fenneldoc -->
+<!-- Generated with Fnldoc 1.1.0-dev-66c2ee5
+     https://sr.ht/~m15a/fnldoc/ -->

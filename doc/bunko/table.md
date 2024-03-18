@@ -1,18 +1,18 @@
 # Table.fnl (1.0.0)
+
 Table extras.
 
 **Table of contents**
 
-- [`copy`](#copy)
-- [`keys`](#keys)
-- [`items`](#items)
-- [`update!`](#update)
-- [`merge!`](#merge)
-- [`append!`](#append)
-- [`unpack/then`](#unpackthen)
+- Function: [`copy`](#function-copy)
+- Function: [`keys`](#function-keys)
+- Function: [`items`](#function-items)
+- Function: [`update!`](#function-update)
+- Function: [`merge!`](#function-merge)
+- Function: [`append!`](#function-append)
+- Function: [`unpack/then`](#function-unpackthen)
 
-## `copy`
-Function signature:
+## Function: `copy`
 
 ```
 (copy table ?metatable)
@@ -22,8 +22,7 @@ Return a shallow copy of the `table`.
 
 Optionally, if `?metatable` is truthy, set the same metatable as the original's.
 
-## `keys`
-Function signature:
+## Function: `keys`
 
 ```
 (keys table)
@@ -31,8 +30,7 @@ Function signature:
 
 Return all keys in the `table`.
 
-## `items`
-Function signature:
+## Function: `items`
 
 ```
 (items table)
@@ -40,8 +38,7 @@ Function signature:
 
 Return all values in the `table`.
 
-## `update!`
-Function signature:
+## Function: `update!`
 
 ```
 (update! table key function default)
@@ -77,8 +74,7 @@ It finally returns `nil`.
                (= counts.c 3))))
 ```
 
-## `merge!`
-Function signature:
+## Function: `merge!`
 
 ```
 (merge! table & tables)
@@ -98,8 +94,7 @@ It returns `nil`.
                (= x.b 2))))
 ```
 
-## `append!`
-Function signature:
+## Function: `append!`
 
 ```
 (append! table & tables)
@@ -121,8 +116,7 @@ It returns `nil`.
                (= (. x 4) 4))))
 ```
 
-## `unpack/then`
-Function signature:
+## Function: `unpack/then`
 
 ```
 (unpack/then table ...)
@@ -189,11 +183,9 @@ Even though, if `unquote-splicing`, i.e. `,@`, were available, it should be nice
      (if ,pred-expr true false)
 ```
 
-
 ---
 
 License: Unlicense
 
-
-<!-- Generated with Fenneldoc 1.0.1-dev-7960056
-     https://gitlab.com/andreyorst/fenneldoc -->
+<!-- Generated with Fnldoc 1.1.0-dev-66c2ee5
+     https://sr.ht/~m15a/fnldoc/ -->

@@ -1,4 +1,5 @@
 # Set.fnl (1.0.0)
+
 Set algebra on Lua table.
 
 Here, each table is regarded as a set of keys. A non-nil value, including
@@ -6,15 +7,14 @@ Here, each table is regarded as a set of keys. A non-nil value, including
 
 **Table of contents**
 
-- [`subset?`](#subset)
-- [`set=`](#set)
-- [`union!`](#union)
-- [`intersection!`](#intersection)
-- [`difference!`](#difference)
-- [`powerset`](#powerset)
+- Function: [`subset?`](#function-subset)
+- Function: [`set=`](#function-set)
+- Function: [`union!`](#function-union)
+- Function: [`intersection!`](#function-intersection)
+- Function: [`difference!`](#function-difference)
+- Function: [`powerset`](#function-powerset)
 
-## `subset?`
-Function signature:
+## Function: `subset?`
 
 ```
 (subset? left right)
@@ -35,8 +35,7 @@ Return `false` otherwise.
   (assert (and q1 (not q2))))
 ```
 
-## `set=`
-Function signature:
+## Function: `set=`
 
 ```
 (set= & tables)
@@ -55,8 +54,7 @@ Return `true` if all the `tables` are of the same set.
   (assert (= q true)))
 ```
 
-## `union!`
-Function signature:
+## Function: `union!`
 
 ```
 (union! table & tables)
@@ -75,8 +73,7 @@ It is actually equivalent to `bunko.table.merge!`.
                (= x.b :b))))
 ```
 
-## `intersection!`
-Function signature:
+## Function: `intersection!`
 
 ```
 (intersection! table & tables)
@@ -95,8 +92,7 @@ Note that even a `false` value indicates the corresponding key exists in the set
                (= (. x :b) nil))))
 ```
 
-## `difference!`
-Function signature:
+## Function: `difference!`
 
 ```
 (difference! table & tables)
@@ -115,8 +111,7 @@ Note that even a `false` value indicates the corresponding key exists in the set
                (= (. x :a) nil))))
 ```
 
-## `powerset`
-Function signature:
+## Function: `powerset`
 
 ```
 (powerset table)
@@ -136,11 +131,9 @@ Return, as a sequential table, the power set of the `table`.
     (assert (subset? x origin))))
 ```
 
-
 ---
 
 License: Unlicense
 
-
-<!-- Generated with Fenneldoc 1.0.1-dev-7960056
-     https://gitlab.com/andreyorst/fenneldoc -->
+<!-- Generated with Fnldoc 1.1.0-dev-66c2ee5
+     https://sr.ht/~m15a/fnldoc/ -->

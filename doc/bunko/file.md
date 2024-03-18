@@ -1,19 +1,19 @@
 # File.fnl (1.0.0)
+
 File and file path utilities.
 
 **Table of contents**
 
-- [`exists?`](#exists)
-- [`normalize`](#normalize)
-- [`remove-suffix`](#remove-suffix)
-- [`basename`](#basename)
-- [`dirname`](#dirname)
-- [`read-all`](#read-all)
-- [`read-lines`](#read-lines)
-- [`make-directory`](#make-directory)
+- Function: [`exists?`](#function-exists)
+- Function: [`normalize`](#function-normalize)
+- Function: [`remove-suffix`](#function-remove-suffix)
+- Function: [`basename`](#function-basename)
+- Function: [`dirname`](#function-dirname)
+- Function: [`read-all`](#function-read-all)
+- Function: [`read-lines`](#function-read-lines)
+- Function: [`make-directory`](#function-make-directory)
 
-## `exists?`
-Function signature:
+## Function: `exists?`
 
 ```
 (exists? path)
@@ -21,8 +21,7 @@ Function signature:
 
 Return `true` if a file at the `path` exists.
 
-## `normalize`
-Function signature:
+## Function: `normalize`
 
 ```
 (normalize & paths)
@@ -49,8 +48,7 @@ Trailing slash will be left as is.
                (= y "b/"))))
 ```
 
-## `remove-suffix`
-Function signature:
+## Function: `remove-suffix`
 
 ```
 (remove-suffix path suffix)
@@ -74,8 +72,7 @@ This is for convenience on manipulating hidden files.
   (assert (= removed "/a/b/.ext")))
 ```
 
-## `basename`
-Function signature:
+## Function: `basename`
 
 ```
 (basename path ?suffix)
@@ -115,8 +112,7 @@ Compatible with GNU coreutils' `basename`.
                  (= i ".ext"))))
 ```
 
-## `dirname`
-Function signature:
+## Function: `dirname`
 
 ```
 (dirname & paths)
@@ -144,8 +140,7 @@ Compatible with GNU coreutils' `dirname`.
                (= h ".") (= i ".") (= j "."))))
 ```
 
-## `read-all`
-Function signature:
+## Function: `read-all`
 
 ```
 (read-all file/path)
@@ -157,8 +152,7 @@ Raises an error if the file handle is closed or the file cannot be opened.
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually.
 
-## `read-lines`
-Function signature:
+## Function: `read-lines`
 
 ```
 (read-lines file/path)
@@ -170,8 +164,7 @@ Raises an error if the file handle is closed or the file cannot be opened.
 If `file/path` is a file handle, it will not be closed, so make sure to use it
 in `with-open` macro or to close it manually.
 
-## `make-directory`
-Function signature:
+## Function: `make-directory`
 
 ```
 (make-directory path parents? mode)
@@ -186,11 +179,9 @@ It returns multiple values. The first value is `true` or `nil`, indicating
 whether succeeded or failed to make the directory; the second string teaches
 you the type of the third value, which is exit status or terminated signal.
 
-
 ---
 
 License: Unlicense
 
-
-<!-- Generated with Fenneldoc 1.0.1-dev-7960056
-     https://gitlab.com/andreyorst/fenneldoc -->
+<!-- Generated with Fnldoc 1.1.0-dev-66c2ee5
+     https://sr.ht/~m15a/fnldoc/ -->

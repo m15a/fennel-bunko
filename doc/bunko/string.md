@@ -1,12 +1,12 @@
 # String.fnl (1.0.0)
+
 Utilities for string manipulation.
 
 **Table of contents**
 
-- [`escape-regex`](#escape-regex)
+- Function: [`escape-regex`](#function-escape-regex)
 
-## `escape-regex`
-Function signature:
+## Function: `escape-regex`
 
 ```
 (escape-regex string)
@@ -28,11 +28,9 @@ See the [Lua manual][1] for more detail.
   (assert (= escaped "%.fnl%$")))
 ```
 
-
 ---
 
 License: Unlicense
 
-
-<!-- Generated with Fenneldoc 1.0.1-dev-7960056
-     https://gitlab.com/andreyorst/fenneldoc -->
+<!-- Generated with Fnldoc 1.1.0-dev-66c2ee5
+     https://sr.ht/~m15a/fnldoc/ -->
