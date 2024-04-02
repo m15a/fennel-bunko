@@ -125,11 +125,11 @@ implicitly in this macro.
   (assert (and (= k :c) (= v :cc))))
 ```"
   {:fnl/arglist [bindings predicate-expression]}
-  (assert (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
-          "expected iterator binding table")
-  (assert (not= nil pred-expr) "expected predicate expression")
-  (assert (= nil ...)
-          "expected only one expression; wrap multiple expressions with do")
+  (assert-compile (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
+                  "expected iterator binding table" iter-tbl)
+  (assert-compile (not= nil pred-expr)
+                  "expected predicate expression" pred-expr)
+  (assert-compile (= nil ...) "expected only one expression" ...)
   (let [kv-tbl (fcollect [i 1 (- (length iter-tbl) 1)]
                  (. iter-tbl i))
         iter-tbl (doto (copy iter-tbl)
@@ -159,11 +159,12 @@ implicitly in this macro.
   (assert (= true q)))
 ```"
   {:fnl/arglist [bindings predicate-expression]}
-  (assert (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
-          "expected iterator binding table")
-  (assert (not= nil pred-expr) "expected predicate expression")
-  (assert (= nil ...)
-          "expected only one expression; wrap multiple expressions with do")
+  (assert-compile (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
+                  "expected iterator binding table"
+                  iter-tbl)
+  (assert-compile (not= nil pred-expr)
+                  "expected predicate expression" pred-expr)
+  (assert-compile (= nil ...) "expected only one expression" ...)
   (let [found `found#
         iter-tbl (doto (copy iter-tbl)
                    (table.insert 1 found)
@@ -190,11 +191,11 @@ implicitly in this macro.
   (assert (= false q)))
 ```"
   {:fnl/arglist [bindings predicate-expression]}
-  (assert (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
-          "expected iterator binding table")
-  (assert (not= nil pred-expr) "expected predicate expression")
-  (assert (= nil ...)
-          "expected only one expression; wrap multiple expressions with do")
+  (assert-compile (and (sequence? iter-tbl) (<= 2 (length iter-tbl)))
+                  "expected iterator binding table" iter-tbl)
+  (assert-compile (not= nil pred-expr)
+                  "expected predicate expression" pred-expr)
+  (assert-compile (= nil ...) "expected only one expression" ...)
   (let [found `found#
         iter-tbl (doto (copy iter-tbl)
                    (table.insert 1 found)
