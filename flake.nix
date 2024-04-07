@@ -9,11 +9,19 @@
     fnldoc.url = "sourcehut:~m15a/fnldoc";
   };
 
-  outputs = inputs @ { self, nixpkgs, flake-utils, fennel-tools, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      flake-utils,
+      fennel-tools,
+      ...
+    }:
     let
       overlay = import ./nix/overlay.nix;
     in
-    flake-utils.lib.eachDefaultSystem (system:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs {
           inherit system;
@@ -39,8 +47,7 @@
 
         inherit (pkgs.lib) listToAttrs cartesianProductOfSets;
 
-        buildPackageSet = { builder, args }:
-          listToAttrs (map builder args);
+        buildPackageSet = { builder, args }: listToAttrs (map builder args);
       in
       {
         devShells =
@@ -50,7 +57,8 @@
               fennelVersion = fennelVersions;
               luaVersion = luaVersions;
             };
-          }) // {
+          })
+          // {
             ci-check-format = pkgs.mkShell {
               buildInputs = [
                 pkgs.fennel-luajit
@@ -68,18 +76,21 @@
                 fennel = pkgs.fennel-unstable-lua5_3;
               in
               pkgs.mkShell {
-                buildInputs = [
-                  fennel
-                  pkgs.faith-unstable
-                  pkgs.fnlfmt-unstable
-                  pkgs.fnldoc
-                  pkgs.fennel-ls
-                ] ++ (with fennel.lua.pkgs; [
-                  # NOTE: lua5_4.pkgs.readline is currently broken.
-                  readline
-                ]);
+                buildInputs =
+                  [
+                    fennel
+                    pkgs.faith-unstable
+                    pkgs.fnlfmt-unstable
+                    pkgs.fnldoc
+                    pkgs.fennel-ls
+                  ]
+                  ++ (with fennel.lua.pkgs; [
+                    # NOTE: lua5_4.pkgs.readline is currently broken.
+                    readline
+                  ]);
                 FENNEL_PATH = "${pkgs.faith-unstable}/bin/?";
               };
           };
-      });
+      }
+    );
 }

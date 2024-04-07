@@ -1,26 +1,28 @@
 final: prev:
 
 let
-  inherit (prev.lib) optionalString;
+  inherit (prev) lib;
 in
 
 {
-  mkTestShell = { fennelVersion, luaVersion }: {
-    name = "ci-test-${fennelVersion}-${luaVersion}";
-    value = final.mkShell {
-      buildInputs =
-        let
-          fennelSuffix =
-            optionalString (fennelVersion != "stable")
-              "-${fennelVersion}";
-        in
-        [
-          final."fennel${fennelSuffix}-${luaVersion}"
-          final.faith-unstable
-        ];
-      FENNEL_PATH = "${final.faith-unstable}/bin/?";
+  mkTestShell =
+    { fennelVersion, luaVersion }:
+    {
+      name = "ci-test-${fennelVersion}-${luaVersion}";
+      value = final.mkShell {
+        buildInputs =
+          let
+            fennelSuffix = lib.optionalString (
+              fennelVersion != "stable"
+            ) "-${fennelVersion}";
+          in
+          [
+            final."fennel${fennelSuffix}-${luaVersion}"
+            final.faith-unstable
+          ];
+        FENNEL_PATH = "${final.faith-unstable}/bin/?";
+      };
     };
-  };
 
   faith = prev.faith.overrideAttrs (_: {
     patches = [ ./patches/faith.patch ];
